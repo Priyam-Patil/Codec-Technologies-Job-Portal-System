@@ -37,16 +37,14 @@ const clerkWebhooks = async (req, res) => {
           email: data.email_addresses[0].email_address,
           name: data.first_name + " " + data.last_name,
           image: data.image_url,
-        }
+        };
 
-       await User.findByIdAndUpdate(data.id, userData);
-       res.json({});
-       break;
+        await User.findByIdAndUpdate(data.id, userData);
+        break;
       }
 
       case "user.deleted": {
         await User.findByIdAndDelete(data.id);
-        res.json({})
         break;
       }
 
@@ -57,7 +55,7 @@ const clerkWebhooks = async (req, res) => {
     res.json({ success: true, message: "Webhook received" });
   } catch (error) {
     console.log(error.message);
-    res.json({ success: false, message: 'Webhooks Error' });
+    res.json({ success: false, message: "Webhooks Error" });
   }
 };
 

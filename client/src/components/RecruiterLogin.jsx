@@ -1,9 +1,12 @@
 import React, { useContext, useEffect, useState } from "react";
 import { AppContext } from "../context/AppContext";
 import { assets } from "../assets/assets";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const RecruiterLogin = () => {
-  const { setShowRecruiterLogin } = useContext(AppContext);
+  const navigate = useNavigate();
 
   const [state, setState] = useState("Login");
   const [name, setName] = useState("");
@@ -13,7 +16,14 @@ const RecruiterLogin = () => {
   const [isTextDataSubmitted, setIsTextDataSubmitted] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
 
-  const onSubmitHandler = (e) => {
+  const {
+    setShowRecruiterLogin,
+    backendUrl,
+    setCompanyToken,
+    setCompanyData,
+  } = useContext(AppContext);
+
+  const onSubmitHandler = async (e) => {
     e.preventDefault();
 
     if (state === "Sign Up" && !isTextDataSubmitted) {
@@ -22,16 +32,52 @@ const RecruiterLogin = () => {
     }
 
     if (state === "Sign Up" && isTextDataSubmitted && !image) {
-      alert("Please upload company logo");
+      toast.error("Please upload company logo");
       return;
     }
 
-    console.log({
-      name,
-      email,
-      password,
-      image,
-    });
+    try {
+      if (state === "Login") {
+        const { data } = await axios.post(backendUrl + "/api/company/login", {
+          email,
+          password,
+        });
+
+        if (data.success) {
+          setCompanyData(data.company);
+          setCompanyToken(data.token);
+          localStorage.setItem("companyToken", data.token);
+          setShowRecruiterLogin(false);
+          navigate("/dashboard/manage-jobs");
+        } else {
+          toast.error(data.message);
+        }
+      } else {
+        const formData = new FormData();
+
+        formData.append("name", name);
+        formData.append("password", password);
+        formData.append("email", email);
+        formData.append("image", image);
+
+        const { data } = await axios.post(
+          backendUrl + "/api/company/register",
+          formData
+        );
+
+        if (data.success) {
+          setCompanyData(data.company);
+          setCompanyToken(data.token);
+          localStorage.setItem("companyToken", data.token);
+          setShowRecruiterLogin(false);
+          navigate("/dashboard/manage-jobs");
+        } else {
+          toast.error(data.message);
+        }
+      }
+    } catch (error) {
+      toast.error(error.response?.data?.message || error.message);
+    }
   };
 
   useEffect(() => {
