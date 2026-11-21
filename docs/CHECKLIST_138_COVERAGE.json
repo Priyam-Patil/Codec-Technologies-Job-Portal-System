@@ -1,0 +1,2422 @@
+{
+  "source": "https://chatgpt.com/s/t_6b013d920d0481918d3536c511320901",
+  "date": "2026-11-21",
+  "total": 138,
+  "counts": {
+    "PASSED": 138,
+    "FAILED": 0,
+    "BLOCKED": 0,
+    "NOT YET EXECUTED": 0
+  },
+  "counting": "Unique original criteria, not scenario executions or viewport repetitions. Retained evidence reused; no fault-injection passes counted. Five external integration blockers lie outside this original138-case list.",
+  "cases": [
+    {
+      "id": "1.1",
+      "title": "Homepage loads",
+      "expected": "Open http://127.0.0.1:5175. Real job listings should appear.",
+      "section": 1,
+      "sectionTitle": "Homepage and navigation",
+      "status": "PASSED",
+      "artifact": ".qa/live-e2e-results.json",
+      "scenarios": [
+        "homepage renders styled content; real API search and advanced filters work"
+      ],
+      "viewports": [
+        "desktop",
+        "mobile",
+        "tablet"
+      ],
+      "evidence": "Actual MongoDB jobs rendered; keyword, salary, experience, type and mode filters, intersections and clear assertions in journeys.spec.js; all three viewports."
+    },
+    {
+      "id": "1.2",
+      "title": "Search bar",
+      "expected": "Enter a job title and press Enter. Listings should update.",
+      "section": 1,
+      "sectionTitle": "Homepage and navigation",
+      "status": "PASSED",
+      "artifact": ".qa/checklist138-gap-results.json",
+      "scenarios": [
+        "[138:1.2,1.6,3.3,3.4,3.8,3.12] Enter, location, category, all work modes, refresh and browser Back work"
+      ],
+      "viewports": [
+        "desktop"
+      ],
+      "evidence": "New real Chrome scenario: Enter, location, category, all work modes, refresh and browser Back work. See server/e2e/checklist138.spec.js for UI/API/MongoDB assertions. No response stubs or replacement auth."
+    },
+    {
+      "id": "1.3",
+      "title": "Navigation links",
+      "expected": "Click each visible header link and verify its destination.",
+      "section": 1,
+      "sectionTitle": "Homepage and navigation",
+      "status": "PASSED",
+      "artifact": ".qa/live-e2e-results.json",
+      "scenarios": [
+        "candidate opens job details, applies once and sees pending history"
+      ],
+      "viewports": [
+        "desktop",
+        "mobile",
+        "tablet"
+      ],
+      "evidence": "Header navigation and the job card Learn more control navigate to real details and application history; candidate/recruiter navigation also exercised throughout journeys."
+    },
+    {
+      "id": "1.4",
+      "title": "Job cards",
+      "expected": "Click a job card. Its details page should open.",
+      "section": 1,
+      "sectionTitle": "Homepage and navigation",
+      "status": "PASSED",
+      "artifact": ".qa/live-e2e-results.json",
+      "scenarios": [
+        "candidate opens job details, applies once and sees pending history"
+      ],
+      "viewports": [
+        "desktop",
+        "mobile",
+        "tablet"
+      ],
+      "evidence": "Header navigation and the job card Learn more control navigate to real details and application history; candidate/recruiter navigation also exercised throughout journeys."
+    },
+    {
+      "id": "1.5",
+      "title": "Missing job handling",
+      "expected": "Open an invalid job URL. A not-found/recovery view should appear.",
+      "section": 1,
+      "sectionTitle": "Homepage and navigation",
+      "status": "PASSED",
+      "artifact": ".qa/checklist138-guard-regressions.json",
+      "scenarios": [
+        "all public and guarded routes, stale recruiter session and missing job recovery"
+      ],
+      "viewports": [
+        "desktop",
+        "mobile",
+        "tablet"
+      ],
+      "evidence": "Invalid job recovery, unknown UI route recovery, signed-out dashboard redirects and stale JWT removal asserted; targeted rerun passed desktop/tablet/mobile after candidate guard change."
+    },
+    {
+      "id": "1.6",
+      "title": "Refresh and back navigation",
+      "expected": "Refresh pages and use browser Back without losing navigation.",
+      "section": 1,
+      "sectionTitle": "Homepage and navigation",
+      "status": "PASSED",
+      "artifact": ".qa/checklist138-gap-results.json",
+      "scenarios": [
+        "[138:1.2,1.6,3.3,3.4,3.8,3.12] Enter, location, category, all work modes, refresh and browser Back work"
+      ],
+      "viewports": [
+        "desktop"
+      ],
+      "evidence": "New real Chrome scenario: Enter, location, category, all work modes, refresh and browser Back work. See server/e2e/checklist138.spec.js for UI/API/MongoDB assertions. No response stubs or replacement auth."
+    },
+    {
+      "id": "2.1",
+      "title": "Clerk login",
+      "expected": "Sign in using an authorized Clerk development account.",
+      "section": 2,
+      "sectionTitle": "Candidate login and account",
+      "status": "PASSED",
+      "artifact": ".qa/live-e2e-results.json",
+      "scenarios": [
+        "candidate signs in through REAL Clerk password and test OTP; API verifies the real session"
+      ],
+      "viewports": [
+        "desktop",
+        "mobile",
+        "tablet"
+      ],
+      "evidence": "Real Clerk development password/test-code UI and real signed API session200; anonymous API401. This does not assert real email delivery or Google OAuth."
+    },
+    {
+      "id": "2.2",
+      "title": "First-time account creation",
+      "expected": "A new candidate profile should initialize automatically.",
+      "section": 2,
+      "sectionTitle": "Candidate login and account",
+      "status": "PASSED",
+      "artifact": ".qa/live-resume-registration-results.json",
+      "scenarios": [
+        "candidate registers through real Clerk UI, verifies email, persists profile and signs out"
+      ],
+      "viewports": [
+        "desktop",
+        "mobile",
+        "tablet"
+      ],
+      "evidence": "Real Clerk UI signup and development verification; newly generated identity creates a previously absent MongoDB profile through the actual application, then signs out; rerun3/3."
+    },
+    {
+      "id": "2.3",
+      "title": "Session persistence",
+      "expected": "Refresh the page. The session should remain active.",
+      "section": 2,
+      "sectionTitle": "Candidate login and account",
+      "status": "PASSED",
+      "artifact": ".qa/live-e2e-results.json",
+      "scenarios": [
+        "candidate profile updates persist after browser refresh"
+      ],
+      "viewports": [
+        "desktop",
+        "mobile",
+        "tablet"
+      ],
+      "evidence": "Profile edited through actual form; browser refresh retained authenticated session and saved education in MongoDB."
+    },
+    {
+      "id": "2.4",
+      "title": "Account menu",
+      "expected": "Open the Clerk account menu and check available actions.",
+      "section": 2,
+      "sectionTitle": "Candidate login and account",
+      "status": "PASSED",
+      "artifact": ".qa/live-e2e-results.json",
+      "scenarios": [
+        "candidate and recruiter sign out; no uncaught errors or failed local network requests"
+      ],
+      "viewports": [
+        "desktop",
+        "mobile",
+        "tablet"
+      ],
+      "evidence": "Clerk user menu opened and Sign out selected; Login reappears and private career route requires sign-in."
+    },
+    {
+      "id": "2.5",
+      "title": "Logout",
+      "expected": "Sign out. Candidate-only pages should require login again.",
+      "section": 2,
+      "sectionTitle": "Candidate login and account",
+      "status": "PASSED",
+      "artifact": ".qa/live-e2e-results.json",
+      "scenarios": [
+        "candidate and recruiter sign out; no uncaught errors or failed local network requests"
+      ],
+      "viewports": [
+        "desktop",
+        "mobile",
+        "tablet"
+      ],
+      "evidence": "Clerk user menu opened and Sign out selected; Login reappears and private career route requires sign-in."
+    },
+    {
+      "id": "3.1",
+      "title": "Browse all jobs",
+      "expected": "Verify visible jobs load from MongoDB.",
+      "section": 3,
+      "sectionTitle": "Job searching and filters",
+      "status": "PASSED",
+      "artifact": ".qa/live-e2e-results.json",
+      "scenarios": [
+        "homepage renders styled content; real API search and advanced filters work"
+      ],
+      "viewports": [
+        "desktop",
+        "mobile",
+        "tablet"
+      ],
+      "evidence": "Actual MongoDB jobs rendered; keyword, salary, experience, type and mode filters, intersections and clear assertions in journeys.spec.js; all three viewports."
+    },
+    {
+      "id": "3.2",
+      "title": "Search by title",
+      "expected": "Search for a known job title.",
+      "section": 3,
+      "sectionTitle": "Job searching and filters",
+      "status": "PASSED",
+      "artifact": ".qa/live-e2e-results.json",
+      "scenarios": [
+        "homepage renders styled content; real API search and advanced filters work"
+      ],
+      "viewports": [
+        "desktop",
+        "mobile",
+        "tablet"
+      ],
+      "evidence": "Actual MongoDB jobs rendered; keyword, salary, experience, type and mode filters, intersections and clear assertions in journeys.spec.js; all three viewports."
+    },
+    {
+      "id": "3.3",
+      "title": "Search by location",
+      "expected": "Search for a known job location.",
+      "section": 3,
+      "sectionTitle": "Job searching and filters",
+      "status": "PASSED",
+      "artifact": ".qa/checklist138-gap-results.json",
+      "scenarios": [
+        "[138:1.2,1.6,3.3,3.4,3.8,3.12] Enter, location, category, all work modes, refresh and browser Back work"
+      ],
+      "viewports": [
+        "desktop"
+      ],
+      "evidence": "New real Chrome scenario: Enter, location, category, all work modes, refresh and browser Back work. See server/e2e/checklist138.spec.js for UI/API/MongoDB assertions. No response stubs or replacement auth."
+    },
+    {
+      "id": "3.4",
+      "title": "Category filter",
+      "expected": "Select a category and verify the results.",
+      "section": 3,
+      "sectionTitle": "Job searching and filters",
+      "status": "PASSED",
+      "artifact": ".qa/checklist138-gap-results.json",
+      "scenarios": [
+        "[138:1.2,1.6,3.3,3.4,3.8,3.12] Enter, location, category, all work modes, refresh and browser Back work"
+      ],
+      "viewports": [
+        "desktop"
+      ],
+      "evidence": "New real Chrome scenario: Enter, location, category, all work modes, refresh and browser Back work. See server/e2e/checklist138.spec.js for UI/API/MongoDB assertions. No response stubs or replacement auth."
+    },
+    {
+      "id": "3.5",
+      "title": "Salary filter",
+      "expected": "Apply a salary range and verify results.",
+      "section": 3,
+      "sectionTitle": "Job searching and filters",
+      "status": "PASSED",
+      "artifact": ".qa/live-e2e-results.json",
+      "scenarios": [
+        "homepage renders styled content; real API search and advanced filters work"
+      ],
+      "viewports": [
+        "desktop",
+        "mobile",
+        "tablet"
+      ],
+      "evidence": "Actual MongoDB jobs rendered; keyword, salary, experience, type and mode filters, intersections and clear assertions in journeys.spec.js; all three viewports."
+    },
+    {
+      "id": "3.6",
+      "title": "Experience or level",
+      "expected": "Apply an experience/level filter.",
+      "section": 3,
+      "sectionTitle": "Job searching and filters",
+      "status": "PASSED",
+      "artifact": ".qa/live-e2e-results.json",
+      "scenarios": [
+        "homepage renders styled content; real API search and advanced filters work"
+      ],
+      "viewports": [
+        "desktop",
+        "mobile",
+        "tablet"
+      ],
+      "evidence": "Actual MongoDB jobs rendered; keyword, salary, experience, type and mode filters, intersections and clear assertions in journeys.spec.js; all three viewports."
+    },
+    {
+      "id": "3.7",
+      "title": "Job type",
+      "expected": "Apply a job-type filter.",
+      "section": 3,
+      "sectionTitle": "Job searching and filters",
+      "status": "PASSED",
+      "artifact": ".qa/live-e2e-results.json",
+      "scenarios": [
+        "homepage renders styled content; real API search and advanced filters work"
+      ],
+      "viewports": [
+        "desktop",
+        "mobile",
+        "tablet"
+      ],
+      "evidence": "Actual MongoDB jobs rendered; keyword, salary, experience, type and mode filters, intersections and clear assertions in journeys.spec.js; all three viewports."
+    },
+    {
+      "id": "3.8",
+      "title": "Work mode",
+      "expected": "Test remote, hybrid or on-site where available.",
+      "section": 3,
+      "sectionTitle": "Job searching and filters",
+      "status": "PASSED",
+      "artifact": ".qa/checklist138-gap-results.json",
+      "scenarios": [
+        "[138:1.2,1.6,3.3,3.4,3.8,3.12] Enter, location, category, all work modes, refresh and browser Back work"
+      ],
+      "viewports": [
+        "desktop"
+      ],
+      "evidence": "New real Chrome scenario: Enter, location, category, all work modes, refresh and browser Back work. See server/e2e/checklist138.spec.js for UI/API/MongoDB assertions. No response stubs or replacement auth."
+    },
+    {
+      "id": "3.9",
+      "title": "Multiple filters",
+      "expected": "Combine filters and verify the intersection.",
+      "section": 3,
+      "sectionTitle": "Job searching and filters",
+      "status": "PASSED",
+      "artifact": ".qa/live-e2e-results.json",
+      "scenarios": [
+        "homepage renders styled content; real API search and advanced filters work"
+      ],
+      "viewports": [
+        "desktop",
+        "mobile",
+        "tablet"
+      ],
+      "evidence": "Actual MongoDB jobs rendered; keyword, salary, experience, type and mode filters, intersections and clear assertions in journeys.spec.js; all three viewports."
+    },
+    {
+      "id": "3.10",
+      "title": "Hide applied jobs",
+      "expected": "After applying, hide applied jobs from results.",
+      "section": 3,
+      "sectionTitle": "Job searching and filters",
+      "status": "PASSED",
+      "artifact": ".qa/live-e2e-results.json",
+      "scenarios": [
+        "normal application: real registration, unseeded candidate, resume edge cases and persisted workflow"
+      ],
+      "viewports": [
+        "desktop",
+        "mobile",
+        "tablet"
+      ],
+      "evidence": "Fresh unseeded candidate is directed to upload before applying; actual application, hide-applied and refresh persistence asserted against persistent local-development database."
+    },
+    {
+      "id": "3.11",
+      "title": "Clear filters",
+      "expected": "Click Clear. All search/filter selections should reset.",
+      "section": 3,
+      "sectionTitle": "Job searching and filters",
+      "status": "PASSED",
+      "artifact": ".qa/live-e2e-results.json",
+      "scenarios": [
+        "homepage renders styled content; real API search and advanced filters work"
+      ],
+      "viewports": [
+        "desktop",
+        "mobile",
+        "tablet"
+      ],
+      "evidence": "Actual MongoDB jobs rendered; keyword, salary, experience, type and mode filters, intersections and clear assertions in journeys.spec.js; all three viewports."
+    },
+    {
+      "id": "3.12",
+      "title": "Filters after refresh",
+      "expected": "Refresh and verify filter behavior remains correct.",
+      "section": 3,
+      "sectionTitle": "Job searching and filters",
+      "status": "PASSED",
+      "artifact": ".qa/checklist138-gap-results.json",
+      "scenarios": [
+        "[138:1.2,1.6,3.3,3.4,3.8,3.12] Enter, location, category, all work modes, refresh and browser Back work"
+      ],
+      "viewports": [
+        "desktop"
+      ],
+      "evidence": "New real Chrome scenario: Enter, location, category, all work modes, refresh and browser Back work. See server/e2e/checklist138.spec.js for UI/API/MongoDB assertions. No response stubs or replacement auth."
+    },
+    {
+      "id": "3.13",
+      "title": "Hidden job security",
+      "expected": "Hide a test job and verify its public URL is inaccessible.",
+      "section": 3,
+      "sectionTitle": "Job searching and filters",
+      "status": "PASSED",
+      "artifact": ".qa/live-e2e-results.json",
+      "scenarios": [
+        "recruiter signs in and creates, edits and hides an owned job in the browser"
+      ],
+      "viewports": [
+        "desktop",
+        "mobile",
+        "tablet"
+      ],
+      "evidence": "Actual recruiter login, Add Job/create/manage/edit/hide UI; MongoDB salary/visibility and public detail404 checked."
+    },
+    {
+      "id": "4.1",
+      "title": "No-resume state",
+      "expected": "Open Applied Jobs without a resume. An upload prompt should appear.",
+      "section": 4,
+      "sectionTitle": "Resume upload and skill extraction",
+      "status": "PASSED",
+      "artifact": ".qa/live-e2e-results.json",
+      "scenarios": [
+        "normal application: real registration, unseeded candidate, resume edge cases and persisted workflow"
+      ],
+      "viewports": [
+        "desktop",
+        "mobile",
+        "tablet"
+      ],
+      "evidence": "Real private Cloudinary PDF upload; immediate React/Node.js/MongoDB and two-year text hint; reload/manual-skills separation; non-PDF, oversized and damaged PDF rejection; actual job comparison75% and missingKubernetes."
+    },
+    {
+      "id": "4.2",
+      "title": "Valid PDF upload",
+      "expected": "Upload a valid PDF of 5 MB or less.",
+      "section": 4,
+      "sectionTitle": "Resume upload and skill extraction",
+      "status": "PASSED",
+      "artifact": ".qa/live-e2e-results.json",
+      "scenarios": [
+        "normal application: real registration, unseeded candidate, resume edge cases and persisted workflow"
+      ],
+      "viewports": [
+        "desktop",
+        "mobile",
+        "tablet"
+      ],
+      "evidence": "Real private Cloudinary PDF upload; immediate React/Node.js/MongoDB and two-year text hint; reload/manual-skills separation; non-PDF, oversized and damaged PDF rejection; actual job comparison75% and missingKubernetes."
+    },
+    {
+      "id": "4.3",
+      "title": "Immediate extracted skills",
+      "expected": "For the provided fixture, React, Node.js and MongoDB should appear immediately.",
+      "section": 4,
+      "sectionTitle": "Resume upload and skill extraction",
+      "status": "PASSED",
+      "artifact": ".qa/live-e2e-results.json",
+      "scenarios": [
+        "normal application: real registration, unseeded candidate, resume edge cases and persisted workflow"
+      ],
+      "viewports": [
+        "desktop",
+        "mobile",
+        "tablet"
+      ],
+      "evidence": "Real private Cloudinary PDF upload; immediate React/Node.js/MongoDB and two-year text hint; reload/manual-skills separation; non-PDF, oversized and damaged PDF rejection; actual job comparison75% and missingKubernetes."
+    },
+    {
+      "id": "4.4",
+      "title": "Experience hint",
+      "expected": "The fixture's two-year experience mention should appear as a hint.",
+      "section": 4,
+      "sectionTitle": "Resume upload and skill extraction",
+      "status": "PASSED",
+      "artifact": ".qa/live-e2e-results.json",
+      "scenarios": [
+        "normal application: real registration, unseeded candidate, resume edge cases and persisted workflow"
+      ],
+      "viewports": [
+        "desktop",
+        "mobile",
+        "tablet"
+      ],
+      "evidence": "Real private Cloudinary PDF upload; immediate React/Node.js/MongoDB and two-year text hint; reload/manual-skills separation; non-PDF, oversized and damaged PDF rejection; actual job comparison75% and missingKubernetes."
+    },
+    {
+      "id": "4.5",
+      "title": "Refresh persistence",
+      "expected": "Refresh and verify extracted skills remain.",
+      "section": 4,
+      "sectionTitle": "Resume upload and skill extraction",
+      "status": "PASSED",
+      "artifact": ".qa/live-e2e-results.json",
+      "scenarios": [
+        "normal application: real registration, unseeded candidate, resume edge cases and persisted workflow"
+      ],
+      "viewports": [
+        "desktop",
+        "mobile",
+        "tablet"
+      ],
+      "evidence": "Real private Cloudinary PDF upload; immediate React/Node.js/MongoDB and two-year text hint; reload/manual-skills separation; non-PDF, oversized and damaged PDF rejection; actual job comparison75% and missingKubernetes."
+    },
+    {
+      "id": "4.6",
+      "title": "Invalid file type",
+      "expected": "Try a non-PDF file. It should be rejected.",
+      "section": 4,
+      "sectionTitle": "Resume upload and skill extraction",
+      "status": "PASSED",
+      "artifact": ".qa/live-e2e-results.json",
+      "scenarios": [
+        "normal application: real registration, unseeded candidate, resume edge cases and persisted workflow"
+      ],
+      "viewports": [
+        "desktop",
+        "mobile",
+        "tablet"
+      ],
+      "evidence": "Real private Cloudinary PDF upload; immediate React/Node.js/MongoDB and two-year text hint; reload/manual-skills separation; non-PDF, oversized and damaged PDF rejection; actual job comparison75% and missingKubernetes."
+    },
+    {
+      "id": "4.7",
+      "title": "Oversized PDF",
+      "expected": "Try a PDF over 5 MB. It should be rejected.",
+      "section": 4,
+      "sectionTitle": "Resume upload and skill extraction",
+      "status": "PASSED",
+      "artifact": ".qa/live-e2e-results.json",
+      "scenarios": [
+        "normal application: real registration, unseeded candidate, resume edge cases and persisted workflow"
+      ],
+      "viewports": [
+        "desktop",
+        "mobile",
+        "tablet"
+      ],
+      "evidence": "Real private Cloudinary PDF upload; immediate React/Node.js/MongoDB and two-year text hint; reload/manual-skills separation; non-PDF, oversized and damaged PDF rejection; actual job comparison75% and missingKubernetes."
+    },
+    {
+      "id": "4.8",
+      "title": "Damaged PDF",
+      "expected": "Try a corrupted test PDF. It should be rejected.",
+      "section": 4,
+      "sectionTitle": "Resume upload and skill extraction",
+      "status": "PASSED",
+      "artifact": ".qa/live-e2e-results.json",
+      "scenarios": [
+        "normal application: real registration, unseeded candidate, resume edge cases and persisted workflow"
+      ],
+      "viewports": [
+        "desktop",
+        "mobile",
+        "tablet"
+      ],
+      "evidence": "Real private Cloudinary PDF upload; immediate React/Node.js/MongoDB and two-year text hint; reload/manual-skills separation; non-PDF, oversized and damaged PDF rejection; actual job comparison75% and missingKubernetes."
+    },
+    {
+      "id": "4.9",
+      "title": "Manual skills separation",
+      "expected": "Clear manually entered skills; PDF-extracted skills should still appear.",
+      "section": 4,
+      "sectionTitle": "Resume upload and skill extraction",
+      "status": "PASSED",
+      "artifact": ".qa/live-e2e-results.json",
+      "scenarios": [
+        "normal application: real registration, unseeded candidate, resume edge cases and persisted workflow"
+      ],
+      "viewports": [
+        "desktop",
+        "mobile",
+        "tablet"
+      ],
+      "evidence": "Real private Cloudinary PDF upload; immediate React/Node.js/MongoDB and two-year text hint; reload/manual-skills separation; non-PDF, oversized and damaged PDF rejection; actual job comparison75% and missingKubernetes."
+    },
+    {
+      "id": "4.10",
+      "title": "Own resume access",
+      "expected": "Open your own resume through the authorized download flow.",
+      "section": 4,
+      "sectionTitle": "Resume upload and skill extraction",
+      "status": "PASSED",
+      "artifact": ".qa/live-e2e-results.json",
+      "scenarios": [
+        "real PDF upload reaches Cloudinary; analysis, matching and private download work"
+      ],
+      "viewports": [
+        "desktop",
+        "mobile",
+        "tablet"
+      ],
+      "evidence": "Actual upload/analysis/matching UI; owner signed private PDF download200 and PDF bytes; unsigned CDN URL denied and nonowner API denied; matching recognized skills correspond to fixture requirements."
+    },
+    {
+      "id": "5.1",
+      "title": "Career hub",
+      "expected": "Open /career and find resume analysis/matching.",
+      "section": 5,
+      "sectionTitle": "Resume analysis and matching",
+      "status": "PASSED",
+      "artifact": ".qa/live-e2e-results.json",
+      "scenarios": [
+        "real PDF upload reaches Cloudinary; analysis, matching and private download work"
+      ],
+      "viewports": [
+        "desktop",
+        "mobile",
+        "tablet"
+      ],
+      "evidence": "Actual upload/analysis/matching UI; owner signed private PDF download200 and PDF bytes; unsigned CDN URL denied and nonowner API denied; matching recognized skills correspond to fixture requirements."
+    },
+    {
+      "id": "5.2",
+      "title": "Compare skills",
+      "expected": "Choose Compare skills and find matching jobs.",
+      "section": 5,
+      "sectionTitle": "Resume analysis and matching",
+      "status": "PASSED",
+      "artifact": ".qa/live-e2e-results.json",
+      "scenarios": [
+        "real PDF upload reaches Cloudinary; analysis, matching and private download work"
+      ],
+      "viewports": [
+        "desktop",
+        "mobile",
+        "tablet"
+      ],
+      "evidence": "Actual upload/analysis/matching UI; owner signed private PDF download200 and PDF bytes; unsigned CDN URL denied and nonowner API denied; matching recognized skills correspond to fixture requirements."
+    },
+    {
+      "id": "5.3",
+      "title": "Recognized skills",
+      "expected": "Verify matched skills correspond to the resume and job.",
+      "section": 5,
+      "sectionTitle": "Resume analysis and matching",
+      "status": "PASSED",
+      "artifact": ".qa/live-e2e-results.json",
+      "scenarios": [
+        "real PDF upload reaches Cloudinary; analysis, matching and private download work"
+      ],
+      "viewports": [
+        "desktop",
+        "mobile",
+        "tablet"
+      ],
+      "evidence": "Actual upload/analysis/matching UI; owner signed private PDF download200 and PDF bytes; unsigned CDN URL denied and nonowner API denied; matching recognized skills correspond to fixture requirements."
+    },
+    {
+      "id": "5.4",
+      "title": "Missing skills",
+      "expected": "Verify missing job-required skills are displayed.",
+      "section": 5,
+      "sectionTitle": "Resume analysis and matching",
+      "status": "PASSED",
+      "artifact": ".qa/live-e2e-results.json",
+      "scenarios": [
+        "normal application: real registration, unseeded candidate, resume edge cases and persisted workflow"
+      ],
+      "viewports": [
+        "desktop",
+        "mobile",
+        "tablet"
+      ],
+      "evidence": "Real private Cloudinary PDF upload; immediate React/Node.js/MongoDB and two-year text hint; reload/manual-skills separation; non-PDF, oversized and damaged PDF rejection; actual job comparison75% and missingKubernetes."
+    },
+    {
+      "id": "5.5",
+      "title": "Coverage calculation",
+      "expected": "Fixture with three of four required skills should show 75% coverage.",
+      "section": 5,
+      "sectionTitle": "Resume analysis and matching",
+      "status": "PASSED",
+      "artifact": ".qa/live-e2e-results.json",
+      "scenarios": [
+        "normal application: real registration, unseeded candidate, resume edge cases and persisted workflow"
+      ],
+      "viewports": [
+        "desktop",
+        "mobile",
+        "tablet"
+      ],
+      "evidence": "Real private Cloudinary PDF upload; immediate React/Node.js/MongoDB and two-year text hint; reload/manual-skills separation; non-PDF, oversized and damaged PDF rejection; actual job comparison75% and missingKubernetes."
+    },
+    {
+      "id": "5.6",
+      "title": "Experience information",
+      "expected": "Verify experience is presented as a hint, not verified history.",
+      "section": 5,
+      "sectionTitle": "Resume analysis and matching",
+      "status": "PASSED",
+      "artifact": ".qa/live-e2e-results.json",
+      "scenarios": [
+        "normal application: real registration, unseeded candidate, resume edge cases and persisted workflow"
+      ],
+      "viewports": [
+        "desktop",
+        "mobile",
+        "tablet"
+      ],
+      "evidence": "Real private Cloudinary PDF upload; immediate React/Node.js/MongoDB and two-year text hint; reload/manual-skills separation; non-PDF, oversized and damaged PDF rejection; actual job comparison75% and missingKubernetes."
+    },
+    {
+      "id": "5.7",
+      "title": "Suggestions",
+      "expected": "Verify supported improvement suggestions appear.",
+      "section": 5,
+      "sectionTitle": "Resume analysis and matching",
+      "status": "PASSED",
+      "artifact": ".qa/checklist138-gap-results.json",
+      "scenarios": [
+        "[138:5.7,5.10] uploaded PDF analysis shows suggestions and explains coverage without a hiring probability"
+      ],
+      "viewports": [
+        "desktop"
+      ],
+      "evidence": "New real Chrome scenario: uploaded PDF analysis shows suggestions and explains coverage without a hiring probability. See server/e2e/checklist138.spec.js for UI/API/MongoDB assertions. No response stubs or replacement auth."
+    },
+    {
+      "id": "5.8",
+      "title": "No recognized skills",
+      "expected": "Use a text PDF without recognized skills; expect an honest fallback.",
+      "section": 5,
+      "sectionTitle": "Resume analysis and matching",
+      "status": "PASSED",
+      "artifact": ".qa/live-e2e-results.json",
+      "scenarios": [
+        "saved jobs survive reload without duplicates; profile rejects unsafe links; unrecognized resume skills are reported honestly"
+      ],
+      "viewports": [
+        "desktop",
+        "mobile",
+        "tablet"
+      ],
+      "evidence": "Actual text PDF with no known technical skills yields honest fallback before restoring fixture; saved-job PUT twice yields one visible card after reload."
+    },
+    {
+      "id": "5.9",
+      "title": "Exclude applied jobs",
+      "expected": "Applied jobs should not appear among unapplied recommendations.",
+      "section": 5,
+      "sectionTitle": "Resume analysis and matching",
+      "status": "PASSED",
+      "artifact": ".qa/checklist138-gap-results.json",
+      "scenarios": [
+        "[138:5.9,12.3,12.8] apply to the newly posted job, exclude recommendations and enforce applicant ownership"
+      ],
+      "viewports": [
+        "desktop"
+      ],
+      "evidence": "New real Chrome scenario: apply to the newly posted job, exclude recommendations and enforce applicant ownership. See server/e2e/checklist138.spec.js for UI/API/MongoDB assertions. No response stubs or replacement auth."
+    },
+    {
+      "id": "5.10",
+      "title": "Matching score meaning",
+      "expected": "Score should describe skill coverage, not hiring probability.",
+      "section": 5,
+      "sectionTitle": "Resume analysis and matching",
+      "status": "PASSED",
+      "artifact": ".qa/checklist138-gap-results.json",
+      "scenarios": [
+        "[138:5.7,5.10] uploaded PDF analysis shows suggestions and explains coverage without a hiring probability"
+      ],
+      "viewports": [
+        "desktop"
+      ],
+      "evidence": "New real Chrome scenario: uploaded PDF analysis shows suggestions and explains coverage without a hiring probability. See server/e2e/checklist138.spec.js for UI/API/MongoDB assertions. No response stubs or replacement auth."
+    },
+    {
+      "id": "6.1",
+      "title": "Profile page",
+      "expected": "Open Career hub → Profile.",
+      "section": 6,
+      "sectionTitle": "Candidate profile",
+      "status": "PASSED",
+      "artifact": ".qa/live-e2e-results.json",
+      "scenarios": [
+        "candidate profile updates persist after browser refresh"
+      ],
+      "viewports": [
+        "desktop",
+        "mobile",
+        "tablet"
+      ],
+      "evidence": "Profile edited through actual form; browser refresh retained authenticated session and saved education in MongoDB."
+    },
+    {
+      "id": "6.2",
+      "title": "Skills",
+      "expected": "Add/edit manual skills and save.",
+      "section": 6,
+      "sectionTitle": "Candidate profile",
+      "status": "PASSED",
+      "artifact": ".qa/checklist138-gap-results.json",
+      "scenarios": [
+        "[138:6.2,6.9] manual skills persist and both invalid professional hosts are rejected"
+      ],
+      "viewports": [
+        "desktop"
+      ],
+      "evidence": "New real Chrome scenario: manual skills persist and both invalid professional hosts are rejected. See server/e2e/checklist138.spec.js for UI/API/MongoDB assertions. No response stubs or replacement auth."
+    },
+    {
+      "id": "6.3",
+      "title": "Education",
+      "expected": "Enter education and save.",
+      "section": 6,
+      "sectionTitle": "Candidate profile",
+      "status": "PASSED",
+      "artifact": ".qa/live-e2e-results.json",
+      "scenarios": [
+        "candidate profile updates persist after browser refresh"
+      ],
+      "viewports": [
+        "desktop",
+        "mobile",
+        "tablet"
+      ],
+      "evidence": "Profile edited through actual form; browser refresh retained authenticated session and saved education in MongoDB."
+    },
+    {
+      "id": "6.4",
+      "title": "Experience",
+      "expected": "Enter experience and save.",
+      "section": 6,
+      "sectionTitle": "Candidate profile",
+      "status": "PASSED",
+      "artifact": ".qa/live-lifecycle-results.json",
+      "scenarios": [
+        "candidate privacy and complete application/interview lifecycle persist through real browser controls"
+      ],
+      "viewports": [
+        "desktop",
+        "mobile",
+        "tablet"
+      ],
+      "evidence": "Experience and all three professional URLs asserted after refresh; malicious identity/body/query selectors cannot change another MongoDB user or expose their history."
+    },
+    {
+      "id": "6.5",
+      "title": "GitHub",
+      "expected": "Save a valid GitHub profile URL.",
+      "section": 6,
+      "sectionTitle": "Candidate profile",
+      "status": "PASSED",
+      "artifact": ".qa/live-lifecycle-results.json",
+      "scenarios": [
+        "candidate privacy and complete application/interview lifecycle persist through real browser controls"
+      ],
+      "viewports": [
+        "desktop",
+        "mobile",
+        "tablet"
+      ],
+      "evidence": "Experience and all three professional URLs asserted after refresh; malicious identity/body/query selectors cannot change another MongoDB user or expose their history."
+    },
+    {
+      "id": "6.6",
+      "title": "LinkedIn",
+      "expected": "Save a valid LinkedIn profile URL.",
+      "section": 6,
+      "sectionTitle": "Candidate profile",
+      "status": "PASSED",
+      "artifact": ".qa/live-lifecycle-results.json",
+      "scenarios": [
+        "candidate privacy and complete application/interview lifecycle persist through real browser controls"
+      ],
+      "viewports": [
+        "desktop",
+        "mobile",
+        "tablet"
+      ],
+      "evidence": "Experience and all three professional URLs asserted after refresh; malicious identity/body/query selectors cannot change another MongoDB user or expose their history."
+    },
+    {
+      "id": "6.7",
+      "title": "Portfolio",
+      "expected": "Save a valid portfolio URL.",
+      "section": 6,
+      "sectionTitle": "Candidate profile",
+      "status": "PASSED",
+      "artifact": ".qa/live-lifecycle-results.json",
+      "scenarios": [
+        "candidate privacy and complete application/interview lifecycle persist through real browser controls"
+      ],
+      "viewports": [
+        "desktop",
+        "mobile",
+        "tablet"
+      ],
+      "evidence": "Experience and all three professional URLs asserted after refresh; malicious identity/body/query selectors cannot change another MongoDB user or expose their history."
+    },
+    {
+      "id": "6.8",
+      "title": "Refresh persistence",
+      "expected": "Refresh and verify saved profile data.",
+      "section": 6,
+      "sectionTitle": "Candidate profile",
+      "status": "PASSED",
+      "artifact": ".qa/live-e2e-results.json",
+      "scenarios": [
+        "candidate profile updates persist after browser refresh"
+      ],
+      "viewports": [
+        "desktop",
+        "mobile",
+        "tablet"
+      ],
+      "evidence": "Profile edited through actual form; browser refresh retained authenticated session and saved education in MongoDB."
+    },
+    {
+      "id": "6.9",
+      "title": "Invalid professional URL",
+      "expected": "Invalid GitHub/LinkedIn hosts should be rejected.",
+      "section": 6,
+      "sectionTitle": "Candidate profile",
+      "status": "PASSED",
+      "artifact": ".qa/checklist138-gap-results.json",
+      "scenarios": [
+        "[138:6.2,6.9] manual skills persist and both invalid professional hosts are rejected"
+      ],
+      "viewports": [
+        "desktop"
+      ],
+      "evidence": "New real Chrome scenario: manual skills persist and both invalid professional hosts are rejected. See server/e2e/checklist138.spec.js for UI/API/MongoDB assertions. No response stubs or replacement auth."
+    },
+    {
+      "id": "6.10",
+      "title": "Identity protection",
+      "expected": "Clerk-managed identity fields should not be editable through profile API.",
+      "section": 6,
+      "sectionTitle": "Candidate profile",
+      "status": "PASSED",
+      "artifact": ".qa/live-lifecycle-results.json",
+      "scenarios": [
+        "candidate privacy and complete application/interview lifecycle persist through real browser controls"
+      ],
+      "viewports": [
+        "desktop",
+        "mobile",
+        "tablet"
+      ],
+      "evidence": "Experience and all three professional URLs asserted after refresh; malicious identity/body/query selectors cannot change another MongoDB user or expose their history."
+    },
+    {
+      "id": "7.1",
+      "title": "Save job",
+      "expected": "Save a visible test job.",
+      "section": 7,
+      "sectionTitle": "Saved jobs",
+      "status": "PASSED",
+      "artifact": ".qa/live-e2e-results.json",
+      "scenarios": [
+        "candidate saves and removes jobs with persisted browser-visible results"
+      ],
+      "viewports": [
+        "desktop",
+        "mobile",
+        "tablet"
+      ],
+      "evidence": "Real Save job UI, shortlist appearance and removal into empty state; MongoDB persistence through API and browser state."
+    },
+    {
+      "id": "7.2",
+      "title": "Saved jobs list",
+      "expected": "Open Career hub → Saved jobs and verify it appears.",
+      "section": 7,
+      "sectionTitle": "Saved jobs",
+      "status": "PASSED",
+      "artifact": ".qa/live-e2e-results.json",
+      "scenarios": [
+        "candidate saves and removes jobs with persisted browser-visible results"
+      ],
+      "viewports": [
+        "desktop",
+        "mobile",
+        "tablet"
+      ],
+      "evidence": "Real Save job UI, shortlist appearance and removal into empty state; MongoDB persistence through API and browser state."
+    },
+    {
+      "id": "7.3",
+      "title": "Refresh",
+      "expected": "Refresh and verify the job remains saved.",
+      "section": 7,
+      "sectionTitle": "Saved jobs",
+      "status": "PASSED",
+      "artifact": ".qa/live-e2e-results.json",
+      "scenarios": [
+        "saved jobs survive reload without duplicates; profile rejects unsafe links; unrecognized resume skills are reported honestly"
+      ],
+      "viewports": [
+        "desktop",
+        "mobile",
+        "tablet"
+      ],
+      "evidence": "Actual text PDF with no known technical skills yields honest fallback before restoring fixture; saved-job PUT twice yields one visible card after reload."
+    },
+    {
+      "id": "7.4",
+      "title": "Duplicate protection",
+      "expected": "Saving twice should not create duplicates.",
+      "section": 7,
+      "sectionTitle": "Saved jobs",
+      "status": "PASSED",
+      "artifact": ".qa/live-e2e-results.json",
+      "scenarios": [
+        "saved jobs survive reload without duplicates; profile rejects unsafe links; unrecognized resume skills are reported honestly"
+      ],
+      "viewports": [
+        "desktop",
+        "mobile",
+        "tablet"
+      ],
+      "evidence": "Actual text PDF with no known technical skills yields honest fallback before restoring fixture; saved-job PUT twice yields one visible card after reload."
+    },
+    {
+      "id": "7.5",
+      "title": "Remove saved job",
+      "expected": "Remove it and verify disappearance.",
+      "section": 7,
+      "sectionTitle": "Saved jobs",
+      "status": "PASSED",
+      "artifact": ".qa/live-e2e-results.json",
+      "scenarios": [
+        "candidate saves and removes jobs with persisted browser-visible results"
+      ],
+      "viewports": [
+        "desktop",
+        "mobile",
+        "tablet"
+      ],
+      "evidence": "Real Save job UI, shortlist appearance and removal into empty state; MongoDB persistence through API and browser state."
+    },
+    {
+      "id": "7.6",
+      "title": "Account isolation",
+      "expected": "Another candidate should not see your saved jobs.",
+      "section": 7,
+      "sectionTitle": "Saved jobs",
+      "status": "PASSED",
+      "artifact": ".qa/checklist138-gap-results.json",
+      "scenarios": [
+        "[138:7.6] saved jobs are isolated between two actual Clerk sessions"
+      ],
+      "viewports": [
+        "desktop"
+      ],
+      "evidence": "New real Chrome scenario: saved jobs are isolated between two actual Clerk sessions. See server/e2e/checklist138.spec.js for UI/API/MongoDB assertions. No response stubs or replacement auth."
+    },
+    {
+      "id": "8.1",
+      "title": "Apply without resume",
+      "expected": "A candidate without a resume should be directed to upload.",
+      "section": 8,
+      "sectionTitle": "Applying for jobs",
+      "status": "PASSED",
+      "artifact": ".qa/live-e2e-results.json",
+      "scenarios": [
+        "normal application: real registration, unseeded candidate, resume edge cases and persisted workflow"
+      ],
+      "viewports": [
+        "desktop",
+        "mobile",
+        "tablet"
+      ],
+      "evidence": "Fresh unseeded candidate is directed to upload before applying; actual application, hide-applied and refresh persistence asserted against persistent local-development database."
+    },
+    {
+      "id": "8.2",
+      "title": "Apply with resume",
+      "expected": "Submit an application for a visible job.",
+      "section": 8,
+      "sectionTitle": "Applying for jobs",
+      "status": "PASSED",
+      "artifact": ".qa/live-e2e-results.json",
+      "scenarios": [
+        "candidate opens job details, applies once and sees pending history"
+      ],
+      "viewports": [
+        "desktop",
+        "mobile",
+        "tablet"
+      ],
+      "evidence": "Actual Apply Now creates application, Already Applied disables repeat, Pending appears in own history; actual repeated authenticated POST409."
+    },
+    {
+      "id": "8.3",
+      "title": "Success feedback",
+      "expected": "The job should display Already Applied.",
+      "section": 8,
+      "sectionTitle": "Applying for jobs",
+      "status": "PASSED",
+      "artifact": ".qa/live-e2e-results.json",
+      "scenarios": [
+        "candidate opens job details, applies once and sees pending history"
+      ],
+      "viewports": [
+        "desktop",
+        "mobile",
+        "tablet"
+      ],
+      "evidence": "Actual Apply Now creates application, Already Applied disables repeat, Pending appears in own history; actual repeated authenticated POST409."
+    },
+    {
+      "id": "8.4",
+      "title": "Applications page",
+      "expected": "Verify the application appears under /applications.",
+      "section": 8,
+      "sectionTitle": "Applying for jobs",
+      "status": "PASSED",
+      "artifact": ".qa/live-e2e-results.json",
+      "scenarios": [
+        "candidate opens job details, applies once and sees pending history"
+      ],
+      "viewports": [
+        "desktop",
+        "mobile",
+        "tablet"
+      ],
+      "evidence": "Actual Apply Now creates application, Already Applied disables repeat, Pending appears in own history; actual repeated authenticated POST409."
+    },
+    {
+      "id": "8.5",
+      "title": "Initial status",
+      "expected": "Verify the application initially shows Pending.",
+      "section": 8,
+      "sectionTitle": "Applying for jobs",
+      "status": "PASSED",
+      "artifact": ".qa/live-e2e-results.json",
+      "scenarios": [
+        "candidate opens job details, applies once and sees pending history"
+      ],
+      "viewports": [
+        "desktop",
+        "mobile",
+        "tablet"
+      ],
+      "evidence": "Actual Apply Now creates application, Already Applied disables repeat, Pending appears in own history; actual repeated authenticated POST409."
+    },
+    {
+      "id": "8.6",
+      "title": "Duplicate prevention",
+      "expected": "Repeated submission should be rejected (HTTP 409 at API).",
+      "section": 8,
+      "sectionTitle": "Applying for jobs",
+      "status": "PASSED",
+      "artifact": ".qa/live-e2e-results.json",
+      "scenarios": [
+        "candidate opens job details, applies once and sees pending history"
+      ],
+      "viewports": [
+        "desktop",
+        "mobile",
+        "tablet"
+      ],
+      "evidence": "Actual Apply Now creates application, Already Applied disables repeat, Pending appears in own history; actual repeated authenticated POST409."
+    },
+    {
+      "id": "8.7",
+      "title": "Hide applied",
+      "expected": "Verify Hide applied excludes the job.",
+      "section": 8,
+      "sectionTitle": "Applying for jobs",
+      "status": "PASSED",
+      "artifact": ".qa/live-e2e-results.json",
+      "scenarios": [
+        "normal application: real registration, unseeded candidate, resume edge cases and persisted workflow"
+      ],
+      "viewports": [
+        "desktop",
+        "mobile",
+        "tablet"
+      ],
+      "evidence": "Fresh unseeded candidate is directed to upload before applying; actual application, hide-applied and refresh persistence asserted against persistent local-development database."
+    },
+    {
+      "id": "8.8",
+      "title": "Application persistence",
+      "expected": "Refresh and verify the application remains.",
+      "section": 8,
+      "sectionTitle": "Applying for jobs",
+      "status": "PASSED",
+      "artifact": ".qa/live-e2e-results.json",
+      "scenarios": [
+        "normal application: real registration, unseeded candidate, resume edge cases and persisted workflow"
+      ],
+      "viewports": [
+        "desktop",
+        "mobile",
+        "tablet"
+      ],
+      "evidence": "Fresh unseeded candidate is directed to upload before applying; actual application, hide-applied and refresh persistence asserted against persistent local-development database."
+    },
+    {
+      "id": "8.9",
+      "title": "Hidden job restriction",
+      "expected": "A hidden job should reject new public applications.",
+      "section": 8,
+      "sectionTitle": "Applying for jobs",
+      "status": "PASSED",
+      "artifact": ".qa/checklist138-gap-results.json",
+      "scenarios": [
+        "[138:8.9,11.2,11.5,11.6,11.7,11.9] one newly posted job is edited, hidden, protected and restored"
+      ],
+      "viewports": [
+        "desktop"
+      ],
+      "evidence": "New real Chrome scenario: one newly posted job is edited, hidden, protected and restored. See server/e2e/checklist138.spec.js for UI/API/MongoDB assertions. No response stubs or replacement auth."
+    },
+    {
+      "id": "9.1",
+      "title": "Pending status",
+      "expected": "New application should show Pending.",
+      "section": 9,
+      "sectionTitle": "Application tracking",
+      "status": "PASSED",
+      "artifact": ".qa/live-e2e-results.json",
+      "scenarios": [
+        "candidate opens job details, applies once and sees pending history"
+      ],
+      "viewports": [
+        "desktop",
+        "mobile",
+        "tablet"
+      ],
+      "evidence": "Actual Apply Now creates application, Already Applied disables repeat, Pending appears in own history; actual repeated authenticated POST409."
+    },
+    {
+      "id": "9.2",
+      "title": "Accepted status",
+      "expected": "Recruiter changes status to Accepted; candidate sees it.",
+      "section": 9,
+      "sectionTitle": "Application tracking",
+      "status": "PASSED",
+      "artifact": ".qa/live-lifecycle-results.json",
+      "scenarios": [
+        "candidate privacy and complete application/interview lifecycle persist through real browser controls"
+      ],
+      "viewports": [
+        "desktop",
+        "mobile",
+        "tablet"
+      ],
+      "evidence": "Recruiter changes Pending/Rejected/Accepted through real controls; candidate Refresh applications reflects each, recruiter reload and direct MongoDB check retain final state."
+    },
+    {
+      "id": "9.3",
+      "title": "Rejected status",
+      "expected": "Recruiter changes a test application to Rejected; candidate sees it.",
+      "section": 9,
+      "sectionTitle": "Application tracking",
+      "status": "PASSED",
+      "artifact": ".qa/live-lifecycle-results.json",
+      "scenarios": [
+        "candidate privacy and complete application/interview lifecycle persist through real browser controls"
+      ],
+      "viewports": [
+        "desktop",
+        "mobile",
+        "tablet"
+      ],
+      "evidence": "Recruiter changes Pending/Rejected/Accepted through real controls; candidate Refresh applications reflects each, recruiter reload and direct MongoDB check retain final state."
+    },
+    {
+      "id": "9.4",
+      "title": "Manual refresh",
+      "expected": "Click Refresh applications and verify status.",
+      "section": 9,
+      "sectionTitle": "Application tracking",
+      "status": "PASSED",
+      "artifact": ".qa/live-lifecycle-results.json",
+      "scenarios": [
+        "candidate privacy and complete application/interview lifecycle persist through real browser controls"
+      ],
+      "viewports": [
+        "desktop",
+        "mobile",
+        "tablet"
+      ],
+      "evidence": "Recruiter changes Pending/Rejected/Accepted through real controls; candidate Refresh applications reflects each, recruiter reload and direct MongoDB check retain final state."
+    },
+    {
+      "id": "9.5",
+      "title": "Window focus",
+      "expected": "Return focus to the tab; status should refresh.",
+      "section": 9,
+      "sectionTitle": "Application tracking",
+      "status": "PASSED",
+      "artifact": ".qa/checklist138-gap-results.json",
+      "scenarios": [
+        "[138:9.5] actual window focus refreshes candidate status before the periodic timer"
+      ],
+      "viewports": [
+        "desktop"
+      ],
+      "evidence": "New real Chrome scenario: actual window focus refreshes candidate status before the periodic timer. See server/e2e/checklist138.spec.js for UI/API/MongoDB assertions. No response stubs or replacement auth."
+    },
+    {
+      "id": "9.6",
+      "title": "Periodic refresh",
+      "expected": "Wait up to 30 seconds for an updated status.",
+      "section": 9,
+      "sectionTitle": "Application tracking",
+      "status": "PASSED",
+      "artifact": ".qa/checklist138-gap-results.json",
+      "scenarios": [
+        "[138:9.6] the real 30-second interval refreshes a status without clicking Refresh"
+      ],
+      "viewports": [
+        "desktop"
+      ],
+      "evidence": "New real Chrome scenario: the real 30-second interval refreshes a status without clicking Refresh. See server/e2e/checklist138.spec.js for UI/API/MongoDB assertions. No response stubs or replacement auth."
+    },
+    {
+      "id": "9.7",
+      "title": "Persistence",
+      "expected": "Refresh and verify status remains correct.",
+      "section": 9,
+      "sectionTitle": "Application tracking",
+      "status": "PASSED",
+      "artifact": ".qa/live-lifecycle-results.json",
+      "scenarios": [
+        "candidate privacy and complete application/interview lifecycle persist through real browser controls"
+      ],
+      "viewports": [
+        "desktop",
+        "mobile",
+        "tablet"
+      ],
+      "evidence": "Recruiter changes Pending/Rejected/Accepted through real controls; candidate Refresh applications reflects each, recruiter reload and direct MongoDB check retain final state."
+    },
+    {
+      "id": "10.1",
+      "title": "Recruiter registration",
+      "expected": "Register using Recruiter Login → Sign up.",
+      "section": 10,
+      "sectionTitle": "Recruiter registration and login",
+      "status": "PASSED",
+      "artifact": ".qa/live-e2e-results.json",
+      "scenarios": [
+        "normal application: real registration, unseeded candidate, resume edge cases and persisted workflow"
+      ],
+      "viewports": [
+        "desktop",
+        "mobile",
+        "tablet"
+      ],
+      "evidence": "Real recruiter signup with valid image, empty Manage Jobs/analytics state, required job field browser validation, followed by actual job creation."
+    },
+    {
+      "id": "10.2",
+      "title": "Company logo",
+      "expected": "Upload a valid PNG, JPEG or WebP logo.",
+      "section": 10,
+      "sectionTitle": "Recruiter registration and login",
+      "status": "PASSED",
+      "artifact": ".qa/live-e2e-results.json",
+      "scenarios": [
+        "normal application: real registration, unseeded candidate, resume edge cases and persisted workflow"
+      ],
+      "viewports": [
+        "desktop",
+        "mobile",
+        "tablet"
+      ],
+      "evidence": "Real recruiter signup with valid image, empty Manage Jobs/analytics state, required job field browser validation, followed by actual job creation."
+    },
+    {
+      "id": "10.3",
+      "title": "Invalid logo",
+      "expected": "Unsupported/oversized logos should show errors.",
+      "section": 10,
+      "sectionTitle": "Recruiter registration and login",
+      "status": "PASSED",
+      "artifact": ".qa/checklist138-gap-results.json",
+      "scenarios": [
+        "[138:10.3] unsupported and oversized company logos are rejected before a real recruiter is registered"
+      ],
+      "viewports": [
+        "desktop"
+      ],
+      "evidence": "New real Chrome scenario: unsupported and oversized company logos are rejected before a real recruiter is registered. See server/e2e/checklist138.spec.js for UI/API/MongoDB assertions. No response stubs or replacement auth."
+    },
+    {
+      "id": "10.4",
+      "title": "Login",
+      "expected": "Sign in using recruiter credentials.",
+      "section": 10,
+      "sectionTitle": "Recruiter registration and login",
+      "status": "PASSED",
+      "artifact": ".qa/live-e2e-results.json",
+      "scenarios": [
+        "recruiter signs in and creates, edits and hides an owned job in the browser"
+      ],
+      "viewports": [
+        "desktop",
+        "mobile",
+        "tablet"
+      ],
+      "evidence": "Real recruiter email/password login obtains verified JWT and protected company data; no substituted authentication."
+    },
+    {
+      "id": "10.5",
+      "title": "Incorrect password",
+      "expected": "Wrong password should produce a safe error.",
+      "section": 10,
+      "sectionTitle": "Recruiter registration and login",
+      "status": "PASSED",
+      "artifact": ".qa/live-e2e-results.json",
+      "scenarios": [
+        "recruiter modal keyboard, invalid credentials, required fields and recovery controls"
+      ],
+      "viewports": [
+        "desktop",
+        "mobile",
+        "tablet"
+      ],
+      "evidence": "Actual wrong-password safe error; required signup fields; Tab/Shift+Tab wrap, Escape closes modal and restores focus."
+    },
+    {
+      "id": "10.6",
+      "title": "Dashboard protection",
+      "expected": "Signed-out users should not access recruiter dashboard.",
+      "section": 10,
+      "sectionTitle": "Recruiter registration and login",
+      "status": "PASSED",
+      "artifact": ".qa/checklist138-guard-regressions.json",
+      "scenarios": [
+        "all public and guarded routes, stale recruiter session and missing job recovery"
+      ],
+      "viewports": [
+        "desktop",
+        "mobile",
+        "tablet"
+      ],
+      "evidence": "Anonymous dashboard, add/edit/manage/applicant/analytics routes redirect home; invalid stored JWT is discarded."
+    },
+    {
+      "id": "10.7",
+      "title": "Modal keyboard access",
+      "expected": "Test Tab, Escape and focus restoration.",
+      "section": 10,
+      "sectionTitle": "Recruiter registration and login",
+      "status": "PASSED",
+      "artifact": ".qa/live-e2e-results.json",
+      "scenarios": [
+        "recruiter modal keyboard, invalid credentials, required fields and recovery controls"
+      ],
+      "viewports": [
+        "desktop",
+        "mobile",
+        "tablet"
+      ],
+      "evidence": "Actual wrong-password safe error; required signup fields; Tab/Shift+Tab wrap, Escape closes modal and restores focus."
+    },
+    {
+      "id": "10.8",
+      "title": "Logout",
+      "expected": "Sign out and verify dashboard access is removed.",
+      "section": 10,
+      "sectionTitle": "Recruiter registration and login",
+      "status": "PASSED",
+      "artifact": ".qa/live-e2e-results.json",
+      "scenarios": [
+        "candidate and recruiter sign out; no uncaught errors or failed local network requests"
+      ],
+      "viewports": [
+        "desktop",
+        "mobile",
+        "tablet"
+      ],
+      "evidence": "Recruiter Logout removes session and public login control reappears; guarded routes retested separately."
+    },
+    {
+      "id": "11.1",
+      "title": "Add Job page",
+      "expected": "Open Dashboard → Add Job.",
+      "section": 11,
+      "sectionTitle": "Recruiter job management",
+      "status": "PASSED",
+      "artifact": ".qa/live-e2e-results.json",
+      "scenarios": [
+        "recruiter signs in and creates, edits and hides an owned job in the browser"
+      ],
+      "viewports": [
+        "desktop",
+        "mobile",
+        "tablet"
+      ],
+      "evidence": "Actual recruiter login, Add Job/create/manage/edit/hide UI; MongoDB salary/visibility and public detail404 checked."
+    },
+    {
+      "id": "11.2",
+      "title": "Create job",
+      "expected": "Post a valid Demo Full Stack Developer job.",
+      "section": 11,
+      "sectionTitle": "Recruiter job management",
+      "status": "PASSED",
+      "artifact": ".qa/checklist138-gap-results.json",
+      "scenarios": [
+        "[138:8.9,11.2,11.5,11.6,11.7,11.9] one newly posted job is edited, hidden, protected and restored"
+      ],
+      "viewports": [
+        "desktop"
+      ],
+      "evidence": "New real Chrome scenario: one newly posted job is edited, hidden, protected and restored. See server/e2e/checklist138.spec.js for UI/API/MongoDB assertions. No response stubs or replacement auth."
+    },
+    {
+      "id": "11.3",
+      "title": "Required validation",
+      "expected": "Missing required fields should show validation errors.",
+      "section": 11,
+      "sectionTitle": "Recruiter job management",
+      "status": "PASSED",
+      "artifact": ".qa/live-e2e-results.json",
+      "scenarios": [
+        "normal application: real registration, unseeded candidate, resume edge cases and persisted workflow"
+      ],
+      "viewports": [
+        "desktop",
+        "mobile",
+        "tablet"
+      ],
+      "evidence": "Real recruiter signup with valid image, empty Manage Jobs/analytics state, required job field browser validation, followed by actual job creation."
+    },
+    {
+      "id": "11.4",
+      "title": "Manage Jobs",
+      "expected": "Confirm the new job appears in Manage Jobs.",
+      "section": 11,
+      "sectionTitle": "Recruiter job management",
+      "status": "PASSED",
+      "artifact": ".qa/live-e2e-results.json",
+      "scenarios": [
+        "recruiter signs in and creates, edits and hides an owned job in the browser"
+      ],
+      "viewports": [
+        "desktop",
+        "mobile",
+        "tablet"
+      ],
+      "evidence": "Actual recruiter login, Add Job/create/manage/edit/hide UI; MongoDB salary/visibility and public detail404 checked."
+    },
+    {
+      "id": "11.5",
+      "title": "Edit job",
+      "expected": "Change salary/description and save.",
+      "section": 11,
+      "sectionTitle": "Recruiter job management",
+      "status": "PASSED",
+      "artifact": ".qa/checklist138-gap-results.json",
+      "scenarios": [
+        "[138:8.9,11.2,11.5,11.6,11.7,11.9] one newly posted job is edited, hidden, protected and restored"
+      ],
+      "viewports": [
+        "desktop"
+      ],
+      "evidence": "New real Chrome scenario: one newly posted job is edited, hidden, protected and restored. See server/e2e/checklist138.spec.js for UI/API/MongoDB assertions. No response stubs or replacement auth."
+    },
+    {
+      "id": "11.6",
+      "title": "Refresh edit",
+      "expected": "Refresh and verify edited values persist.",
+      "section": 11,
+      "sectionTitle": "Recruiter job management",
+      "status": "PASSED",
+      "artifact": ".qa/checklist138-gap-results.json",
+      "scenarios": [
+        "[138:8.9,11.2,11.5,11.6,11.7,11.9] one newly posted job is edited, hidden, protected and restored"
+      ],
+      "viewports": [
+        "desktop"
+      ],
+      "evidence": "New real Chrome scenario: one newly posted job is edited, hidden, protected and restored. See server/e2e/checklist138.spec.js for UI/API/MongoDB assertions. No response stubs or replacement auth."
+    },
+    {
+      "id": "11.7",
+      "title": "Hide job",
+      "expected": "Hide the job and verify it disappears publicly.",
+      "section": 11,
+      "sectionTitle": "Recruiter job management",
+      "status": "PASSED",
+      "artifact": ".qa/checklist138-gap-results.json",
+      "scenarios": [
+        "[138:8.9,11.2,11.5,11.6,11.7,11.9] one newly posted job is edited, hidden, protected and restored"
+      ],
+      "viewports": [
+        "desktop"
+      ],
+      "evidence": "New real Chrome scenario: one newly posted job is edited, hidden, protected and restored. See server/e2e/checklist138.spec.js for UI/API/MongoDB assertions. No response stubs or replacement auth."
+    },
+    {
+      "id": "11.8",
+      "title": "Hidden detail",
+      "expected": "Public job details should not expose hidden jobs.",
+      "section": 11,
+      "sectionTitle": "Recruiter job management",
+      "status": "PASSED",
+      "artifact": ".qa/live-e2e-results.json",
+      "scenarios": [
+        "recruiter signs in and creates, edits and hides an owned job in the browser"
+      ],
+      "viewports": [
+        "desktop",
+        "mobile",
+        "tablet"
+      ],
+      "evidence": "Actual recruiter login, Add Job/create/manage/edit/hide UI; MongoDB salary/visibility and public detail404 checked."
+    },
+    {
+      "id": "11.9",
+      "title": "Restore job",
+      "expected": "Restore visibility and verify public listing returns.",
+      "section": 11,
+      "sectionTitle": "Recruiter job management",
+      "status": "PASSED",
+      "artifact": ".qa/checklist138-gap-results.json",
+      "scenarios": [
+        "[138:8.9,11.2,11.5,11.6,11.7,11.9] one newly posted job is edited, hidden, protected and restored"
+      ],
+      "viewports": [
+        "desktop"
+      ],
+      "evidence": "New real Chrome scenario: one newly posted job is edited, hidden, protected and restored. See server/e2e/checklist138.spec.js for UI/API/MongoDB assertions. No response stubs or replacement auth."
+    },
+    {
+      "id": "11.10",
+      "title": "Recruiter ownership",
+      "expected": "Another recruiter should not be able to edit the job.",
+      "section": 11,
+      "sectionTitle": "Recruiter job management",
+      "status": "PASSED",
+      "artifact": ".qa/live-e2e-results.json",
+      "scenarios": [
+        "analytics charts show real application counts and another recruiter is denied access"
+      ],
+      "viewports": [
+        "desktop",
+        "mobile",
+        "tablet"
+      ],
+      "evidence": "Recruiter analytics UI application and per-job chart counts compared directly with actual MongoDB; separate recruiter cannot edit job/read resume and sees no foreign applicants."
+    },
+    {
+      "id": "12.1",
+      "title": "View Applications",
+      "expected": "Open Dashboard → View Applications.",
+      "section": 12,
+      "sectionTitle": "Recruiter applicant management",
+      "status": "PASSED",
+      "artifact": ".qa/live-e2e-results.json",
+      "scenarios": [
+        "recruiter reviews real applicant resume, changes status and schedules/updates interview"
+      ],
+      "viewports": [
+        "desktop",
+        "mobile",
+        "tablet"
+      ],
+      "evidence": "Own candidate/job applicant row; Get resume link/Open resume private PDF bytes200; real future interview scheduling and updated details; candidate sees Accepted and updated meeting information."
+    },
+    {
+      "id": "12.2",
+      "title": "Applicant listing",
+      "expected": "Verify the candidate appears under the correct job.",
+      "section": 12,
+      "sectionTitle": "Recruiter applicant management",
+      "status": "PASSED",
+      "artifact": ".qa/live-e2e-results.json",
+      "scenarios": [
+        "recruiter reviews real applicant resume, changes status and schedules/updates interview"
+      ],
+      "viewports": [
+        "desktop",
+        "mobile",
+        "tablet"
+      ],
+      "evidence": "Own candidate/job applicant row; Get resume link/Open resume private PDF bytes200; real future interview scheduling and updated details; candidate sees Accepted and updated meeting information."
+    },
+    {
+      "id": "12.3",
+      "title": "Candidate details",
+      "expected": "Verify only permitted applicant information is shown.",
+      "section": 12,
+      "sectionTitle": "Recruiter applicant management",
+      "status": "PASSED",
+      "artifact": ".qa/checklist138-gap-results.json",
+      "scenarios": [
+        "[138:5.9,12.3,12.8] apply to the newly posted job, exclude recommendations and enforce applicant ownership"
+      ],
+      "viewports": [
+        "desktop"
+      ],
+      "evidence": "New real Chrome scenario: apply to the newly posted job, exclude recommendations and enforce applicant ownership. See server/e2e/checklist138.spec.js for UI/API/MongoDB assertions. No response stubs or replacement auth."
+    },
+    {
+      "id": "12.4",
+      "title": "Resume download",
+      "expected": "Use Get resume link → Open resume to retrieve the private PDF.",
+      "section": 12,
+      "sectionTitle": "Recruiter applicant management",
+      "status": "PASSED",
+      "artifact": ".qa/live-e2e-results.json",
+      "scenarios": [
+        "recruiter reviews real applicant resume, changes status and schedules/updates interview"
+      ],
+      "viewports": [
+        "desktop",
+        "mobile",
+        "tablet"
+      ],
+      "evidence": "Own candidate/job applicant row; Get resume link/Open resume private PDF bytes200; real future interview scheduling and updated details; candidate sees Accepted and updated meeting information."
+    },
+    {
+      "id": "12.5",
+      "title": "Change status",
+      "expected": "Change Pending to Accepted or Rejected.",
+      "section": 12,
+      "sectionTitle": "Recruiter applicant management",
+      "status": "PASSED",
+      "artifact": ".qa/live-lifecycle-results.json",
+      "scenarios": [
+        "candidate privacy and complete application/interview lifecycle persist through real browser controls"
+      ],
+      "viewports": [
+        "desktop",
+        "mobile",
+        "tablet"
+      ],
+      "evidence": "Recruiter changes Pending/Rejected/Accepted through real controls; candidate Refresh applications reflects each, recruiter reload and direct MongoDB check retain final state."
+    },
+    {
+      "id": "12.6",
+      "title": "Status persistence",
+      "expected": "Refresh and verify the new status.",
+      "section": 12,
+      "sectionTitle": "Recruiter applicant management",
+      "status": "PASSED",
+      "artifact": ".qa/live-lifecycle-results.json",
+      "scenarios": [
+        "candidate privacy and complete application/interview lifecycle persist through real browser controls"
+      ],
+      "viewports": [
+        "desktop",
+        "mobile",
+        "tablet"
+      ],
+      "evidence": "Recruiter changes Pending/Rejected/Accepted through real controls; candidate Refresh applications reflects each, recruiter reload and direct MongoDB check retain final state."
+    },
+    {
+      "id": "12.7",
+      "title": "Candidate synchronization",
+      "expected": "Candidate account should display updated status.",
+      "section": 12,
+      "sectionTitle": "Recruiter applicant management",
+      "status": "PASSED",
+      "artifact": ".qa/live-lifecycle-results.json",
+      "scenarios": [
+        "candidate privacy and complete application/interview lifecycle persist through real browser controls"
+      ],
+      "viewports": [
+        "desktop",
+        "mobile",
+        "tablet"
+      ],
+      "evidence": "Recruiter changes Pending/Rejected/Accepted through real controls; candidate Refresh applications reflects each, recruiter reload and direct MongoDB check retain final state."
+    },
+    {
+      "id": "12.8",
+      "title": "Other recruiter restriction",
+      "expected": "Another recruiter should not access or modify the application.",
+      "section": 12,
+      "sectionTitle": "Recruiter applicant management",
+      "status": "PASSED",
+      "artifact": ".qa/checklist138-gap-results.json",
+      "scenarios": [
+        "[138:5.9,12.3,12.8] apply to the newly posted job, exclude recommendations and enforce applicant ownership"
+      ],
+      "viewports": [
+        "desktop"
+      ],
+      "evidence": "New real Chrome scenario: apply to the newly posted job, exclude recommendations and enforce applicant ownership. See server/e2e/checklist138.spec.js for UI/API/MongoDB assertions. No response stubs or replacement auth."
+    },
+    {
+      "id": "13.1",
+      "title": "Schedule interview",
+      "expected": "Select an applicant and schedule a future interview.",
+      "section": 13,
+      "sectionTitle": "Interview scheduling",
+      "status": "PASSED",
+      "artifact": ".qa/live-e2e-results.json",
+      "scenarios": [
+        "recruiter reviews real applicant resume, changes status and schedules/updates interview"
+      ],
+      "viewports": [
+        "desktop",
+        "mobile",
+        "tablet"
+      ],
+      "evidence": "Own candidate/job applicant row; Get resume link/Open resume private PDF bytes200; real future interview scheduling and updated details; candidate sees Accepted and updated meeting information."
+    },
+    {
+      "id": "13.2",
+      "title": "Date and time",
+      "expected": "Enter a valid future local date/time.",
+      "section": 13,
+      "sectionTitle": "Interview scheduling",
+      "status": "PASSED",
+      "artifact": ".qa/live-e2e-results.json",
+      "scenarios": [
+        "recruiter reviews real applicant resume, changes status and schedules/updates interview"
+      ],
+      "viewports": [
+        "desktop",
+        "mobile",
+        "tablet"
+      ],
+      "evidence": "Own candidate/job applicant row; Get resume link/Open resume private PDF bytes200; real future interview scheduling and updated details; candidate sees Accepted and updated meeting information."
+    },
+    {
+      "id": "13.3",
+      "title": "Meeting details",
+      "expected": "Enter supported interview details.",
+      "section": 13,
+      "sectionTitle": "Interview scheduling",
+      "status": "PASSED",
+      "artifact": ".qa/live-e2e-results.json",
+      "scenarios": [
+        "recruiter reviews real applicant resume, changes status and schedules/updates interview"
+      ],
+      "viewports": [
+        "desktop",
+        "mobile",
+        "tablet"
+      ],
+      "evidence": "Own candidate/job applicant row; Get resume link/Open resume private PDF bytes200; real future interview scheduling and updated details; candidate sees Accepted and updated meeting information."
+    },
+    {
+      "id": "13.4",
+      "title": "Save",
+      "expected": "Save and verify the interview is attached to the application.",
+      "section": 13,
+      "sectionTitle": "Interview scheduling",
+      "status": "PASSED",
+      "artifact": ".qa/live-e2e-results.json",
+      "scenarios": [
+        "recruiter reviews real applicant resume, changes status and schedules/updates interview"
+      ],
+      "viewports": [
+        "desktop",
+        "mobile",
+        "tablet"
+      ],
+      "evidence": "Own candidate/job applicant row; Get resume link/Open resume private PDF bytes200; real future interview scheduling and updated details; candidate sees Accepted and updated meeting information."
+    },
+    {
+      "id": "13.5",
+      "title": "Candidate visibility",
+      "expected": "Candidate should see the interview in Applied Jobs.",
+      "section": 13,
+      "sectionTitle": "Interview scheduling",
+      "status": "PASSED",
+      "artifact": ".qa/live-e2e-results.json",
+      "scenarios": [
+        "recruiter reviews real applicant resume, changes status and schedules/updates interview"
+      ],
+      "viewports": [
+        "desktop",
+        "mobile",
+        "tablet"
+      ],
+      "evidence": "Own candidate/job applicant row; Get resume link/Open resume private PDF bytes200; real future interview scheduling and updated details; candidate sees Accepted and updated meeting information."
+    },
+    {
+      "id": "13.6",
+      "title": "Update interview",
+      "expected": "Edit the schedule and save.",
+      "section": 13,
+      "sectionTitle": "Interview scheduling",
+      "status": "PASSED",
+      "artifact": ".qa/checklist138-gap-results.json",
+      "scenarios": [
+        "[138:13.6,13.8,13.9,14.2,14.4,14.7] change interview time, verify timezone/privacy and compare all analytics to MongoDB"
+      ],
+      "viewports": [
+        "desktop"
+      ],
+      "evidence": "New real Chrome scenario: change interview time, verify timezone/privacy and compare all analytics to MongoDB. See server/e2e/checklist138.spec.js for UI/API/MongoDB assertions. No response stubs or replacement auth."
+    },
+    {
+      "id": "13.7",
+      "title": "Updated candidate view",
+      "expected": "Candidate should see updated details.",
+      "section": 13,
+      "sectionTitle": "Interview scheduling",
+      "status": "PASSED",
+      "artifact": ".qa/live-e2e-results.json",
+      "scenarios": [
+        "recruiter reviews real applicant resume, changes status and schedules/updates interview"
+      ],
+      "viewports": [
+        "desktop",
+        "mobile",
+        "tablet"
+      ],
+      "evidence": "Own candidate/job applicant row; Get resume link/Open resume private PDF bytes200; real future interview scheduling and updated details; candidate sees Accepted and updated meeting information."
+    },
+    {
+      "id": "13.8",
+      "title": "Timezone",
+      "expected": "Displayed date/time should be correct for the browser timezone.",
+      "section": 13,
+      "sectionTitle": "Interview scheduling",
+      "status": "PASSED",
+      "artifact": ".qa/checklist138-gap-results.json",
+      "scenarios": [
+        "[138:13.6,13.8,13.9,14.2,14.4,14.7] change interview time, verify timezone/privacy and compare all analytics to MongoDB"
+      ],
+      "viewports": [
+        "desktop"
+      ],
+      "evidence": "New real Chrome scenario: change interview time, verify timezone/privacy and compare all analytics to MongoDB. See server/e2e/checklist138.spec.js for UI/API/MongoDB assertions. No response stubs or replacement auth."
+    },
+    {
+      "id": "13.9",
+      "title": "Privacy",
+      "expected": "Unrelated accounts should not access the interview.",
+      "section": 13,
+      "sectionTitle": "Interview scheduling",
+      "status": "PASSED",
+      "artifact": ".qa/checklist138-gap-results.json",
+      "scenarios": [
+        "[138:13.6,13.8,13.9,14.2,14.4,14.7] change interview time, verify timezone/privacy and compare all analytics to MongoDB"
+      ],
+      "viewports": [
+        "desktop"
+      ],
+      "evidence": "New real Chrome scenario: change interview time, verify timezone/privacy and compare all analytics to MongoDB. See server/e2e/checklist138.spec.js for UI/API/MongoDB assertions. No response stubs or replacement auth."
+    },
+    {
+      "id": "14.1",
+      "title": "Analytics page",
+      "expected": "Open Dashboard → Analytics.",
+      "section": 14,
+      "sectionTitle": "Recruiter analytics",
+      "status": "PASSED",
+      "artifact": ".qa/live-e2e-results.json",
+      "scenarios": [
+        "analytics charts show real application counts and another recruiter is denied access"
+      ],
+      "viewports": [
+        "desktop",
+        "mobile",
+        "tablet"
+      ],
+      "evidence": "Recruiter analytics UI application and per-job chart counts compared directly with actual MongoDB; separate recruiter cannot edit job/read resume and sees no foreign applicants."
+    },
+    {
+      "id": "14.2",
+      "title": "Job count",
+      "expected": "Compare total jobs with actual owned jobs.",
+      "section": 14,
+      "sectionTitle": "Recruiter analytics",
+      "status": "PASSED",
+      "artifact": ".qa/checklist138-gap-results.json",
+      "scenarios": [
+        "[138:13.6,13.8,13.9,14.2,14.4,14.7] change interview time, verify timezone/privacy and compare all analytics to MongoDB"
+      ],
+      "viewports": [
+        "desktop"
+      ],
+      "evidence": "New real Chrome scenario: change interview time, verify timezone/privacy and compare all analytics to MongoDB. See server/e2e/checklist138.spec.js for UI/API/MongoDB assertions. No response stubs or replacement auth."
+    },
+    {
+      "id": "14.3",
+      "title": "Application count",
+      "expected": "Compare total applications with actual records.",
+      "section": 14,
+      "sectionTitle": "Recruiter analytics",
+      "status": "PASSED",
+      "artifact": ".qa/live-e2e-results.json",
+      "scenarios": [
+        "analytics charts show real application counts and another recruiter is denied access"
+      ],
+      "viewports": [
+        "desktop",
+        "mobile",
+        "tablet"
+      ],
+      "evidence": "Recruiter analytics UI application and per-job chart counts compared directly with actual MongoDB; separate recruiter cannot edit job/read resume and sees no foreign applicants."
+    },
+    {
+      "id": "14.4",
+      "title": "Status counts",
+      "expected": "Verify Pending, Accepted and Rejected counts.",
+      "section": 14,
+      "sectionTitle": "Recruiter analytics",
+      "status": "PASSED",
+      "artifact": ".qa/checklist138-gap-results.json",
+      "scenarios": [
+        "[138:13.6,13.8,13.9,14.2,14.4,14.7] change interview time, verify timezone/privacy and compare all analytics to MongoDB"
+      ],
+      "viewports": [
+        "desktop"
+      ],
+      "evidence": "New real Chrome scenario: change interview time, verify timezone/privacy and compare all analytics to MongoDB. See server/e2e/checklist138.spec.js for UI/API/MongoDB assertions. No response stubs or replacement auth."
+    },
+    {
+      "id": "14.5",
+      "title": "Applications-per-job chart",
+      "expected": "Chart values should match database records.",
+      "section": 14,
+      "sectionTitle": "Recruiter analytics",
+      "status": "PASSED",
+      "artifact": ".qa/live-e2e-results.json",
+      "scenarios": [
+        "analytics charts show real application counts and another recruiter is denied access"
+      ],
+      "viewports": [
+        "desktop",
+        "mobile",
+        "tablet"
+      ],
+      "evidence": "Recruiter analytics UI application and per-job chart counts compared directly with actual MongoDB; separate recruiter cannot edit job/read resume and sees no foreign applicants."
+    },
+    {
+      "id": "14.6",
+      "title": "Empty state",
+      "expected": "New recruiter with no jobs should see a useful empty state.",
+      "section": 14,
+      "sectionTitle": "Recruiter analytics",
+      "status": "PASSED",
+      "artifact": ".qa/live-e2e-results.json",
+      "scenarios": [
+        "normal application: real registration, unseeded candidate, resume edge cases and persisted workflow"
+      ],
+      "viewports": [
+        "desktop",
+        "mobile",
+        "tablet"
+      ],
+      "evidence": "Real recruiter signup with valid image, empty Manage Jobs/analytics state, required job field browser validation, followed by actual job creation."
+    },
+    {
+      "id": "14.7",
+      "title": "Ownership",
+      "expected": "Other recruiters' data should not appear.",
+      "section": 14,
+      "sectionTitle": "Recruiter analytics",
+      "status": "PASSED",
+      "artifact": ".qa/checklist138-gap-results.json",
+      "scenarios": [
+        "[138:13.6,13.8,13.9,14.2,14.4,14.7] change interview time, verify timezone/privacy and compare all analytics to MongoDB"
+      ],
+      "viewports": [
+        "desktop"
+      ],
+      "evidence": "New real Chrome scenario: change interview time, verify timezone/privacy and compare all analytics to MongoDB. See server/e2e/checklist138.spec.js for UI/API/MongoDB assertions. No response stubs or replacement auth."
+    },
+    {
+      "id": "15.1",
+      "title": "Candidate protected routes",
+      "expected": "Signed-out users should be redirected from private candidate pages.",
+      "section": 15,
+      "sectionTitle": "Security and recovery",
+      "status": "PASSED",
+      "artifact": ".qa/checklist138-gap-results.json",
+      "scenarios": [
+        "[138:15.1] candidate redirect preserves the private deep link and rejects an external return URL"
+      ],
+      "viewports": [
+        "desktop"
+      ],
+      "evidence": "New real Chrome scenario: candidate redirect preserves the private deep link and rejects an external return URL. See server/e2e/checklist138.spec.js for UI/API/MongoDB assertions. No response stubs or replacement auth."
+    },
+    {
+      "id": "15.2",
+      "title": "Recruiter protected routes",
+      "expected": "Signed-out users should be blocked from dashboard routes.",
+      "section": 15,
+      "sectionTitle": "Security and recovery",
+      "status": "PASSED",
+      "artifact": ".qa/checklist138-guard-regressions.json",
+      "scenarios": [
+        "all public and guarded routes, stale recruiter session and missing job recovery"
+      ],
+      "viewports": [
+        "desktop",
+        "mobile",
+        "tablet"
+      ],
+      "evidence": "Invalid job recovery, unknown UI route recovery, signed-out dashboard redirects and stale JWT removal asserted; targeted rerun passed desktop/tablet/mobile after candidate guard change."
+    },
+    {
+      "id": "15.3",
+      "title": "Private resumes",
+      "expected": "Unauthorized accounts should not access another candidate's resume.",
+      "section": 15,
+      "sectionTitle": "Security and recovery",
+      "status": "PASSED",
+      "artifact": ".qa/live-e2e-results.json",
+      "scenarios": [
+        "real PDF upload reaches Cloudinary; analysis, matching and private download work"
+      ],
+      "viewports": [
+        "desktop",
+        "mobile",
+        "tablet"
+      ],
+      "evidence": "Actual upload/analysis/matching UI; owner signed private PDF download200 and PDF bytes; unsigned CDN URL denied and nonowner API denied; matching recognized skills correspond to fixture requirements."
+    },
+    {
+      "id": "15.4",
+      "title": "Missing routes",
+      "expected": "Unknown UI routes should provide recovery/navigation.",
+      "section": 15,
+      "sectionTitle": "Security and recovery",
+      "status": "PASSED",
+      "artifact": ".qa/checklist138-guard-regressions.json",
+      "scenarios": [
+        "all public and guarded routes, stale recruiter session and missing job recovery"
+      ],
+      "viewports": [
+        "desktop",
+        "mobile",
+        "tablet"
+      ],
+      "evidence": "Invalid job recovery, unknown UI route recovery, signed-out dashboard redirects and stale JWT removal asserted; targeted rerun passed desktop/tablet/mobile after candidate guard change."
+    },
+    {
+      "id": "15.5",
+      "title": "API error recovery",
+      "expected": "Temporary API failure should show Retry and recover.",
+      "section": 15,
+      "sectionTitle": "Security and recovery",
+      "status": "PASSED",
+      "artifact": "docs/NETWORK_ERROR_ROOT_CAUSE.md",
+      "scenarios": [
+        "Actual backend port closed, actionable Retry UI, real jobs restored after local backend startup"
+      ],
+      "viewports": [
+        "desktop"
+      ],
+      "evidence": "Retained actual ERR_CONNECTION_REFUSED reproduction and recovery, screenshots network-before-backend-unavailable.png, network-after-backend-unavailable.png and network-recovered-live.png. Simulated503 tests are not counted."
+    },
+    {
+      "id": "15.6",
+      "title": "Database restart persistence",
+      "expected": "Gracefully restart backend and verify records remain.",
+      "section": 15,
+      "sectionTitle": "Security and recovery",
+      "status": "PASSED",
+      "artifact": ".qa/local-persistence-proof.json",
+      "scenarios": [
+        "Prior graceful local backend/MongoDB restart and identical four-collection digest comparison"
+      ],
+      "viewports": [],
+      "evidence": "Retained NETWORK_REGRESSION_TESTS.md and local-persistence-proof.json; actual digest equality plus network-live-checks.json post-restart browser/API checks. Normal servers deliberately not restarted again."
+    },
+    {
+      "id": "15.7",
+      "title": "Console errors",
+      "expected": "Check DevTools for unexpected JavaScript errors.",
+      "section": 15,
+      "sectionTitle": "Security and recovery",
+      "status": "PASSED",
+      "artifact": ".qa/live-e2e-results.json",
+      "scenarios": [
+        "candidate and recruiter sign out; no uncaught errors or failed local network requests"
+      ],
+      "viewports": [
+        "desktop",
+        "mobile",
+        "tablet"
+      ],
+      "evidence": "Real journeys captured pageerror, unexpected API5xx and failed localhost requests across complete flows; arrays empty. Expected validation/auth/ownership failures asserted separately."
+    },
+    {
+      "id": "15.8",
+      "title": "Network failures",
+      "expected": "Check DevTools Network for unexpected failed requests.",
+      "section": 15,
+      "sectionTitle": "Security and recovery",
+      "status": "PASSED",
+      "artifact": ".qa/live-e2e-results.json",
+      "scenarios": [
+        "candidate and recruiter sign out; no uncaught errors or failed local network requests"
+      ],
+      "viewports": [
+        "desktop",
+        "mobile",
+        "tablet"
+      ],
+      "evidence": "Real journeys captured pageerror, unexpected API5xx and failed localhost requests across complete flows; arrays empty. Expected validation/auth/ownership failures asserted separately."
+    },
+    {
+      "id": "16.1",
+      "title": "Mobile homepage",
+      "expected": "Check layout at approximately 390px width.",
+      "section": 16,
+      "sectionTitle": "Mobile and tablet",
+      "status": "PASSED",
+      "artifact": ".qa/live-e2e-results.json",
+      "scenarios": [
+        "homepage renders styled content; real API search and advanced filters work"
+      ],
+      "viewports": [
+        "desktop",
+        "mobile",
+        "tablet"
+      ],
+      "evidence": "Retained mobile390x844 and tablet820x1180 real Chrome flows; header/navigation/filter controls used throughout; horizontal overflow assertions and screenshots in docs/screenshots."
+    },
+    {
+      "id": "16.2",
+      "title": "Mobile navigation",
+      "expected": "Verify menus and navigation work.",
+      "section": 16,
+      "sectionTitle": "Mobile and tablet",
+      "status": "PASSED",
+      "artifact": ".qa/live-e2e-results.json",
+      "scenarios": [
+        "homepage renders styled content; real API search and advanced filters work"
+      ],
+      "viewports": [
+        "desktop",
+        "mobile",
+        "tablet"
+      ],
+      "evidence": "Retained mobile390x844 and tablet820x1180 real Chrome flows; header/navigation/filter controls used throughout; horizontal overflow assertions and screenshots in docs/screenshots."
+    },
+    {
+      "id": "16.3",
+      "title": "Mobile job filters",
+      "expected": "Test search and filtering on mobile.",
+      "section": 16,
+      "sectionTitle": "Mobile and tablet",
+      "status": "PASSED",
+      "artifact": ".qa/live-e2e-results.json",
+      "scenarios": [
+        "homepage renders styled content; real API search and advanced filters work"
+      ],
+      "viewports": [
+        "desktop",
+        "mobile",
+        "tablet"
+      ],
+      "evidence": "Retained mobile390x844 and tablet820x1180 real Chrome flows; header/navigation/filter controls used throughout; horizontal overflow assertions and screenshots in docs/screenshots."
+    },
+    {
+      "id": "16.4",
+      "title": "Mobile resume analysis",
+      "expected": "Upload a PDF and inspect extracted skills on mobile.",
+      "section": 16,
+      "sectionTitle": "Mobile and tablet",
+      "status": "PASSED",
+      "artifact": ".qa/live-e2e-results.json",
+      "scenarios": [
+        "normal application: real registration, unseeded candidate, resume edge cases and persisted workflow"
+      ],
+      "viewports": [
+        "desktop",
+        "mobile",
+        "tablet"
+      ],
+      "evidence": "Retained complete mobile390x844/tablet820x1180/desktop flows with actual uploads, analysis, applications, employer controls and analytics; journeys also assert viewport overflow. Existing screenshot evidence retained."
+    },
+    {
+      "id": "16.5",
+      "title": "Mobile applications",
+      "expected": "Verify application cards and statuses fit the screen.",
+      "section": 16,
+      "sectionTitle": "Mobile and tablet",
+      "status": "PASSED",
+      "artifact": ".qa/live-e2e-results.json",
+      "scenarios": [
+        "normal application: real registration, unseeded candidate, resume edge cases and persisted workflow"
+      ],
+      "viewports": [
+        "desktop",
+        "mobile",
+        "tablet"
+      ],
+      "evidence": "Retained complete mobile390x844/tablet820x1180/desktop flows with actual uploads, analysis, applications, employer controls and analytics; journeys also assert viewport overflow. Existing screenshot evidence retained."
+    },
+    {
+      "id": "16.6",
+      "title": "Mobile recruiter dashboard",
+      "expected": "Verify dashboard controls are usable.",
+      "section": 16,
+      "sectionTitle": "Mobile and tablet",
+      "status": "PASSED",
+      "artifact": ".qa/live-e2e-results.json",
+      "scenarios": [
+        "normal application: real registration, unseeded candidate, resume edge cases and persisted workflow"
+      ],
+      "viewports": [
+        "desktop",
+        "mobile",
+        "tablet"
+      ],
+      "evidence": "Retained complete mobile390x844/tablet820x1180/desktop flows with actual uploads, analysis, applications, employer controls and analytics; journeys also assert viewport overflow. Existing screenshot evidence retained."
+    },
+    {
+      "id": "16.7",
+      "title": "Mobile analytics",
+      "expected": "Verify charts are readable without horizontal overflow.",
+      "section": 16,
+      "sectionTitle": "Mobile and tablet",
+      "status": "PASSED",
+      "artifact": ".qa/live-e2e-results.json",
+      "scenarios": [
+        "normal application: real registration, unseeded candidate, resume edge cases and persisted workflow"
+      ],
+      "viewports": [
+        "desktop",
+        "mobile",
+        "tablet"
+      ],
+      "evidence": "Retained complete mobile390x844/tablet820x1180/desktop flows with actual uploads, analysis, applications, employer controls and analytics; journeys also assert viewport overflow. Existing screenshot evidence retained."
+    },
+    {
+      "id": "16.8",
+      "title": "Tablet layout",
+      "expected": "Repeat representative flows at approximately 820px width.",
+      "section": 16,
+      "sectionTitle": "Mobile and tablet",
+      "status": "PASSED",
+      "artifact": ".qa/live-e2e-results.json",
+      "scenarios": [
+        "normal application: real registration, unseeded candidate, resume edge cases and persisted workflow"
+      ],
+      "viewports": [
+        "desktop",
+        "mobile",
+        "tablet"
+      ],
+      "evidence": "Retained complete mobile390x844/tablet820x1180/desktop flows with actual uploads, analysis, applications, employer controls and analytics; journeys also assert viewport overflow. Existing screenshot evidence retained."
+    },
+    {
+      "id": "17.1",
+      "title": "Candidate demonstration",
+      "expected": "Login → Search → Filter → Upload → Analyze → Match → Save → Apply → Track → Interview → Logout.",
+      "section": 17,
+      "sectionTitle": "Final complete demonstrations",
+      "status": "PASSED",
+      "artifact": ".qa/checklist138-gap-results.json",
+      "scenarios": [
+        "[138:17.1,17.2,17.3] finish both ordered cross-account demonstrations and sign out"
+      ],
+      "viewports": [
+        "desktop"
+      ],
+      "evidence": "New real Chrome scenario: finish both ordered cross-account demonstrations and sign out. See server/e2e/checklist138.spec.js for UI/API/MongoDB assertions. No response stubs or replacement auth."
+    },
+    {
+      "id": "17.2",
+      "title": "Recruiter demonstration",
+      "expected": "Register/Login → Add Job → Edit → Visibility → Applicants → Resume → Status → Interview → Analytics → Logout.",
+      "section": 17,
+      "sectionTitle": "Final complete demonstrations",
+      "status": "PASSED",
+      "artifact": ".qa/checklist138-gap-results.json",
+      "scenarios": [
+        "[138:17.1,17.2,17.3] finish both ordered cross-account demonstrations and sign out"
+      ],
+      "viewports": [
+        "desktop"
+      ],
+      "evidence": "New real Chrome scenario: finish both ordered cross-account demonstrations and sign out. See server/e2e/checklist138.spec.js for UI/API/MongoDB assertions. No response stubs or replacement auth."
+    },
+    {
+      "id": "17.3",
+      "title": "Cross-account workflow",
+      "expected": "Use separate candidate/recruiter browser sessions and verify shared application updates.",
+      "section": 17,
+      "sectionTitle": "Final complete demonstrations",
+      "status": "PASSED",
+      "artifact": ".qa/checklist138-gap-results.json",
+      "scenarios": [
+        "[138:17.1,17.2,17.3] finish both ordered cross-account demonstrations and sign out"
+      ],
+      "viewports": [
+        "desktop"
+      ],
+      "evidence": "New real Chrome scenario: finish both ordered cross-account demonstrations and sign out. See server/e2e/checklist138.spec.js for UI/API/MongoDB assertions. No response stubs or replacement auth."
+    },
+    {
+      "id": "17.4",
+      "title": "Final verification",
+      "expected": "Record any failures with page, action, error and expected result.",
+      "section": 17,
+      "sectionTitle": "Final complete demonstrations",
+      "status": "PASSED",
+      "artifact": "docs/RESUMED_TESTING_REPORT.md",
+      "scenarios": [
+        "Recorded intermediate failures, roots/fixes, final commands and coverage"
+      ],
+      "viewports": [],
+      "evidence": "This report and CHECKLIST_138_COVERAGE.md preserve every original case, failure history and external blockers. No mock passes included."
+    }
+  ]
+}

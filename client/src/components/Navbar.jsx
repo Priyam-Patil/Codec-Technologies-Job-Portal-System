@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import { useContext } from "react";
 import { assets } from "../assets/assets";
 import { Link, useNavigate } from "react-router-dom";
 import { useClerk, UserButton, useUser } from "@clerk/clerk-react";
@@ -18,13 +18,8 @@ const Navbar = () => {
 
   return (
     <div className="sticky top-0 z-40 bg-white/90 backdrop-blur-xl border-b border-gray-100 shadow-sm">
-      <div className="container px-4 2xl:px-20 mx-auto flex justify-between items-center py-4">
-        <img
-          onClick={() => navigate("/")}
-          className="cursor-pointer transition-all duration-300 hover:scale-105"
-          src={assets.logo}
-          alt=""
-        />
+      <div className="container px-4 2xl:px-20 mx-auto flex flex-wrap gap-3 justify-between items-center py-4">
+        <Link to="/" aria-label="InsiderJobs home"><img className="w-36 sm:w-44" src={assets.logo} alt="InsiderJobs" /></Link>
 
         {companyToken ? (
           <div className="flex items-center gap-4 max-sm:text-xs">
@@ -52,7 +47,8 @@ const Navbar = () => {
             </button>
           </div>
         ) : user ? (
-          <div className="flex items-center gap-3">
+          <div className="flex flex-wrap items-center gap-3 text-sm sm:text-base">
+            <Link to="/career" className="font-medium text-blue-700">Career hub</Link>
             <Link
               to="/applications"
               className="font-medium text-gray-700 hover:text-blue-600 transition-all duration-300"

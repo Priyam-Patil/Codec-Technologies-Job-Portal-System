@@ -1,21 +1,12 @@
-import React, { useContext, useRef } from "react";
+import { useContext } from "react";
 import { assets } from "../assets/assets";
 import { AppContext } from "../context/AppContext";
 
 const Hero = () => {
-  const { setSearchFilter, setIsSearched } = useContext(AppContext);
+  const { searchFilter, setSearchFilter, setIsSearched, jobs, jobsLoading } = useContext(AppContext);
 
-  const titleRef = useRef(null);
-  const locationRef = useRef(null);
 
-  const onSearch = () => {
-    setSearchFilter({
-      title: titleRef.current.value,
-      location: locationRef.current.value,
-    });
-
-    setIsSearched(true);
-  };
+  const onSearch = event => { event.preventDefault(); setIsSearched(true); document.getElementById('job-list')?.scrollIntoView({ behavior: 'smooth' }); };
 
   return (
     <div className="container 2xl:px-20 mx-auto my-10 fade-up">
@@ -29,7 +20,7 @@ const Hero = () => {
           </p>
 
           <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-5 leading-tight">
-            Over 10,000+ jobs to apply
+            {jobsLoading ? 'Find your next opportunity' : `${jobs.length} opportunities to explore`}
           </h2>
 
           <p className="mb-10 max-w-2xl mx-auto text-sm md:text-base font-light px-5 text-blue-50">
@@ -37,11 +28,11 @@ const Hero = () => {
             Opportunities and Take the First Step Toward Your Future!
           </p>
 
-          <div className="flex flex-col sm:flex-row items-center justify-between bg-white/95 backdrop-blur-xl rounded-2xl text-gray-600 max-w-3xl px-3 py-3 mx-4 sm:mx-auto shadow-2xl gap-3">
+          <form onSubmit={onSearch} className="flex flex-col sm:flex-row items-center justify-between bg-white/95 backdrop-blur-xl rounded-2xl text-gray-600 max-w-3xl px-3 py-3 mx-4 sm:mx-auto shadow-2xl gap-3">
             <div className="flex items-center gap-3 w-full px-3">
               <img className="h-5 w-5" src={assets.search_icon} alt="" />
               <input
-                ref={titleRef}
+                aria-label="Search job title" value={searchFilter.title} onChange={event => setSearchFilter(previous => ({ ...previous, title: event.target.value }))}
                 type="text"
                 placeholder="Search for jobs"
                 className="max-sm:text-xs p-2 rounded outline-none w-full text-gray-700 bg-transparent"
@@ -53,7 +44,7 @@ const Hero = () => {
             <div className="flex items-center gap-3 w-full px-3">
               <img className="h-5 w-5" src={assets.location_icon} alt="" />
               <input
-                ref={locationRef}
+                aria-label="Search job location" value={searchFilter.location} onChange={event => setSearchFilter(previous => ({ ...previous, location: event.target.value }))}
                 type="text"
                 placeholder="Location"
                 className="max-sm:text-xs p-2 rounded outline-none w-full text-gray-700 bg-transparent"
@@ -61,12 +52,12 @@ const Hero = () => {
             </div>
 
             <button
-              onClick={onSearch}
+              type="submit"
               className="bg-blue-600 text-white px-8 py-3 rounded-xl font-medium w-full sm:w-auto btn-animate hover:bg-blue-700"
             >
               Search
             </button>
-          </div>
+          </form>
         </div>
       </div>
 

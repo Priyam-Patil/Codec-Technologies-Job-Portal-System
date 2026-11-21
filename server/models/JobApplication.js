@@ -21,7 +21,13 @@ const JobApplicationsSchema = new mongoose.Schema({
 
   status: {
     type: String,
+    enum: ['Pending', 'Accepted', 'Rejected'],
     default: "Pending",
+  },
+  interview: {
+    scheduledAt: Date,
+    meetingDetails: String,
+    status: { type: String, enum: ['Scheduled', 'Completed', 'Cancelled'] },
   },
 
   date: {
@@ -29,6 +35,9 @@ const JobApplicationsSchema = new mongoose.Schema({
     required: true,
   },
 });
+
+// Applied explicitly against a reviewed database; automatic production index creation is disabled.
+JobApplicationsSchema.index({ userId: 1, jobId: 1 }, { unique: true });
 
 const JobApplication = mongoose.model(
   "JobApplication",

@@ -8,18 +8,24 @@ import {
   loginCompany,
   postJob,
   registerCompany,
+  editJob, analytics, scheduleInterview, applicantResume,
 } from "../controllers/companyController.js";
 
 import upload from "../middleware/multer.js";
 import { protectCompany } from "../middleware/authMiddleware.js";
+import { rateLimit } from '../middleware/security.js';
 
 const router = express.Router();
 
 // Register a company
-router.post("/register", upload.single("image"), registerCompany);
+router.post("/register", rateLimit({ limit: 10, windowMs: 15 * 60000 }), upload.single("image"), registerCompany);
 
 // Company login
-router.post("/login", loginCompany);
+router.post("/login", rateLimit({ limit: 15, windowMs: 15 * 60000 }), loginCompany);
+router.get('/analytics', protectCompany, analytics);
+router.put('/jobs/:id', protectCompany, editJob);
+router.put('/interviews/:id', protectCompany, scheduleInterview);
+router.get('/applications/:id/resume', protectCompany, applicantResume);
 
 // Get company data
 router.get("/company",protectCompany, getCompanyData);

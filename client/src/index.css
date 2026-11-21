@@ -19,9 +19,7 @@
   }
 }
 
-::-webkit-scrollbar {
-  display: none;
-}
+/* Keep native scrollbars visible for keyboard and pointer users. */
 
 /* Reusable animations */
 
@@ -74,7 +72,7 @@
 /* Rich text */
 
 .rich-text {
-  font-size: 15px;
+  font-size: 16px;
   line-height: 1.8;
   color: #6b7280;
 }
@@ -144,4 +142,23 @@
   border-top-color: #2563eb;
   border-radius: 9999px;
   animation: spinLoader 0.8s linear infinite;
+}
+
+@layer components {
+  .panel { @apply bg-white border border-slate-200 rounded-2xl p-6 shadow-sm; }
+  .primary-button { @apply inline-flex justify-center items-center bg-blue-700 text-white px-5 py-3 rounded-xl font-medium hover:bg-blue-800 transition-colors; }
+  .secondary-button { @apply inline-flex justify-center items-center bg-white border border-slate-200 text-slate-700 px-4 py-3 rounded-xl font-medium hover:bg-blue-50 transition-colors; }
+  .field-label { @apply block text-sm font-medium text-slate-700; }
+  .field { @apply block w-full mt-2 px-3 py-3 border border-slate-300 rounded-xl bg-white text-slate-900; }
+  .eyebrow { @apply text-sm font-semibold tracking-widest; }
+  .skill-chip { @apply text-sm px-3 py-2 rounded-lg bg-blue-50 text-blue-800 border border-blue-100; }
+  .job-grid { @apply grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6; }
+  .career-banner { @apply flex flex-col md:flex-row md:items-center justify-between gap-6 bg-gradient-to-br from-blue-900 via-blue-800 to-indigo-800 rounded-3xl text-white p-7 sm:p-10; }
+}
+button:disabled { opacity: .6; cursor: not-allowed; }
+.Toastify__toast-container { pointer-events: none; }
+.Toastify__toast { pointer-events: auto; }
+:focus-visible { outline: 3px solid #2563eb; outline-offset: 3px; }
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; scroll-behavior: auto !important; }
 }

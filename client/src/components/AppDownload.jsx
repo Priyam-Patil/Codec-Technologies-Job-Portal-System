@@ -1,5 +1,5 @@
-import React from "react";
 import { assets } from "../assets/assets";
+import { Link } from 'react-router-dom';
 
 const AppDownload = () => {
   return (
@@ -7,17 +7,12 @@ const AppDownload = () => {
       <div className="relative max-w-6xl mx-auto bg-gradient-to-r from-blue-50 via-indigo-50 to-purple-50 p-10 sm:p-20 rounded-lg overflow-hidden">
         <div className="relative z-10">
           <h1 className="text-2xl sm:text-4xl font-bold mb-8 max-w-md">
-            Download Mobile App For Better Experience
+            Your next opportunity, wherever you are.
           </h1>
 
           <div className="flex gap-4">
-            <a href="#" className="inline-block">
-              <img className="h-12" src={assets.play_store} alt="" />
-            </a>
-
-            <a href="#" className="inline-block">
-              <img className="h-12" src={assets.app_store} alt="" />
-            </a>
+            <Link to="/career" className="primary-button">Open career hub</Link>
+            <a href="#job-list" className="secondary-button">Explore jobs</a>
           </div>
         </div>
 

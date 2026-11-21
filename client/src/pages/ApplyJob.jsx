@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import { useCallback, useContext, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { AppContext } from "../context/AppContext";
 import { assets } from "../assets/assets";
@@ -8,21 +8,24 @@ import JobCard from "../components/JobCard";
 import kconvert from "k-convert";
 import moment from "moment";
 import { toast } from "react-toastify";
-import axios from "axios";
+import axios from "../lib/api";
 import { useAuth } from "@clerk/clerk-react";
 
 const ApplyJob = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-  const { getToken } = useAuth();
+  const { getToken, isLoaded, isSignedIn } = useAuth();
 
   const [jobData, setJobData] = useState(null);
-  const [isAlreadyApplied, setIsAlreadyApplied] = useState(false);
+  const [loadError, setLoadError] = useState('');
+  const [applying, setApplying] = useState(false);
+  const [submittedJob, setSubmittedJob] = useState(null);
 
   const {
     jobs,
     backendUrl,
     userData,
+    userLoading,
     userApplications,
     fetchUserApplications,
   } = useContext(AppContext);
@@ -32,22 +35,29 @@ const ApplyJob = () => {
       .map((item) => String(item.jobId?._id || item.jobId))
       .filter(Boolean)
   );
+  const isAlreadyApplied = submittedJob === id || appliedJobIds.has(id);
+  const profilePending = !isLoaded || (isSignedIn && (userLoading || !userData));
 
-  const fetchJob = async () => {
+  const fetchJob = useCallback(async () => {
+    setJobData(null); setLoadError('');
     try {
       const { data } = await axios.get(backendUrl + `/api/jobs/${id}`);
 
       if (data.success) {
         setJobData(data.job);
       } else {
+        setLoadError(data.message);
         toast.error(data.message);
       }
     } catch (error) {
+      setLoadError(error.response?.data?.message || error.message);
       toast.error(error.response?.data?.message || error.message);
     }
-  };
+  }, [backendUrl, id]);
 
   const applyHandler = async () => {
+    if (applying) return;
+    setApplying(true);
     try {
       if (!userData) {
         return toast.error("Login to apply for jobs");
@@ -78,35 +88,25 @@ const ApplyJob = () => {
 
       if (data.success) {
         toast.success(data.message);
-        setIsAlreadyApplied(true);
+        setSubmittedJob(id);
         fetchUserApplications();
       } else {
         toast.error(data.message);
       }
     } catch (error) {
       toast.error(error.response?.data?.message || error.message);
+    } finally {
+      setApplying(false);
     }
   };
 
-  const checkAlreadyApplied = () => {
-    const hasApplied = userApplications.some(
-      (item) => String(item.jobId?._id || item.jobId) === String(jobData?._id)
-    );
-
-    setIsAlreadyApplied(hasApplied);
-  };
-
   useEffect(() => {
+    // Start a remote fetch when navigating between jobs, including its loading state.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     fetchJob();
-  }, [id]);
+  }, [fetchJob]);
 
-  useEffect(() => {
-    if (userApplications.length > 0 && jobData) {
-      checkAlreadyApplied();
-    }
-  }, [userApplications, jobData]);
-
-  return jobData ? (
+  return loadError ? <><Navbar /><div role="alert" className="panel m-8"><p>{loadError}</p><button onClick={fetchJob} className="secondary-button mt-4">Retry</button><button onClick={() => navigate('/')} className="primary-button mt-4 ml-3">Browse available jobs</button></div></> : jobData ? (
     <>
       <Navbar />
 
@@ -154,6 +154,7 @@ const ApplyJob = () => {
             <div className="flex flex-col justify-center text-end text-sm max-md:mx-auto max-md:text-center">
               <button
                 onClick={applyHandler}
+                disabled={applying || profilePending || isAlreadyApplied}
                 className={`p-3 px-10 text-white rounded-xl font-medium btn-animate ${
                   isAlreadyApplied
                     ? "bg-gray-500 hover:bg-gray-600"
@@ -182,6 +183,7 @@ const ApplyJob = () => {
 
               <button
                 onClick={applyHandler}
+                disabled={applying || profilePending || isAlreadyApplied}
                 className={`p-3 px-10 text-white rounded-xl mt-10 font-medium btn-animate ${
                   isAlreadyApplied
                     ? "bg-gray-500 hover:bg-gray-600"

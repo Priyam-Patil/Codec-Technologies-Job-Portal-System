@@ -1,0 +1,800 @@
+{
+  "source": "https://chatgpt.com/s/t_6b013d920d0481918d3536c511320901",
+  "title": "138-case Job Portal checklist",
+  "idConvention": "Original section.case position; no global renumbering",
+  "total": 138,
+  "sections": [
+    {
+      "section": 1,
+      "title": "Homepage and navigation",
+      "cases": [
+        {
+          "id": "1.1",
+          "title": "Homepage loads",
+          "expected": "Open http://127.0.0.1:5175. Real job listings should appear."
+        },
+        {
+          "id": "1.2",
+          "title": "Search bar",
+          "expected": "Enter a job title and press Enter. Listings should update."
+        },
+        {
+          "id": "1.3",
+          "title": "Navigation links",
+          "expected": "Click each visible header link and verify its destination."
+        },
+        {
+          "id": "1.4",
+          "title": "Job cards",
+          "expected": "Click a job card. Its details page should open."
+        },
+        {
+          "id": "1.5",
+          "title": "Missing job handling",
+          "expected": "Open an invalid job URL. A not-found/recovery view should appear."
+        },
+        {
+          "id": "1.6",
+          "title": "Refresh and back navigation",
+          "expected": "Refresh pages and use browser Back without losing navigation."
+        }
+      ]
+    },
+    {
+      "section": 2,
+      "title": "Candidate login and account",
+      "cases": [
+        {
+          "id": "2.1",
+          "title": "Clerk login",
+          "expected": "Sign in using an authorized Clerk development account."
+        },
+        {
+          "id": "2.2",
+          "title": "First-time account creation",
+          "expected": "A new candidate profile should initialize automatically."
+        },
+        {
+          "id": "2.3",
+          "title": "Session persistence",
+          "expected": "Refresh the page. The session should remain active."
+        },
+        {
+          "id": "2.4",
+          "title": "Account menu",
+          "expected": "Open the Clerk account menu and check available actions."
+        },
+        {
+          "id": "2.5",
+          "title": "Logout",
+          "expected": "Sign out. Candidate-only pages should require login again."
+        }
+      ]
+    },
+    {
+      "section": 3,
+      "title": "Job searching and filters",
+      "cases": [
+        {
+          "id": "3.1",
+          "title": "Browse all jobs",
+          "expected": "Verify visible jobs load from MongoDB."
+        },
+        {
+          "id": "3.2",
+          "title": "Search by title",
+          "expected": "Search for a known job title."
+        },
+        {
+          "id": "3.3",
+          "title": "Search by location",
+          "expected": "Search for a known job location."
+        },
+        {
+          "id": "3.4",
+          "title": "Category filter",
+          "expected": "Select a category and verify the results."
+        },
+        {
+          "id": "3.5",
+          "title": "Salary filter",
+          "expected": "Apply a salary range and verify results."
+        },
+        {
+          "id": "3.6",
+          "title": "Experience or level",
+          "expected": "Apply an experience/level filter."
+        },
+        {
+          "id": "3.7",
+          "title": "Job type",
+          "expected": "Apply a job-type filter."
+        },
+        {
+          "id": "3.8",
+          "title": "Work mode",
+          "expected": "Test remote, hybrid or on-site where available."
+        },
+        {
+          "id": "3.9",
+          "title": "Multiple filters",
+          "expected": "Combine filters and verify the intersection."
+        },
+        {
+          "id": "3.10",
+          "title": "Hide applied jobs",
+          "expected": "After applying, hide applied jobs from results."
+        },
+        {
+          "id": "3.11",
+          "title": "Clear filters",
+          "expected": "Click Clear. All search/filter selections should reset."
+        },
+        {
+          "id": "3.12",
+          "title": "Filters after refresh",
+          "expected": "Refresh and verify filter behavior remains correct."
+        },
+        {
+          "id": "3.13",
+          "title": "Hidden job security",
+          "expected": "Hide a test job and verify its public URL is inaccessible."
+        }
+      ]
+    },
+    {
+      "section": 4,
+      "title": "Resume upload and skill extraction",
+      "cases": [
+        {
+          "id": "4.1",
+          "title": "No-resume state",
+          "expected": "Open Applied Jobs without a resume. An upload prompt should appear."
+        },
+        {
+          "id": "4.2",
+          "title": "Valid PDF upload",
+          "expected": "Upload a valid PDF of 5 MB or less."
+        },
+        {
+          "id": "4.3",
+          "title": "Immediate extracted skills",
+          "expected": "For the provided fixture, React, Node.js and MongoDB should appear immediately."
+        },
+        {
+          "id": "4.4",
+          "title": "Experience hint",
+          "expected": "The fixture's two-year experience mention should appear as a hint."
+        },
+        {
+          "id": "4.5",
+          "title": "Refresh persistence",
+          "expected": "Refresh and verify extracted skills remain."
+        },
+        {
+          "id": "4.6",
+          "title": "Invalid file type",
+          "expected": "Try a non-PDF file. It should be rejected."
+        },
+        {
+          "id": "4.7",
+          "title": "Oversized PDF",
+          "expected": "Try a PDF over 5 MB. It should be rejected."
+        },
+        {
+          "id": "4.8",
+          "title": "Damaged PDF",
+          "expected": "Try a corrupted test PDF. It should be rejected."
+        },
+        {
+          "id": "4.9",
+          "title": "Manual skills separation",
+          "expected": "Clear manually entered skills; PDF-extracted skills should still appear."
+        },
+        {
+          "id": "4.10",
+          "title": "Own resume access",
+          "expected": "Open your own resume through the authorized download flow."
+        }
+      ]
+    },
+    {
+      "section": 5,
+      "title": "Resume analysis and matching",
+      "cases": [
+        {
+          "id": "5.1",
+          "title": "Career hub",
+          "expected": "Open /career and find resume analysis/matching."
+        },
+        {
+          "id": "5.2",
+          "title": "Compare skills",
+          "expected": "Choose Compare skills and find matching jobs."
+        },
+        {
+          "id": "5.3",
+          "title": "Recognized skills",
+          "expected": "Verify matched skills correspond to the resume and job."
+        },
+        {
+          "id": "5.4",
+          "title": "Missing skills",
+          "expected": "Verify missing job-required skills are displayed."
+        },
+        {
+          "id": "5.5",
+          "title": "Coverage calculation",
+          "expected": "Fixture with three of four required skills should show 75% coverage."
+        },
+        {
+          "id": "5.6",
+          "title": "Experience information",
+          "expected": "Verify experience is presented as a hint, not verified history."
+        },
+        {
+          "id": "5.7",
+          "title": "Suggestions",
+          "expected": "Verify supported improvement suggestions appear."
+        },
+        {
+          "id": "5.8",
+          "title": "No recognized skills",
+          "expected": "Use a text PDF without recognized skills; expect an honest fallback."
+        },
+        {
+          "id": "5.9",
+          "title": "Exclude applied jobs",
+          "expected": "Applied jobs should not appear among unapplied recommendations."
+        },
+        {
+          "id": "5.10",
+          "title": "Matching score meaning",
+          "expected": "Score should describe skill coverage, not hiring probability."
+        }
+      ]
+    },
+    {
+      "section": 6,
+      "title": "Candidate profile",
+      "cases": [
+        {
+          "id": "6.1",
+          "title": "Profile page",
+          "expected": "Open Career hub → Profile."
+        },
+        {
+          "id": "6.2",
+          "title": "Skills",
+          "expected": "Add/edit manual skills and save."
+        },
+        {
+          "id": "6.3",
+          "title": "Education",
+          "expected": "Enter education and save."
+        },
+        {
+          "id": "6.4",
+          "title": "Experience",
+          "expected": "Enter experience and save."
+        },
+        {
+          "id": "6.5",
+          "title": "GitHub",
+          "expected": "Save a valid GitHub profile URL."
+        },
+        {
+          "id": "6.6",
+          "title": "LinkedIn",
+          "expected": "Save a valid LinkedIn profile URL."
+        },
+        {
+          "id": "6.7",
+          "title": "Portfolio",
+          "expected": "Save a valid portfolio URL."
+        },
+        {
+          "id": "6.8",
+          "title": "Refresh persistence",
+          "expected": "Refresh and verify saved profile data."
+        },
+        {
+          "id": "6.9",
+          "title": "Invalid professional URL",
+          "expected": "Invalid GitHub/LinkedIn hosts should be rejected."
+        },
+        {
+          "id": "6.10",
+          "title": "Identity protection",
+          "expected": "Clerk-managed identity fields should not be editable through profile API."
+        }
+      ]
+    },
+    {
+      "section": 7,
+      "title": "Saved jobs",
+      "cases": [
+        {
+          "id": "7.1",
+          "title": "Save job",
+          "expected": "Save a visible test job."
+        },
+        {
+          "id": "7.2",
+          "title": "Saved jobs list",
+          "expected": "Open Career hub → Saved jobs and verify it appears."
+        },
+        {
+          "id": "7.3",
+          "title": "Refresh",
+          "expected": "Refresh and verify the job remains saved."
+        },
+        {
+          "id": "7.4",
+          "title": "Duplicate protection",
+          "expected": "Saving twice should not create duplicates."
+        },
+        {
+          "id": "7.5",
+          "title": "Remove saved job",
+          "expected": "Remove it and verify disappearance."
+        },
+        {
+          "id": "7.6",
+          "title": "Account isolation",
+          "expected": "Another candidate should not see your saved jobs."
+        }
+      ]
+    },
+    {
+      "section": 8,
+      "title": "Applying for jobs",
+      "cases": [
+        {
+          "id": "8.1",
+          "title": "Apply without resume",
+          "expected": "A candidate without a resume should be directed to upload."
+        },
+        {
+          "id": "8.2",
+          "title": "Apply with resume",
+          "expected": "Submit an application for a visible job."
+        },
+        {
+          "id": "8.3",
+          "title": "Success feedback",
+          "expected": "The job should display Already Applied."
+        },
+        {
+          "id": "8.4",
+          "title": "Applications page",
+          "expected": "Verify the application appears under /applications."
+        },
+        {
+          "id": "8.5",
+          "title": "Initial status",
+          "expected": "Verify the application initially shows Pending."
+        },
+        {
+          "id": "8.6",
+          "title": "Duplicate prevention",
+          "expected": "Repeated submission should be rejected (HTTP 409 at API)."
+        },
+        {
+          "id": "8.7",
+          "title": "Hide applied",
+          "expected": "Verify Hide applied excludes the job."
+        },
+        {
+          "id": "8.8",
+          "title": "Application persistence",
+          "expected": "Refresh and verify the application remains."
+        },
+        {
+          "id": "8.9",
+          "title": "Hidden job restriction",
+          "expected": "A hidden job should reject new public applications."
+        }
+      ]
+    },
+    {
+      "section": 9,
+      "title": "Application tracking",
+      "cases": [
+        {
+          "id": "9.1",
+          "title": "Pending status",
+          "expected": "New application should show Pending."
+        },
+        {
+          "id": "9.2",
+          "title": "Accepted status",
+          "expected": "Recruiter changes status to Accepted; candidate sees it."
+        },
+        {
+          "id": "9.3",
+          "title": "Rejected status",
+          "expected": "Recruiter changes a test application to Rejected; candidate sees it."
+        },
+        {
+          "id": "9.4",
+          "title": "Manual refresh",
+          "expected": "Click Refresh applications and verify status."
+        },
+        {
+          "id": "9.5",
+          "title": "Window focus",
+          "expected": "Return focus to the tab; status should refresh."
+        },
+        {
+          "id": "9.6",
+          "title": "Periodic refresh",
+          "expected": "Wait up to 30 seconds for an updated status."
+        },
+        {
+          "id": "9.7",
+          "title": "Persistence",
+          "expected": "Refresh and verify status remains correct."
+        }
+      ]
+    },
+    {
+      "section": 10,
+      "title": "Recruiter registration and login",
+      "cases": [
+        {
+          "id": "10.1",
+          "title": "Recruiter registration",
+          "expected": "Register using Recruiter Login → Sign up."
+        },
+        {
+          "id": "10.2",
+          "title": "Company logo",
+          "expected": "Upload a valid PNG, JPEG or WebP logo."
+        },
+        {
+          "id": "10.3",
+          "title": "Invalid logo",
+          "expected": "Unsupported/oversized logos should show errors."
+        },
+        {
+          "id": "10.4",
+          "title": "Login",
+          "expected": "Sign in using recruiter credentials."
+        },
+        {
+          "id": "10.5",
+          "title": "Incorrect password",
+          "expected": "Wrong password should produce a safe error."
+        },
+        {
+          "id": "10.6",
+          "title": "Dashboard protection",
+          "expected": "Signed-out users should not access recruiter dashboard."
+        },
+        {
+          "id": "10.7",
+          "title": "Modal keyboard access",
+          "expected": "Test Tab, Escape and focus restoration."
+        },
+        {
+          "id": "10.8",
+          "title": "Logout",
+          "expected": "Sign out and verify dashboard access is removed."
+        }
+      ]
+    },
+    {
+      "section": 11,
+      "title": "Recruiter job management",
+      "cases": [
+        {
+          "id": "11.1",
+          "title": "Add Job page",
+          "expected": "Open Dashboard → Add Job."
+        },
+        {
+          "id": "11.2",
+          "title": "Create job",
+          "expected": "Post a valid Demo Full Stack Developer job."
+        },
+        {
+          "id": "11.3",
+          "title": "Required validation",
+          "expected": "Missing required fields should show validation errors."
+        },
+        {
+          "id": "11.4",
+          "title": "Manage Jobs",
+          "expected": "Confirm the new job appears in Manage Jobs."
+        },
+        {
+          "id": "11.5",
+          "title": "Edit job",
+          "expected": "Change salary/description and save."
+        },
+        {
+          "id": "11.6",
+          "title": "Refresh edit",
+          "expected": "Refresh and verify edited values persist."
+        },
+        {
+          "id": "11.7",
+          "title": "Hide job",
+          "expected": "Hide the job and verify it disappears publicly."
+        },
+        {
+          "id": "11.8",
+          "title": "Hidden detail",
+          "expected": "Public job details should not expose hidden jobs."
+        },
+        {
+          "id": "11.9",
+          "title": "Restore job",
+          "expected": "Restore visibility and verify public listing returns."
+        },
+        {
+          "id": "11.10",
+          "title": "Recruiter ownership",
+          "expected": "Another recruiter should not be able to edit the job."
+        }
+      ]
+    },
+    {
+      "section": 12,
+      "title": "Recruiter applicant management",
+      "cases": [
+        {
+          "id": "12.1",
+          "title": "View Applications",
+          "expected": "Open Dashboard → View Applications."
+        },
+        {
+          "id": "12.2",
+          "title": "Applicant listing",
+          "expected": "Verify the candidate appears under the correct job."
+        },
+        {
+          "id": "12.3",
+          "title": "Candidate details",
+          "expected": "Verify only permitted applicant information is shown."
+        },
+        {
+          "id": "12.4",
+          "title": "Resume download",
+          "expected": "Use Get resume link → Open resume to retrieve the private PDF."
+        },
+        {
+          "id": "12.5",
+          "title": "Change status",
+          "expected": "Change Pending to Accepted or Rejected."
+        },
+        {
+          "id": "12.6",
+          "title": "Status persistence",
+          "expected": "Refresh and verify the new status."
+        },
+        {
+          "id": "12.7",
+          "title": "Candidate synchronization",
+          "expected": "Candidate account should display updated status."
+        },
+        {
+          "id": "12.8",
+          "title": "Other recruiter restriction",
+          "expected": "Another recruiter should not access or modify the application."
+        }
+      ]
+    },
+    {
+      "section": 13,
+      "title": "Interview scheduling",
+      "cases": [
+        {
+          "id": "13.1",
+          "title": "Schedule interview",
+          "expected": "Select an applicant and schedule a future interview."
+        },
+        {
+          "id": "13.2",
+          "title": "Date and time",
+          "expected": "Enter a valid future local date/time."
+        },
+        {
+          "id": "13.3",
+          "title": "Meeting details",
+          "expected": "Enter supported interview details."
+        },
+        {
+          "id": "13.4",
+          "title": "Save",
+          "expected": "Save and verify the interview is attached to the application."
+        },
+        {
+          "id": "13.5",
+          "title": "Candidate visibility",
+          "expected": "Candidate should see the interview in Applied Jobs."
+        },
+        {
+          "id": "13.6",
+          "title": "Update interview",
+          "expected": "Edit the schedule and save."
+        },
+        {
+          "id": "13.7",
+          "title": "Updated candidate view",
+          "expected": "Candidate should see updated details."
+        },
+        {
+          "id": "13.8",
+          "title": "Timezone",
+          "expected": "Displayed date/time should be correct for the browser timezone."
+        },
+        {
+          "id": "13.9",
+          "title": "Privacy",
+          "expected": "Unrelated accounts should not access the interview."
+        }
+      ]
+    },
+    {
+      "section": 14,
+      "title": "Recruiter analytics",
+      "cases": [
+        {
+          "id": "14.1",
+          "title": "Analytics page",
+          "expected": "Open Dashboard → Analytics."
+        },
+        {
+          "id": "14.2",
+          "title": "Job count",
+          "expected": "Compare total jobs with actual owned jobs."
+        },
+        {
+          "id": "14.3",
+          "title": "Application count",
+          "expected": "Compare total applications with actual records."
+        },
+        {
+          "id": "14.4",
+          "title": "Status counts",
+          "expected": "Verify Pending, Accepted and Rejected counts."
+        },
+        {
+          "id": "14.5",
+          "title": "Applications-per-job chart",
+          "expected": "Chart values should match database records."
+        },
+        {
+          "id": "14.6",
+          "title": "Empty state",
+          "expected": "New recruiter with no jobs should see a useful empty state."
+        },
+        {
+          "id": "14.7",
+          "title": "Ownership",
+          "expected": "Other recruiters' data should not appear."
+        }
+      ]
+    },
+    {
+      "section": 15,
+      "title": "Security and recovery",
+      "cases": [
+        {
+          "id": "15.1",
+          "title": "Candidate protected routes",
+          "expected": "Signed-out users should be redirected from private candidate pages."
+        },
+        {
+          "id": "15.2",
+          "title": "Recruiter protected routes",
+          "expected": "Signed-out users should be blocked from dashboard routes."
+        },
+        {
+          "id": "15.3",
+          "title": "Private resumes",
+          "expected": "Unauthorized accounts should not access another candidate's resume."
+        },
+        {
+          "id": "15.4",
+          "title": "Missing routes",
+          "expected": "Unknown UI routes should provide recovery/navigation."
+        },
+        {
+          "id": "15.5",
+          "title": "API error recovery",
+          "expected": "Temporary API failure should show Retry and recover."
+        },
+        {
+          "id": "15.6",
+          "title": "Database restart persistence",
+          "expected": "Gracefully restart backend and verify records remain."
+        },
+        {
+          "id": "15.7",
+          "title": "Console errors",
+          "expected": "Check DevTools for unexpected JavaScript errors."
+        },
+        {
+          "id": "15.8",
+          "title": "Network failures",
+          "expected": "Check DevTools Network for unexpected failed requests."
+        }
+      ]
+    },
+    {
+      "section": 16,
+      "title": "Mobile and tablet",
+      "cases": [
+        {
+          "id": "16.1",
+          "title": "Mobile homepage",
+          "expected": "Check layout at approximately 390px width."
+        },
+        {
+          "id": "16.2",
+          "title": "Mobile navigation",
+          "expected": "Verify menus and navigation work."
+        },
+        {
+          "id": "16.3",
+          "title": "Mobile job filters",
+          "expected": "Test search and filtering on mobile."
+        },
+        {
+          "id": "16.4",
+          "title": "Mobile resume analysis",
+          "expected": "Upload a PDF and inspect extracted skills on mobile."
+        },
+        {
+          "id": "16.5",
+          "title": "Mobile applications",
+          "expected": "Verify application cards and statuses fit the screen."
+        },
+        {
+          "id": "16.6",
+          "title": "Mobile recruiter dashboard",
+          "expected": "Verify dashboard controls are usable."
+        },
+        {
+          "id": "16.7",
+          "title": "Mobile analytics",
+          "expected": "Verify charts are readable without horizontal overflow."
+        },
+        {
+          "id": "16.8",
+          "title": "Tablet layout",
+          "expected": "Repeat representative flows at approximately 820px width."
+        }
+      ]
+    },
+    {
+      "section": 17,
+      "title": "Final complete demonstrations",
+      "cases": [
+        {
+          "id": "17.1",
+          "title": "Candidate demonstration",
+          "expected": "Login → Search → Filter → Upload → Analyze → Match → Save → Apply → Track → Interview → Logout."
+        },
+        {
+          "id": "17.2",
+          "title": "Recruiter demonstration",
+          "expected": "Register/Login → Add Job → Edit → Visibility → Applicants → Resume → Status → Interview → Analytics → Logout."
+        },
+        {
+          "id": "17.3",
+          "title": "Cross-account workflow",
+          "expected": "Use separate candidate/recruiter browser sessions and verify shared application updates."
+        },
+        {
+          "id": "17.4",
+          "title": "Final verification",
+          "expected": "Record any failures with page, action, error and expected result."
+        }
+      ]
+    }
+  ]
+}

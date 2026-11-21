@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import { useContext } from "react";
 import { NavLink, Outlet, useNavigate } from "react-router-dom";
 import { assets } from "../assets/assets";
 import { AppContext } from "../context/AppContext";
@@ -34,23 +34,9 @@ const Dashboard = () => {
                 </span>
               </p>
 
-              <div className="relative group">
-                <img
-                  className="w-9 h-9 border border-gray-200 rounded-full cursor-pointer object-cover shadow-sm transition-all duration-300 hover:scale-105"
-                  src={companyData.image}
-                  alt=""
-                />
-
-                <div className="absolute hidden group-hover:block top-0 right-0 z-10 text-black rounded pt-10">
-                  <ul className="list-none m-0 p-2 bg-white rounded-xl border border-gray-100 text-sm shadow-xl">
-                    <li
-                      onClick={logout}
-                      className="py-2 px-3 cursor-pointer pr-10 hover:bg-red-50 hover:text-red-600 rounded-lg transition-all duration-300"
-                    >
-                      Logout
-                    </li>
-                  </ul>
-                </div>
+              <div className="flex items-center gap-3">
+                <img className="w-9 h-9 border border-gray-200 rounded-full object-cover" src={companyData.image} alt="Company logo" />
+                <button type="button" onClick={logout} className="secondary-button text-sm">Logout</button>
               </div>
             </div>
           )}
@@ -59,10 +45,12 @@ const Dashboard = () => {
 
       <div className="flex items-start">
         {/* Sidebar */}
-        <div className="w-20 sm:w-64 min-h-[calc(100vh-73px)] bg-white border-r border-gray-100 shadow-sm">
+        <div className="w-16 sm:w-64 shrink-0 min-h-[calc(100vh-73px)] bg-white border-r border-gray-100 shadow-sm">
           <ul className="flex flex-col pt-5">
+            <NavLink to="/dashboard/analytics" aria-label="Analytics" className="flex gap-3 py-4 px-5 border-b text-blue-700 font-semibold"><span aria-hidden="true">▤</span><span className="max-sm:hidden">Analytics</span></NavLink>
             <NavLink
               to="/dashboard/add-job"
+              aria-label="Add Job"
               className={({ isActive }) =>
                 `flex items-center gap-3 py-4 px-5 border-b border-gray-100 text-sm cursor-pointer transition-all duration-300 ${
                   isActive
@@ -77,6 +65,7 @@ const Dashboard = () => {
 
             <NavLink
               to="/dashboard/manage-jobs"
+              aria-label="Manage Jobs"
               className={({ isActive }) =>
                 `flex items-center gap-3 py-4 px-5 border-b border-gray-100 text-sm cursor-pointer transition-all duration-300 ${
                   isActive
@@ -91,6 +80,7 @@ const Dashboard = () => {
 
             <NavLink
               to="/dashboard/view-applications"
+              aria-label="View Applications"
               className={({ isActive }) =>
                 `flex items-center gap-3 py-4 px-5 border-b border-gray-100 text-sm cursor-pointer transition-all duration-300 ${
                   isActive
@@ -106,7 +96,7 @@ const Dashboard = () => {
         </div>
 
         {/* Main Content */}
-        <div className="flex-1 px-4 sm:px-8 py-6 overflow-x-auto fade-up">
+        <div className="flex-1 min-w-0 px-3 sm:px-8 py-6 overflow-x-auto fade-up">
           <Outlet />
         </div>
       </div>

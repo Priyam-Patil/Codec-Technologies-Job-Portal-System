@@ -1,62 +1,25 @@
-import { Webhook } from "svix";
-import User from "../models/User.js";
+import { Webhook } from 'svix';
+import User from '../models/User.js';
 
-// API controller function to manage Clerk user with database
-const clerkWebhooks = async (req, res) => {
+export default async function clerkWebhooks(req, res, next) {
+  let event;
   try {
-    // Create a Svix instance with Clerk webhook secret
-    const whook = new Webhook(process.env.CLERK_WEBHOOK_SECRET);
-
-    // Verify headers
-    await whook.verify(JSON.stringify(req.body), {
-      "svix-id": req.headers["svix-id"],
-      "svix-timestamp": req.headers["svix-timestamp"],
-      "svix-signature": req.headers["svix-signature"],
+    event = new Webhook(process.env.CLERK_WEBHOOK_SECRET).verify(req.body.toString('utf8'), {
+      'svix-id': req.headers['svix-id'], 'svix-timestamp': req.headers['svix-timestamp'], 'svix-signature': req.headers['svix-signature'],
     });
-
-    // Getting data from request body
-    const { data, type } = req.body;
-
-    // Switch cases for different events
-    switch (type) {
-      case "user.created": {
-        const userData = {
-          _id: data.id,
-          email: data.email_addresses[0].email_address,
-          name: data.first_name + " " + data.last_name,
-          image: data.image_url,
-          resume: "",
-        };
-
-        await User.create(userData);
-        break;
-      }
-
-      case "user.updated": {
-        const userData = {
-          email: data.email_addresses[0].email_address,
-          name: data.first_name + " " + data.last_name,
-          image: data.image_url,
-        };
-
-        await User.findByIdAndUpdate(data.id, userData);
-        break;
-      }
-
-      case "user.deleted": {
-        await User.findByIdAndDelete(data.id);
-        break;
-      }
-
-      default:
-        break;
-    }
-
-    res.json({ success: true, message: "Webhook received" });
-  } catch (error) {
-    console.log(error.message);
-    res.json({ success: false, message: "Webhooks Error" });
+  } catch {
+    return res.status(400).json({ success: false, message: 'Invalid webhook signature' });
   }
-};
-
-export default clerkWebhooks;
+  try {
+    const { data, type } = event;
+    if (type === 'user.created' || type === 'user.updated') {
+      const primary = data.email_addresses?.find(email => email.id === data.primary_email_address_id) || data.email_addresses?.[0];
+      if (!data.id || !primary?.email_address) return res.status(400).json({ success: false, message: 'Incomplete identity event' });
+      const identity = { email: primary.email_address, name: [data.first_name, data.last_name].filter(Boolean).join(' ') || primary.email_address, image: data.image_url || '' };
+      await User.updateOne({ _id: data.id }, { $set: identity, $setOnInsert: { resume: '' } }, { upsert: true, runValidators: true });
+    } else if (type === 'user.deleted') {
+      await User.findByIdAndDelete(data.id);
+    }
+    res.json({ success: true, message: 'Webhook received' });
+  } catch (error) { next(error); }
+}

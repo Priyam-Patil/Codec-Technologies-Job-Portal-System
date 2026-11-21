@@ -1,7 +1,7 @@
-import React, { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { AppContext } from "../context/AppContext";
 import { assets } from "../assets/assets";
-import axios from "axios";
+import axios from "../lib/api";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
@@ -15,6 +15,9 @@ const RecruiterLogin = () => {
   const [image, setImage] = useState(false);
   const [isTextDataSubmitted, setIsTextDataSubmitted] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
+  const dialogRef = useRef(null);
+  const [imagePreview, setImagePreview] = useState('');
 
   const {
     setShowRecruiterLogin,
@@ -25,6 +28,7 @@ const RecruiterLogin = () => {
 
   const onSubmitHandler = async (e) => {
     e.preventDefault();
+    if (submitting) return;
 
     if (state === "Sign Up" && !isTextDataSubmitted) {
       setIsTextDataSubmitted(true);
@@ -35,7 +39,9 @@ const RecruiterLogin = () => {
       toast.error("Please upload company logo");
       return;
     }
+    if (state === 'Sign Up' && image && (!['image/png', 'image/jpeg', 'image/webp'].includes(image.type) || image.size > 5 * 1024 * 1024)) return toast.error('Choose a PNG, JPEG or WebP logo no larger than 5 MB');
 
+    setSubmitting(true);
     try {
       if (state === "Login") {
         const { data } = await axios.post(backendUrl + "/api/company/login", {
@@ -77,22 +83,48 @@ const RecruiterLogin = () => {
       }
     } catch (error) {
       toast.error(error.response?.data?.message || error.message);
+    } finally {
+      setSubmitting(false);
     }
   };
 
   useEffect(() => {
+    const previousOverflow = document.body.style.overflow;
+    const previouslyFocused = document.activeElement;
     document.body.style.overflow = "hidden";
+    dialogRef.current?.querySelector('input:not([type=file])')?.focus();
+    const onKey = event => {
+      if (event.key === 'Escape') setShowRecruiterLogin(false);
+      if (event.key !== 'Tab') return;
+      const controls = [...(dialogRef.current?.querySelectorAll('button, input, a[href]') || [])].filter(node => !node.disabled && node.offsetParent !== null);
+      const first = controls[0], last = controls.at(-1);
+      if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last?.focus(); }
+      else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first?.focus(); }
+    };
+    document.addEventListener('keydown', onKey);
 
     return () => {
-      document.body.style.overflow = "unset";
+      document.body.style.overflow = previousOverflow;
+      document.removeEventListener('keydown', onKey);
+      previouslyFocused?.focus();
     };
-  }, []);
+  }, [setShowRecruiterLogin]);
+  useEffect(() => {
+    if (!image) return;
+    const url = URL.createObjectURL(image);
+    // Synchronize browser-owned preview URL and revoke it when replaced/unmounted.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setImagePreview(url);
+    return () => URL.revokeObjectURL(url);
+  }, [image]);
 
   return (
     <div className="fixed top-0 left-0 right-0 bottom-0 z-50 bg-black/50 backdrop-blur-sm flex justify-center items-center">
       <form
+        ref={dialogRef}
+        role="dialog" aria-modal="true" aria-label="Recruiter authentication"
         onSubmit={onSubmitHandler}
-        className="relative bg-white p-8 rounded-xl w-96"
+        className="relative bg-white p-8 rounded-xl w-96 max-w-[calc(100vw-2rem)] max-h-[calc(100dvh-2rem)] overflow-y-auto"
       >
         <button
           type="button"
@@ -119,7 +151,7 @@ const RecruiterLogin = () => {
             <label htmlFor="image" className="cursor-pointer">
               <img
                 className="w-16 h-16 object-cover rounded-full"
-                src={image ? URL.createObjectURL(image) : assets.upload_area}
+                src={image ? imagePreview : assets.upload_area}
                 alt=""
               />
 
@@ -127,7 +159,8 @@ const RecruiterLogin = () => {
                 type="file"
                 id="image"
                 hidden
-                accept="image/*"
+                accept="image/png,image/jpeg,image/webp"
+                aria-label="Company logo"
                 onChange={(e) => setImage(e.target.files[0])}
               />
             </label>
@@ -144,6 +177,7 @@ const RecruiterLogin = () => {
                 className="border border-gray-300 rounded-full w-full px-4 py-2 mb-4 outline-none"
                 type="text"
                 placeholder="Company Name"
+                aria-label="Company name"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
               />
@@ -153,6 +187,7 @@ const RecruiterLogin = () => {
               required
               className="border border-gray-300 rounded-full w-full px-4 py-2 mb-4 outline-none"
               type="email"
+              aria-label="Recruiter email"
               placeholder="Email Id"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
@@ -163,6 +198,10 @@ const RecruiterLogin = () => {
                 required
                 className="border border-gray-300 rounded-full w-full px-4 py-2 pr-16 outline-none"
                 type={showPassword ? "text" : "password"}
+                aria-label="Recruiter password"
+                minLength={state === 'Login' ? undefined : 10}
+                maxLength={72}
+                autoComplete={state === 'Login' ? 'current-password' : 'new-password'}
                 placeholder="Password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
@@ -180,8 +219,8 @@ const RecruiterLogin = () => {
             </div>
 
             {state === "Login" && (
-              <p className="text-blue-600 text-sm mb-4 cursor-pointer">
-                Forgot password?
+              <p className="text-slate-500 text-sm mb-4">
+                Recruiter password recovery is not available yet.
               </p>
             )}
           </>
@@ -189,6 +228,7 @@ const RecruiterLogin = () => {
 
         <button
           type="submit"
+          disabled={submitting}
           className="bg-blue-600 text-white w-full py-2 rounded-full"
         >
           {state === "Login"
@@ -201,7 +241,7 @@ const RecruiterLogin = () => {
         {state === "Login" ? (
           <p className="text-sm text-gray-500 text-center mt-4">
             Don&apos;t have an account?{" "}
-            <span
+            <button type="button"
               onClick={() => {
                 setState("Sign Up");
                 setIsTextDataSubmitted(false);
@@ -211,12 +251,12 @@ const RecruiterLogin = () => {
               className="text-blue-600 cursor-pointer"
             >
               Sign up
-            </span>
+            </button>
           </p>
         ) : (
           <p className="text-sm text-gray-500 text-center mt-4">
             Already have an account?{" "}
-            <span
+            <button type="button"
               onClick={() => {
                 setState("Login");
                 setIsTextDataSubmitted(false);
@@ -226,7 +266,7 @@ const RecruiterLogin = () => {
               className="text-blue-600 cursor-pointer"
             >
               Login
-            </span>
+            </button>
           </p>
         )}
       </form>

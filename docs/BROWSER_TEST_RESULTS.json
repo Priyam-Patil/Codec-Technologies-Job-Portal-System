@@ -1,0 +1,133 @@
+{
+  "command": "cd server; npm run test:e2e",
+  "stats": {
+    "startTime": "2026-11-21T05:03:58.001Z",
+    "duration": 113149.892,
+    "expected": 20,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  },
+  "cases": [
+    {
+      "title": "homepage renders styled content; real API search and advanced filters work",
+      "project": "desktop",
+      "status": "passed",
+      "durationMs": 1836
+    },
+    {
+      "title": "homepage renders styled content; real API search and advanced filters work",
+      "project": "mobile",
+      "status": "passed",
+      "durationMs": 2295
+    },
+    {
+      "title": "candidate signs in through REAL Clerk password and test OTP; API verifies the real session",
+      "project": "desktop",
+      "status": "passed",
+      "durationMs": 6249
+    },
+    {
+      "title": "candidate signs in through REAL Clerk password and test OTP; API verifies the real session",
+      "project": "mobile",
+      "status": "passed",
+      "durationMs": 5009
+    },
+    {
+      "title": "candidate profile updates persist after browser refresh",
+      "project": "desktop",
+      "status": "passed",
+      "durationMs": 1882
+    },
+    {
+      "title": "candidate profile updates persist after browser refresh",
+      "project": "mobile",
+      "status": "passed",
+      "durationMs": 1990
+    },
+    {
+      "title": "candidate saves and removes jobs with persisted browser-visible results",
+      "project": "desktop",
+      "status": "passed",
+      "durationMs": 886
+    },
+    {
+      "title": "candidate saves and removes jobs with persisted browser-visible results",
+      "project": "mobile",
+      "status": "passed",
+      "durationMs": 922
+    },
+    {
+      "title": "real PDF upload reaches Cloudinary; analysis, matching and private download work",
+      "project": "desktop",
+      "status": "passed",
+      "durationMs": 27327
+    },
+    {
+      "title": "real PDF upload reaches Cloudinary; analysis, matching and private download work",
+      "project": "mobile",
+      "status": "passed",
+      "durationMs": 26056
+    },
+    {
+      "title": "recruiter signs in and creates, edits and hides an owned job in the browser",
+      "project": "desktop",
+      "status": "passed",
+      "durationMs": 4726
+    },
+    {
+      "title": "recruiter signs in and creates, edits and hides an owned job in the browser",
+      "project": "mobile",
+      "status": "passed",
+      "durationMs": 5019
+    },
+    {
+      "title": "candidate opens job details, applies once and sees pending history",
+      "project": "desktop",
+      "status": "passed",
+      "durationMs": 2566
+    },
+    {
+      "title": "candidate opens job details, applies once and sees pending history",
+      "project": "mobile",
+      "status": "passed",
+      "durationMs": 2598
+    },
+    {
+      "title": "recruiter reviews real applicant resume, changes status and schedules/updates interview",
+      "project": "desktop",
+      "status": "passed",
+      "durationMs": 4973
+    },
+    {
+      "title": "recruiter reviews real applicant resume, changes status and schedules/updates interview",
+      "project": "mobile",
+      "status": "passed",
+      "durationMs": 5108
+    },
+    {
+      "title": "analytics charts show real application counts and another recruiter is denied access",
+      "project": "desktop",
+      "status": "passed",
+      "durationMs": 1546
+    },
+    {
+      "title": "analytics charts show real application counts and another recruiter is denied access",
+      "project": "mobile",
+      "status": "passed",
+      "durationMs": 1608
+    },
+    {
+      "title": "candidate and recruiter sign out; no uncaught errors or failed local network requests",
+      "project": "desktop",
+      "status": "passed",
+      "durationMs": 2451
+    },
+    {
+      "title": "candidate and recruiter sign out; no uncaught errors or failed local network requests",
+      "project": "mobile",
+      "status": "passed",
+      "durationMs": 2390
+    }
+  ]
+}

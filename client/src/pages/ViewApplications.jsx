@@ -1,18 +1,20 @@
-import React, { useContext, useEffect, useState } from "react";
-import { assets } from "../assets/assets";
+import { useCallback, useContext, useEffect, useState } from "react";
 import { AppContext } from "../context/AppContext";
-import axios from "axios";
+import axios from "../lib/api";
 import { toast } from "react-toastify";
+import ResumeAccess from '../components/ResumeAccess';
+import InterviewForm from '../components/InterviewForm';
 
 const ViewApplications = () => {
   const { backendUrl, companyToken } = useContext(AppContext);
 
   const [applicants, setApplicants] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [loadError, setLoadError] = useState('');
 
-  const fetchCompanyJobApplications = async () => {
+  const fetchCompanyJobApplications = useCallback(async () => {
     try {
-      setLoading(true);
+      setLoading(true); setLoadError('');
 
       const { data } = await axios.get(backendUrl + "/api/company/applicants", {
         headers: {
@@ -23,14 +25,14 @@ const ViewApplications = () => {
       if (data.success) {
         setApplicants(data.applications);
       } else {
-        toast.error(data.message);
+        setLoadError(data.message);
       }
     } catch (error) {
-      toast.error(error.response?.data?.message || error.message);
+      setLoadError(error.response?.data?.message || error.message);
     } finally {
       setLoading(false);
     }
-  };
+  }, [backendUrl, companyToken]);
 
   const changeApplicationStatus = async (id, status) => {
     try {
@@ -65,11 +67,13 @@ const ViewApplications = () => {
 
   useEffect(() => {
     if (companyToken) {
+      // Remote synchronization includes loading feedback for subsequent refreshes.
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       fetchCompanyJobApplications();
     } else {
       setLoading(false);
     }
-  }, [companyToken]);
+  }, [companyToken, fetchCompanyJobApplications]);
 
   return (
     <div className="container mx-auto p-4 fade-up">
@@ -80,7 +84,7 @@ const ViewApplications = () => {
         </p>
       </div>
 
-      {loading ? (
+      {loadError ? <div className="panel" role="alert"><p>{loadError}</p><button className="secondary-button mt-3" onClick={fetchCompanyJobApplications}>Retry</button></div> : loading ? (
         <div className="min-h-[55vh] flex flex-col items-center justify-center bg-white border border-gray-100 rounded-3xl shadow-sm text-center px-4">
           <div className="loader-ring"></div>
           <p className="text-gray-500 mt-4 font-medium">
@@ -151,64 +155,16 @@ const ViewApplications = () => {
 
                   <td className="py-4 px-5 border-b">
                     {applicant.userId?.resume ? (
-                      <a
-                        href={applicant.userId.resume}
-                        target="_blank"
-                        rel="noreferrer"
-                        className="bg-blue-50 text-blue-600 px-4 py-2 rounded-xl inline-flex gap-2 items-center font-medium hover:bg-blue-600 hover:text-white transition-all duration-300"
-                      >
-                        Resume
-                        <img src={assets.resume_download_icon} alt="" />
-                      </a>
+                      <ResumeAccess applicationId={applicant._id} />
                     ) : (
                       <span className="text-gray-400">No Resume</span>
                     )}
                   </td>
 
                   <td className="py-4 px-5 border-b relative">
-                    {applicant.status === "Pending" ? (
-                      <div className="relative inline-block text-left group">
-                        <button className="text-gray-500 action-button px-3 py-1 rounded-lg hover:bg-gray-100 transition-all duration-300">
-                          ...
-                        </button>
+                    <label className="field-label">Application status<select aria-label="Application status" className="field" value={applicant.status} onChange={event => changeApplicationStatus(applicant._id, event.target.value)}>{['Pending', 'Accepted', 'Rejected'].map(status => <option key={status}>{status}</option>)}</select></label>
+                    <InterviewForm application={applicant} onUpdate={updated => setApplicants(previous => previous.map(item => item._id === updated._id ? { ...item, interview: updated.interview } : item))} />
 
-                        <div className="z-10 hidden absolute right-0 md:left-0 top-0 mt-8 w-32 bg-white border border-gray-100 rounded-xl shadow-xl group-hover:block overflow-hidden">
-                          <button
-                            onClick={() =>
-                              changeApplicationStatus(
-                                applicant._id,
-                                "Accepted"
-                              )
-                            }
-                            className="block w-full text-left px-4 py-2 text-green-600 hover:bg-green-50 transition-all duration-200"
-                          >
-                            Accept
-                          </button>
-
-                          <button
-                            onClick={() =>
-                              changeApplicationStatus(
-                                applicant._id,
-                                "Rejected"
-                              )
-                            }
-                            className="block w-full text-left px-4 py-2 text-red-600 hover:bg-red-50 transition-all duration-200"
-                          >
-                            Reject
-                          </button>
-                        </div>
-                      </div>
-                    ) : (
-                      <span
-                        className={`px-4 py-1.5 rounded-full text-sm font-medium ${
-                          applicant.status === "Accepted"
-                            ? "bg-green-50 text-green-600"
-                            : "bg-red-50 text-red-600"
-                        }`}
-                      >
-                        {applicant.status}
-                      </span>
-                    )}
                   </td>
                 </tr>
               ))}

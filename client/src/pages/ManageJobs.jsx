@@ -1,8 +1,8 @@
-import React, { useContext, useEffect, useState } from "react";
+import { useCallback, useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import moment from "moment";
 import { AppContext } from "../context/AppContext";
-import axios from "axios";
+import axios from "../lib/api";
 import { toast } from "react-toastify";
 
 const ManageJobs = () => {
@@ -10,12 +10,14 @@ const ManageJobs = () => {
 
   const [jobs, setJobs] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [loadError, setLoadError] = useState('');
+  const [updating, setUpdating] = useState(null);
 
   const { backendUrl, companyToken } = useContext(AppContext);
 
-  const fetchCompanyJobs = async () => {
+  const fetchCompanyJobs = useCallback(async () => {
     try {
-      setLoading(true);
+      setLoading(true); setLoadError('');
 
       const { data } = await axios.get(
         backendUrl + "/api/company/list-jobs",
@@ -28,18 +30,19 @@ const ManageJobs = () => {
 
       if (data.success) {
         setJobs([...data.jobsData].reverse());
-        console.log(data.jobsData);
       } else {
-        toast.error(data.message);
+        setLoadError(data.message);
       }
     } catch (error) {
-      toast.error(error.response?.data?.message || error.message);
+      setLoadError(error.response?.data?.message || error.message);
     } finally {
       setLoading(false);
     }
-  };
+  }, [backendUrl, companyToken]);
 
   const changeJobVisibility = async (id) => {
+    if (updating) return;
+    setUpdating(id);
     try {
       const { data } = await axios.put(
         backendUrl + "/api/company/change-visibility",
@@ -53,22 +56,26 @@ const ManageJobs = () => {
 
       if (data.success) {
         toast.success(data.message);
-        fetchCompanyJobs();
+        setJobs(previous => previous.map(job => job._id === id ? { ...job, visible: data.job.visible } : job));
       } else {
         toast.error(data.message);
       }
     } catch (error) {
       toast.error(error.response?.data?.message || error.message);
+    } finally {
+      setUpdating(null);
     }
   };
 
   useEffect(() => {
     if (companyToken) {
+      // Remote synchronization includes loading feedback for subsequent refreshes.
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       fetchCompanyJobs();
     } else {
       setLoading(false);
     }
-  }, [companyToken]);
+  }, [companyToken, fetchCompanyJobs]);
 
   return (
     <div className="container p-4 max-w-6xl fade-up">
@@ -81,7 +88,7 @@ const ManageJobs = () => {
         </div>
       </div>
 
-      {loading ? (
+      {loadError ? <div className="panel" role="alert"><p>{loadError}</p><button className="secondary-button mt-3" onClick={fetchCompanyJobs}>Retry</button></div> : loading ? (
         <div className="min-h-[55vh] flex flex-col items-center justify-center bg-white border border-gray-100 rounded-3xl shadow-sm text-center px-4">
           <div className="loader-ring"></div>
           <p className="text-gray-500 mt-4 font-medium">
@@ -145,6 +152,7 @@ const ManageJobs = () => {
 
                     <td className="py-4 px-5 border-b font-medium text-gray-800">
                       {job.title}
+                      <button className="block text-sm text-blue-700 mt-2" onClick={() => navigate('/dashboard/edit-job/' + job._id)}>Edit job</button>
                     </td>
 
                     <td className="py-4 px-5 border-b max-sm:hidden">
@@ -166,6 +174,8 @@ const ManageJobs = () => {
                         onChange={() => changeJobVisibility(job._id)}
                         className="scale-125 ml-4 accent-blue-600 cursor-pointer"
                         type="checkbox"
+                        disabled={updating === job._id}
+                        aria-label={`Show ${job.title} publicly`}
                         checked={job.visible}
                       />
                     </td>

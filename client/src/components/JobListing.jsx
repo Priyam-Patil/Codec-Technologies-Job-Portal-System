@@ -1,237 +1,42 @@
-import React, { useContext, useEffect, useState } from "react";
-import { AppContext } from "../context/AppContext";
-import { assets } from "../assets/assets";
-import JobCard from "./JobCard";
+import { useContext, useState } from 'react';
+import { AppContext } from '../context/AppContext';
+import JobCard from './JobCard';
 
-const JobListing = () => {
-  const { isSearched, searchFilter, setSearchFilter, jobs } =
-    useContext(AppContext);
-
+export default function JobListing() {
+  const { searchFilter, setSearchFilter, jobs, jobsLoading, jobsError, fetchJobs, userApplications } = useContext(AppContext);
   const [showFilter, setShowFilter] = useState(true);
-  const [currentPage, setCurrentPage] = useState(1);
-
-  const [selectedCategories, setSelectedCategories] = useState([]);
-  const [selectedLocations, setSelectedLocations] = useState([]);
-  const [filteredJobs, setFilteredJobs] = useState(jobs);
-
-  const dynamicCategories = [
-    ...new Set(jobs.map((job) => job.category).filter(Boolean)),
-  ].sort();
-
-  const dynamicLocations = [
-    ...new Set(jobs.map((job) => job.location).filter(Boolean)),
-  ].sort();
-
-  const handleCategoryChange = (category) => {
-    setSelectedCategories((prev) =>
-      prev.includes(category)
-        ? prev.filter((c) => c !== category)
-        : [...prev, category]
-    );
-  };
-
-  const handleLocationChange = (location) => {
-    setSelectedLocations((prev) =>
-      prev.includes(location)
-        ? prev.filter((l) => l !== location)
-        : [...prev, location]
-    );
-  };
-
-  useEffect(() => {
-    const matchesCategory = (job) =>
-      selectedCategories.length === 0 ||
-      selectedCategories.includes(job.category);
-
-    const matchesLocation = (job) =>
-      selectedLocations.length === 0 ||
-      selectedLocations.includes(job.location);
-
-    const matchesTitle = (job) =>
-      searchFilter.title === "" ||
-      job.title.toLowerCase().includes(searchFilter.title.toLowerCase());
-
-    const matchesSearchLocation = (job) =>
-      searchFilter.location === "" ||
-      job.location.toLowerCase().includes(searchFilter.location.toLowerCase());
-
-    const newFilteredJobs = jobs
-      .slice()
-      .reverse()
-      .filter(
-        (job) =>
-          matchesCategory(job) &&
-          matchesLocation(job) &&
-          matchesTitle(job) &&
-          matchesSearchLocation(job)
-      );
-
-    setFilteredJobs(newFilteredJobs);
-    setCurrentPage(1);
-  }, [jobs, selectedCategories, selectedLocations, searchFilter]);
-
-  return (
-    <div className="container 2xl:px-20 mx-auto flex flex-col lg:flex-row max-lg:space-y-8 py-10 fade-up">
-      <div className="w-full lg:w-1/4 bg-white px-5 py-6 rounded-2xl border border-gray-100 shadow-sm h-fit">
-        {isSearched &&
-          (searchFilter.title !== "" || searchFilter.location !== "") && (
-            <>
-              <h3 className="font-semibold text-lg mb-4 text-gray-800">
-                Current Search
-              </h3>
-
-              <div className="mb-5 text-gray-600 flex flex-wrap gap-2">
-                {searchFilter.title && (
-                  <span className="inline-flex items-center gap-2.5 bg-blue-50 text-blue-600 border border-blue-100 px-4 py-2 rounded-full text-sm">
-                    {searchFilter.title}
-                    <img
-                      onClick={() =>
-                        setSearchFilter((prev) => ({ ...prev, title: "" }))
-                      }
-                      className="cursor-pointer w-3 h-3"
-                      src={assets.cross_icon}
-                      alt=""
-                    />
-                  </span>
-                )}
-
-                {searchFilter.location && (
-                  <span className="inline-flex items-center gap-2.5 bg-red-50 text-red-600 border border-red-100 px-4 py-2 rounded-full text-sm">
-                    {searchFilter.location}
-                    <img
-                      onClick={() =>
-                        setSearchFilter((prev) => ({
-                          ...prev,
-                          location: "",
-                        }))
-                      }
-                      className="cursor-pointer w-3 h-3"
-                      src={assets.cross_icon}
-                      alt=""
-                    />
-                  </span>
-                )}
-              </div>
-            </>
-          )}
-
-        <button
-          onClick={() => setShowFilter((prev) => !prev)}
-          className="px-6 py-2 rounded-xl border border-gray-300 lg:hidden hover:bg-blue-50 hover:text-blue-600 transition-all duration-300"
-        >
-          {showFilter ? "Close" : "Filters"}
-        </button>
-
-        <div className={showFilter ? "" : "max-lg:hidden"}>
-          <h4 className="font-semibold text-lg py-4 text-gray-800">
-            Search by Categories
-          </h4>
-
-          <ul className="space-y-4 text-gray-600">
-            {dynamicCategories.map((category, index) => (
-              <li
-                className="flex gap-3 items-center hover:text-blue-600 transition-all duration-300"
-                key={index}
-              >
-                <input
-                  className="scale-125 accent-blue-600"
-                  type="checkbox"
-                  onChange={() => handleCategoryChange(category)}
-                  checked={selectedCategories.includes(category)}
-                />
-                <p>{category}</p>
-              </li>
-            ))}
-          </ul>
-        </div>
-
-        <div className={showFilter ? "" : "max-lg:hidden"}>
-          <h4 className="font-semibold text-lg py-4 pt-14 text-gray-800">
-            Search by Location
-          </h4>
-
-          <ul className="space-y-4 text-gray-600">
-            {dynamicLocations.map((location, index) => (
-              <li
-                className="flex gap-3 items-center hover:text-blue-600 transition-all duration-300"
-                key={index}
-              >
-                <input
-                  className="scale-125 accent-blue-600"
-                  type="checkbox"
-                  onChange={() => handleLocationChange(location)}
-                  checked={selectedLocations.includes(location)}
-                />
-                <p>{location}</p>
-              </li>
-            ))}
-          </ul>
-        </div>
+  const [page, setPage] = useState(1);
+  const [filters, setFilters] = useState({ category: [], location: [], level: '', jobType: '', workMode: '', minSalary: '', maxSalary: '', hideApplied: false });
+  const applied = new Set(userApplications.map(item => item.jobId?._id || item.jobId));
+  const update = (field, value) => { setFilters(previous => ({ ...previous, [field]: value })); setPage(1); };
+  const filtered = jobs.slice().reverse().filter(job =>
+    job.title.toLowerCase().includes(searchFilter.title.trim().toLowerCase()) &&
+    job.location.toLowerCase().includes(searchFilter.location.trim().toLowerCase()) &&
+    ['category', 'location'].every(field => !filters[field].length || filters[field].includes(job[field])) &&
+    ['level', 'jobType', 'workMode'].every(field => !filters[field] || job[field] === filters[field]) &&
+    (filters.minSalary === '' || job.salary >= Number(filters.minSalary)) &&
+    (filters.maxSalary === '' || job.salary <= Number(filters.maxSalary)) &&
+    (!filters.hideApplied || !applied.has(job._id)));
+  const totalPages = Math.max(1, Math.ceil(filtered.length / 6));
+  const currentPage = Math.min(page, totalPages);
+  return <div className="container mx-auto px-4 2xl:px-20 flex flex-col lg:flex-row gap-8 py-10">
+    <aside className="panel w-full lg:w-72 lg:shrink-0 h-fit"><div className="flex justify-between items-center"><h2 className="font-bold text-xl">Find your fit</h2><button className="lg:hidden secondary-button" aria-expanded={showFilter} onClick={() => setShowFilter(value => !value)}>Filters</button></div>
+      <div className={showFilter ? 'space-y-5 mt-6' : 'hidden lg:block space-y-5 mt-6'}>
+        <label className="field-label">Job title<input className="field" value={searchFilter.title} onChange={event => { setSearchFilter(previous => ({ ...previous, title: event.target.value })); setPage(1); }} placeholder="Search roles" /></label>
+        <label className="field-label">Location search<input className="field" value={searchFilter.location} onChange={event => { setSearchFilter(previous => ({ ...previous, location: event.target.value })); setPage(1); }} placeholder="City or region" /></label>
+        {[['category', 'Categories'], ['location', 'Locations']].map(([field, label]) => <fieldset key={field}><legend className="field-label mb-3">{label}</legend><div className="space-y-2 max-h-48 overflow-y-auto">{[...new Set(jobs.map(job => job[field]).filter(Boolean))].sort().map(value => <label key={value} className="flex gap-3 items-center text-sm"><input type="checkbox" checked={filters[field].includes(value)} onChange={() => update(field, filters[field].includes(value) ? filters[field].filter(item => item !== value) : [...filters[field], value])} />{value}</label>)}</div></fieldset>)}
+        {[['level', 'Experience level'], ['jobType', 'Job type'], ['workMode', 'Work mode']].map(([field, label]) => <label key={field} className="field-label">{label}<select aria-label={label} className="field" value={filters[field]} onChange={event => update(field, event.target.value)}><option value="">All</option>{[...new Set(jobs.map(job => job[field]).filter(Boolean))].sort().map(value => <option key={value}>{value}</option>)}</select></label>)}
+        <div className="grid grid-cols-2 gap-3">{[['minSalary', 'Min salary'], ['maxSalary', 'Max salary']].map(([field, label]) => <label key={field} className="field-label">{label}<input type="number" min="0" className="field" value={filters[field]} onChange={event => update(field, event.target.value)} /></label>)}</div>
+        <p className="text-sm text-slate-500">Salary uses the CTC units entered by recruiters. Older records may have no job type or work mode.</p>
+        <label className="flex gap-3 items-center text-sm"><input type="checkbox" checked={filters.hideApplied} onChange={event => update('hideApplied', event.target.checked)} />Hide jobs I applied to</label>
+        <button className="secondary-button w-full" onClick={() => { setFilters({ category: [], location: [], level: '', jobType: '', workMode: '', minSalary: '', maxSalary: '', hideApplied: false }); setSearchFilter({ title: '', location: '' }); setPage(1); }}>Clear filters</button>
       </div>
-
-      <section className="w-full lg:w-3/4 text-gray-800 max-lg:px-4 lg:pl-8">
-        <h3 className="font-bold text-3xl py-2 text-gray-900" id="job-list">
-          Latest jobs
-        </h3>
-        <p className="mb-8 text-gray-500">
-          Get your desired job from top companies
-        </p>
-
-        <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6">
-          {filteredJobs
-            .slice((currentPage - 1) * 6, currentPage * 6)
-            .map((job, index) => (
-              <JobCard key={index} job={job} />
-            ))}
-        </div>
-
-        {filteredJobs.length > 0 && (
-          <div className="flex items-center justify-center space-x-3 mt-12">
-            <a href="#job-list">
-              <img
-                onClick={() =>
-                  setCurrentPage((prev) => Math.max(prev - 1, 1))
-                }
-                className="w-9 h-9 p-2 rounded-full border border-gray-200 cursor-pointer hover:bg-blue-50 transition-all duration-300"
-                src={assets.left_arrow_icon}
-                alt=""
-              />
-            </a>
-
-            {Array.from({ length: Math.ceil(filteredJobs.length / 6) }).map(
-              (_, index) => (
-                <a href="#job-list" key={index}>
-                  <button
-                    onClick={() => setCurrentPage(index + 1)}
-                    className={`w-10 h-10 flex items-center justify-center border rounded-full transition-all duration-300 ${
-                      currentPage === index + 1
-                        ? "bg-blue-600 text-white border-blue-600 shadow-md"
-                        : "border-gray-200 hover:bg-blue-50 hover:text-blue-600"
-                    }`}
-                  >
-                    {index + 1}
-                  </button>
-                </a>
-              )
-            )}
-
-            <a href="#job-list">
-              <img
-                onClick={() =>
-                  setCurrentPage((prev) =>
-                    Math.min(prev + 1, Math.ceil(filteredJobs.length / 6))
-                  )
-                }
-                className="w-9 h-9 p-2 rounded-full border border-gray-200 cursor-pointer hover:bg-blue-50 transition-all duration-300"
-                src={assets.right_arrow_icon}
-                alt=""
-              />
-            </a>
-          </div>
-        )}
-      </section>
-    </div>
-  );
-};
-
-export default JobListing;
+    </aside>
+    <section className="min-w-0 flex-1" id="job-list"><p className="eyebrow text-blue-700">DISCOVER OPPORTUNITIES</p><h2 className="text-3xl font-bold mt-2">Make your next move.</h2><p className="text-slate-600 mt-3 mb-7">{jobsLoading ? 'Loading opportunities…' : `${filtered.length} jobs matching your search`}</p>
+      {jobsError ? <div className="panel" role="alert"><p>{jobsError}</p><button onClick={fetchJobs} className="primary-button mt-4">Retry</button></div>
+        : jobsLoading ? <div className="job-grid" role="status">{[1,2,3].map(item => <div key={item} className="panel h-64 animate-pulse bg-slate-100" />)}<span className="sr-only">Loading jobs</span></div>
+          : filtered.length ? <><div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5">{filtered.slice((currentPage - 1) * 6, currentPage * 6).map(job => <JobCard key={job._id} job={job} />)}</div><nav aria-label="Job pages" className="flex justify-center items-center gap-4 mt-8"><button className="secondary-button" disabled={currentPage === 1} onClick={() => setPage(currentPage - 1)}>Previous</button><span>{currentPage} / {totalPages}</span><button className="secondary-button" disabled={currentPage === totalPages} onClick={() => setPage(currentPage + 1)}>Next</button></nav></>
+            : <div className="panel py-16 text-center"><h3 className="font-semibold text-xl">No matching opportunities yet</h3><p className="text-slate-600 mt-3">Try a different title or broaden your filters.</p></div>}
+    </section>
+  </div>;
+}

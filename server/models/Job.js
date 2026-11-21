@@ -9,6 +9,8 @@ const jobSchema = new mongoose.Schema({
   salary: { type: Number, required: true },
   date: { type: Number, required: true },
   visible: { type: Boolean, default: true },
+  jobType: { type: String, enum: ['Full-time', 'Part-time', 'Contract', 'Internship'] },
+  workMode: { type: String, enum: ['Remote', 'Hybrid', 'Onsite'] },
   companyId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Company",

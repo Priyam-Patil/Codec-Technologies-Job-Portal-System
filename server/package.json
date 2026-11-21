@@ -4,9 +4,25 @@
   "description": "",
   "main": "server.js",
   "type": "module",
+  "engines": {
+    "node": "^22.13.0 || >=24"
+  },
   "scripts": {
     "server": "nodemon server.js",
-    "start": "node server.js"
+    "start": "node server.js",
+    "dev:local": "node scripts/dev-local.js",
+    "dev:local:all": "node scripts/dev-local.js --with-client",
+    "test": "node --test tests/*.test.js",
+    "test:integration": "node --test tests/integration/*.test.js",
+    "check": "node scripts/check-syntax.js",
+    "db:check-indexes": "node scripts/application-index.js",
+    "demo": "node scripts/demo.js",
+    "demo:cleanup": "node scripts/demo-cleanup.js",
+    "demo:reset": "node scripts/reset-demo.js",
+    "test:e2e": "playwright test",
+    "test:e2e:audit": "playwright test --config playwright.audit.config.js",
+    "test:e2e:live": "playwright test --config playwright.live.config.js",
+    "test:e2e:headed": "playwright test --headed"
   },
   "keywords": [],
   "author": "",
@@ -23,7 +39,14 @@
     "jsonwebtoken": "^9.0.3",
     "mongoose": "^9.7.3",
     "multer": "^2.2.0",
-    "nodemon": "^3.1.14",
+    "pdfjs-dist": "^6.5.438",
+    "sanitize-html": "^2.18.2",
     "svix": "^1.96.1"
+  },
+  "devDependencies": {
+    "@clerk/testing": "^2.3.6",
+    "@playwright/test": "^1.65.1",
+    "mongodb-memory-server": "^11.3.0",
+    "nodemon": "^3.1.14"
   }
 }
