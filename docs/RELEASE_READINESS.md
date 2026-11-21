@@ -6,9 +6,9 @@ This document records the checks made before preparing the release commit. Push 
 
 - Authorized target: `https://github.com/Priyam-Patil/Codec-Technologies-Job-Portal-System.git`.
 - Safe publication branch: `codex/insiderjobs-release-20261121`.
-- The signed-in GitHub browser showed a private, empty repository. Git returned no heads or remote HEAD before publication. There are no target commits to overwrite.
+- Before publication, the signed-in GitHub browser showed a private, empty repository. A later read showed it publicly visible; this work did not change repository visibility or star settings. Git returned no heads or remote HEAD before publication. There are no target commits to overwrite.
 - Existing local history has six commits and is retained. Existing `origin` continues to point to `Priyam-Patil/job_portal_working`; it was not changed. Push uses the exact target URL and only the release branch, with no force flag, no merge, and no production promotion.
-- The GitHub connector returned404 for this private repository, while the signed-in browser and authenticated Git transport could access it. No token was extracted from the browser or credential store.
+- The GitHub connector returned404 for this private repository, while the signed-in browser and authenticated Git transport could access it. After publication the connector could also read it. No token was extracted from the browser or credential store.
 
 ## Confidentiality and source review
 
@@ -28,6 +28,8 @@ Local `.qa` manifests, database files, generated credentials, dependency/build o
 - Removed redundant trailing blank lines from four QA Markdown documents; preserved their content.
 - Linked the current138-case mapping and release report from README and clarified that the older54-case network suite includes fault injection.
 
+A full audit after the first safe-branch push confirmed the two previously documented moderate development-only nodemon/minimatch findings. A follow-up commit scopes an override to nodemon: minimatch11.0.1, the patched version in [GHSA-g3hv-75wg-m249](https://github.com/advisories/GHSA-g3hv-75wg-m249). This is separate from production dependencies; its Node requirement supports this project. Final full backend npm audit reports zero findings. The README was updated to remove superseded audit figures.
+
 No real environment file or hosted environment variable was changed. No production data or database index was modified.
 
 ## Executed checks
@@ -41,6 +43,8 @@ No real environment file or hosted environment variable was changed. No producti
 | Client `npm run lint` | PASS |
 | Client `npm run build` after Quill pin | PASS,914 modules |
 | Client/server `npm audit --omit=dev` | PASS,0 known reported vulnerabilities in final production dependency trees |
+| Full server `npm audit` after scoped override | PASS,0 findings including development dependencies |
+| Development watcher compatibility | PASS,normal nodemon CLI starts harmless fixture and automatically restarts it after actual file edit; portal processes untouched. Programmatic stdin harness attempts were inconclusive, not counted. |
 | `npx playwright test --config playwright.checklist138.config.js` after final dependency pin | PASS,12/12; zero failures/skips/flaky,1.6 minutes |
 | Git whitespace, staged-file and secret checks | PASS;238 indexed files,182 staged changes,zero secret/forbidden/oversized-file findings; existing environment files unchanged |
 
