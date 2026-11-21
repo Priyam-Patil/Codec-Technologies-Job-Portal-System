@@ -1,175 +1,470 @@
-# InsiderJobs — Full-Stack Job Portal
+<div align="center">
 
-**Latest checklist:** [138 original criteria with evidence](docs/CHECKLIST_138_COVERAGE.md), [resumed browser report](docs/RESUMED_TESTING_REPORT.md), and [publication/preview release checks](docs/RELEASE_READINESS.md). The five external integration blockers are separate from those 138 local checklist criteria. Hosted readiness is not implied.
+# 💼 InsiderJobs — Full-Stack Job Portal
 
-**Strict live-only E2E:** see [LIVE_BROWSER_E2E_RESULTS.md](docs/LIVE_BROWSER_E2E_RESULTS.md) for the latest mock-free workflow run, actual Clerk UI registration, privacy/status lifecycle checks, built-in Codex browser checks and explicit external blockers. Run `npm run test:e2e:live` from `server`. The separate network-regression suite intentionally injects failures and is not counted as live integration evidence.
+### Modern Recruitment Platform | CodeC Technologies
 
-An existing MERN job portal enhanced with explainable resume recommendations, candidate profiles, saved jobs, recruiter analytics and interviews. Candidates use Clerk; recruiters retain bcrypt and JWT authentication. MongoDB stores application data and Cloudinary stores uploaded assets.
+**React • Node.js • Express • MongoDB • Clerk • Cloudinary • Vercel**
 
-**Current verification:** see the [independent end-to-end audit](docs/FINAL_E2E_AUDIT.md), [feature checklist](docs/WORKING_FEATURES_CHECKLIST.md) and [bug-fix report](docs/BUG_FIX_REPORT.md). Real Clerk development sign-in/logout, authenticated Cloudinary PDF upload/download, immediate extracted resume skills, candidate/recruiter workflows and persistent local MongoDB were executed. Configured remote MongoDB connectivity, email, live webhook ingress and hosted deployment remain blocked/unverified. The [demo guide](docs/DEMO_GUIDE.md) provides exact commands for the persistent local app on **5175/5000** and isolated browser audit.
+[![Live Demo](https://img.shields.io/badge/Live_Demo-Visit_Website-000000?style=for-the-badge&logo=vercel&logoColor=white)](https://insiderjobs-codec-technologies.vercel.app/) [![GitHub](https://img.shields.io/badge/GitHub-Source_Code-181717?style=for-the-badge&logo=github&logoColor=white)](https://github.com/Priyam-Patil/Codec-Technologies-Job-Portal-System) [![React](https://img.shields.io/badge/React-19-149ECA?style=for-the-badge&logo=react&logoColor=white)](https://react.dev/) [![MongoDB](https://img.shields.io/badge/MongoDB-Database-47A248?style=for-the-badge&logo=mongodb&logoColor=white)](https://www.mongodb.com/)
 
-See [initial audit](docs/INITIAL_AUDIT.md), [verification and final report](docs/FINAL_REPORT.md), and [deployment checklist](docs/DEPLOYMENT.md).
+Discover opportunities. Understand your skills. Manage hiring in one place.
 
-Earlier network-regression verification: **54/54 Chrome desktop/tablet/mobile cases (includes deliberately injected faults; not 54 live-service passes)**, **14 backend unit/network + 18 isolated API tests**, **3 frontend tests**, lint/build and syntax pass. All **28 explicit endpoint contracts** were exercised locally. Restart-persistence and repeated frontend/API/auth checks pass. Start both local services with `npm run dev:local:all` from `server`. See [network root causes](docs/NETWORK_ERROR_ROOT_CAUSE.md), [complete endpoint audit](docs/COMPLETE_API_ENDPOINT_AUDIT.md) and [network regressions](docs/NETWORK_REGRESSION_TESTS.md). Configured remote MongoDB and external deployment gates remain blocked/unverified.
+[Live Application](#live-application) · [Features](#features) · [Architecture](#architecture) · [Setup](#installation-and-setup) · [API](#api-overview) · [Testing](#testing-and-quality-assurance) · [Deployment](#deployment)
 
-## Features
+</div>
 
-| Candidate | Recruiter |
+---
+
+<a name="live-application"></a>
+
+## 🌐 Live Application
+
+**[Open the live website →](https://insiderjobs-codec-technologies.vercel.app/)**
+
+[Browse the GitHub repository](https://github.com/Priyam-Patil/Codec-Technologies-Job-Portal-System)
+
+InsiderJobs is a full-stack recruitment platform developed by **Priyam Patil** as a **CodeC Technologies** project. Job seekers can discover opportunities, manage professional profiles, upload resumes, receive explainable skill-based recommendations, and track applications. Recruiters can publish jobs, review applicants, schedule interviews, and monitor recruitment analytics.
+
+> **Deployment note:** The frontend is deployed on Vercel; its supplied URL returned HTTP 200 during this README review. Hosted backend, MongoDB, authentication, and third-party workflows require independent verification. A reachable frontend does not establish that the complete application is production-ready.
+
+<a name="features"></a>
+
+## ✨ Features
+
+### 👨‍💻 For candidates
+
+- Sign up, sign in, and sign out securely through Clerk.
+- Browse jobs, search by title and location, and open detailed descriptions.
+- Filter by category, salary, experience level, job type, and remote/hybrid/onsite work mode.
+- Save jobs, remove bookmarks, and hide previously applied jobs.
+- Upload a PDF resume and immediately review recognized skills and experience hints.
+- Explore ranked skill-based recommendations; compare matching and missing skills for a selected job.
+- Manage skills, education, experience, GitHub, LinkedIn, and portfolio links.
+- Apply to visible jobs, track application statuses, and view interview schedules and updates.
+
+### 🏢 For recruiters
+
+- Register a company and sign in with bcrypt-protected passwords and JWT authentication.
+- Create, edit, and manage owned job postings; show or hide listings.
+- Review applicants for company jobs and request authorized resume access links.
+- Accept or reject applications, with updates available to candidates.
+- Schedule interviews, change meeting details, and update interview status.
+- View total/active/inactive jobs, application statuses, and applications-per-job charts using database records.
+
+### 🔐 Security and privacy
+
+- Clerk candidate authentication and verified recruiter JWT authorization.
+- bcrypt password hashing, server-side validation, and allowlist-based HTML sanitization.
+- Resource ownership checks for profiles, jobs, applications, interviews, and resume access.
+- Bounded PDF uploads with file-type/signature checks and isolated parsing limits.
+- Expiring authorized download links for **newly uploaded private resumes**.
+- Clerk webhook signature verification against the original request body.
+- Duplicate application prevention backed by the required unique MongoDB index.
+- Controlled API errors, private-response cache headers, and bounded per-process request throttling.
+
+Legacy public resume assets require a separately approved migration. Automatic index creation is disabled on normal database connections: review duplicates and obtain approval before installing an index on an existing persistent database. Local throttling is not a replacement for a shared production rate limiter.
+
+## 🛠️ Technology Stack
+
+| Category | Technologies |
 |---|---|
-| Clerk account and logout | Company signup and bcrypt/JWT login |
-| Title, location, category, salary and level filters | Post, edit and show/hide owned jobs |
-| Job type and work-mode filters | View owned applications and resolve resume links |
-| Apply once; review status and interviews | Accept/reject applications; schedule/update interviews |
-| PDF resume upload and skill extraction | Real database totals and applications-per-job chart |
-| Explainable ranked matches and job comparison | Optional application/status/interview emails |
-| Profile education, experience and professional links | Resource ownership enforced in API queries |
-| Persistent saved jobs and applied-job exclusion | Accessible status and interview controls |
+| Frontend | React 19, Vite 8, JavaScript, Tailwind CSS |
+| Routing | React Router |
+| Backend | Node.js, Express.js |
+| Database | MongoDB, Mongoose |
+| Candidate authentication | Clerk |
+| Recruiter authentication | JSON Web Tokens, bcrypt |
+| Cloud storage | Cloudinary |
+| Resume processing | PDF.js in a bounded Node.js worker |
+| Job recommendations | Explainable skill-overlap scoring |
+| API communication | Axios, REST APIs |
+| Testing | Playwright, Node.js Test Runner |
+| Frontend hosting | Vercel |
+| Version control | Git, GitHub |
 
-New screens: `/career`, `/dashboard/analytics`, `/dashboard/edit-job/:id`. Existing URLs and response envelopes remain compatible. HTTP errors now use appropriate status codes.
+<a name="architecture"></a>
 
-## Technology
+## 🏗️ Architecture
 
-- **Frontend:** React 19, Vite 8, React Router 7, Tailwind 3, Axios, Clerk React, Quill, Moment, React Toastify.
-- **Backend:** Node.js ES modules, Express 5, Mongoose 9/MongoDB, Clerk Express, bcrypt, JSON Web Tokens, Multer, Cloudinary, Svix.
-- **Analysis:** PDF.js in a bounded worker, deterministic skill vocabulary, explainable skill-overlap scoring. No paid AI API, embeddings or trained prediction model.
-- **Security/QA:** sanitize-html, bounded in-memory throttles, Node's test runner, mongodb-memory-server. Sentry remains available as opt-in telemetry.
-
-## Architecture
+The React/Vite frontend communicates with a separate Express REST API. MongoDB stores application data; Clerk manages candidate identity, while recruiter credentials use bcrypt and JWTs.
 
 ```mermaid
-flowchart LR
-  UI[React client] --> API[Express API]
-  Clerk[Clerk candidate identity] --> API
-  Clerk -->|Signed raw webhook| Users[MongoDB user profiles]
-  API --> DB[(MongoDB)]
-  API -->|Private PDF upload| Cloudinary[Cloudinary]
-  API --> Worker[Bounded PDF text worker]
-  Worker --> Skills[Skills and summary metadata]
-  Skills --> Match[Explainable job matching]
-  API -. Optional notifications .-> Email[Resend]
+flowchart TD
+    Candidate[Candidate] --> UI[React and Vite frontend]
+    Recruiter[Recruiter] --> UI
+    UI --> API[Express REST API]
+    UI --> Clerk[Clerk candidate authentication]
+    Clerk -->|Verified session and signed webhooks| API
+    API --> DB[(MongoDB)]
+    API --> Storage[Cloudinary private resume storage]
+    API --> Parser[PDF.js worker]
+    Parser --> Skills[Recognized skills and summary]
+    Skills --> Matching[Explainable skill-overlap scoring]
+    API -. Optional notifications .-> Email[Resend]
 ```
 
-`server/app.js` creates the API without connecting to services. `server/server.js` retains local startup and exports a lazy-connection Vercel handler. `client/src/context/AppContext.jsx` coordinates existing authentication and application state; candidate state resets on identity changes.
+Candidate API identity comes from the verified Clerk session. Recruiter requests use the existing JWT header flow, and database queries enforce ownership. The production API entry point exports a lazy-connection handler for serverless use while retaining normal Node.js startup.
 
-## Resume analysis and matching
+## 🧠 Resume Analysis and Skill-Based Matching
 
-1. An authenticated candidate uploads a PDF, limited to 5 MB. MIME type, extension and PDF signature are checked before upload.
-2. PDF.js extracts at most 100,000 text characters from at most 20 pages inside a worker with a 12-second deadline and a 128 MB JavaScript heap limit. Damaged or encrypted PDFs are rejected before upload. Valid scanned, textless or processing-limited PDFs have an honest unreadable/manual-skills fallback. Upload success immediately displays PDF-only extracted skills and summary metadata; profile skills are separate.
-3. A curated vocabulary recognizes skills and aliases with token boundaries. Explicit “N years” mentions provide an **unverified text hint**, not calculated employment tenure.
-4. The original PDF is uploaded to Cloudinary as an authenticated raw asset. MongoDB stores only the asset metadata, recognized skills, experience hint and suggestions. Extracted full text is discarded after the request; no resume goes to an external AI service.
-5. Recognized resume and profile skills are compared with the title and description of visible, unapplied jobs.
+InsiderJobs uses an **explainable, rule-based recommendation system**, with no trained prediction model, generative AI, or external LLM integration.
 
-**Score = 100 × matched recognized job skills / total recognized job skills**, rounded to an integer. Repetition does not increase a skill's weight. No recognized requirements yields a null score. Ties use posting recency. With no candidate skills, the API explains the fallback and orders jobs by recency. The top 30 are returned.
+### How it works
 
-Scores measure vocabulary overlap. They do not establish suitability, hiring probability or match accuracy. Negated requirements, proficiency, chronology, synonyms outside the vocabulary and job context need human review. Missing skills are suggestions for learning, not instructions to misrepresent experience. Existing resumes need re-uploading for extraction; manual profile skills work immediately.
+1. The candidate uploads a PDF resume, up to **5 MB**.
+2. The backend validates the document before processing or storage.
+3. PDF.js extracts embedded readable text inside a worker with time and memory limits.
+4. A curated vocabulary identifies recognized skills and explicit experience mentions.
+5. Recognized resume skills and manually supplied profile skills are compared with skills found in visible job titles and descriptions.
+6. Unapplied jobs are ranked by skill coverage, with posting recency used to break ties.
 
-## Local setup
+### Matching formula
 
-Use Node **22.13+ in the 22.x line, or 24+**; Node 24 LTS is recommended for deployment. Current checks ran on Node 26.13.1 on Windows. MongoDB integration tests download a temporary local MongoDB binary on first use.
+**Match Score (%) = (Matched Recognized Job Skills ÷ Total Recognized Job Skills) × 100**
 
-Install dependencies:
+For a job requiring **React, Node.js, MongoDB, and JavaScript**, a candidate matching three of those four recognized skills receives **3 ÷ 4 × 100 = 75%** skill coverage. Matching and missing skills are shown alongside the score.
 
-```powershell
+The score measures recognized skill overlap; it is **not a hiring probability, verified qualification, or guarantee of suitability**. A job with no recognized requirements receives no numeric score. With no recognized candidate skills, the application explains the fallback and shows jobs by recency.
+
+Only extracted skills and summary metadata are retained; full extracted text is discarded. No external AI service receives the resume. Experience mentions are unverified text hints. Scanned PDFs have no OCR support; candidates can add profile skills when embedded text cannot be read.
+
+## 📸 Screenshots
+
+<details>
+<summary><strong>View resume analysis and recruiter analytics</strong></summary>
+
+These screenshots come from executed **local QA sessions using isolated test data**, not a claim of hosted integration verification.
+
+**Resume analysis and recognized skill coverage**
+
+![Resume analysis showing recognized technical skills and job comparison](docs/screenshots/final-desktop-resume-analysis.png)
+
+**Recruiter analytics and applications per job**
+
+![Recruiter dashboard showing job totals, application statuses, and applications per job](docs/screenshots/final-desktop-analytics.png)
+
+</details>
+
+## 📂 Project Structure
+
+```text
+Codec-Technologies-Job-Portal-System/
+├── client/
+│   ├── src/
+│   │   ├── assets/
+│   │   ├── components/
+│   │   ├── context/
+│   │   ├── lib/
+│   │   └── pages/
+│   ├── tests/
+│   ├── package.json
+│   └── vercel.json
+├── server/
+│   ├── config/
+│   ├── controllers/
+│   ├── middleware/
+│   ├── models/
+│   ├── routes/
+│   ├── utils/
+│   ├── scripts/
+│   ├── tests/
+│   ├── e2e/
+│   ├── app.js
+│   ├── server.js
+│   ├── package.json
+│   └── vercel.json
+├── docs/
+│   ├── screenshots/
+│   ├── CHECKLIST_138_COVERAGE.md
+│   ├── DEMO_GUIDE.md
+│   └── DEPLOYMENT.md
+└── README.md
+```
+
+The tree shows selected existing source and documentation paths; dependencies, local databases, credentials, and generated output are excluded.
+
+<a name="installation-and-setup"></a>
+
+## ⚙️ Installation and Setup
+
+### Prerequisites
+
+- Node.js **22.13+ in the 22.x line, or Node.js 24+**; use a compatible supported runtime for hosting.
+- npm and access to an authorized development MongoDB database.
+- Clerk and Cloudinary accounts configured for development/testing.
+
+### 1. Clone the repository
+
+```bash
+git clone https://github.com/Priyam-Patil/Codec-Technologies-Job-Portal-System.git
+cd Codec-Technologies-Job-Portal-System
+```
+
+### 2. Install backend dependencies
+
+```bash
 cd server
 npm ci
+```
+
+### 3. Install frontend dependencies
+
+From the backend directory:
+
+```bash
 cd ../client
 npm ci
 ```
 
-Existing environment files are confidential and must be kept unchanged. No environment template was created. Configure missing values manually in your own local or hosting settings; never paste secrets into source or commit them.
+### 4. Configure frontend variables manually
 
-| Existing variable name | Location / purpose |
+For a **new clone**, configure the following in `client/.env`, or use the project's existing `client/.env.local`. Vite gives local overrides precedence; avoid conflicting duplicate settings.
+
+```env
+VITE_CLERK_PUBLISHABLE_KEY=your_clerk_publishable_key
+VITE_BACKEND_URL=http://localhost:5000
+```
+
+### 5. Configure backend variables manually
+
+For a new clone, configure `server/.env` with your own authorized development credentials:
+
+```env
+PORT=5000
+MONGODB_URI=your_mongodb_connection_string
+JWT_SECRET=your_secure_jwt_secret
+CLOUDINARY_NAME=your_cloudinary_cloud_name
+CLOUDINARY_API_KEY=your_cloudinary_api_key
+CLOUDINARY_SECRET_KEY=your_cloudinary_secret_key
+CLERK_PUBLISHABLE_KEY=your_clerk_publishable_key
+CLERK_SECRET_KEY=your_clerk_secret_key
+CLERK_WEBHOOK_SECRET=your_clerk_webhook_secret
+```
+
+Optional backend configuration:
+
+```env
+ALLOWED_ORIGINS=http://localhost:5173
+RESEND_API_KEY=your_optional_resend_api_key
+EMAIL_FROM=your_verified_sender_address
+SENTRY_DSN=your_optional_sentry_dsn
+```
+
+> Examples contain placeholders only. Preserve existing environment files and values in an established workspace. Never commit real environment files, secrets, database connection strings, private uploads, or generated account manifests. Set allowed origins to the exact frontend origin printed by Vite. Email requires both credentials and a verified sender; leave it unconfigured when not needed.
+
+### 6. Start the backend
+
+In one terminal, from the repository root:
+
+```bash
+cd server
+npm run server
+```
+
+Default API: [http://localhost:5000](http://localhost:5000)
+
+Health endpoint: [http://localhost:5000/health](http://localhost:5000/health)
+
+The health endpoint returns HTTP 200 only when MongoDB is connected; database unavailability produces a controlled failure response.
+
+### 7. Start the frontend
+
+In a separate terminal, from the repository root:
+
+```bash
+cd client
+npm run dev
+```
+
+Open the local URL printed by Vite. The frontend and backend must use the same Clerk instance, and the configured API URL and CORS origins must agree.
+
+<details>
+<summary><strong>Optional: persistent local demonstration on ports 5175 / 5000</strong></summary>
+
+With existing Clerk **development** and Cloudinary configuration, the project can run with a persistent local MongoDB process instead of connecting to the configured remote database:
+
+```bash
+cd server
+npm run dev:local:all
+```
+
+This starts the frontend at [http://127.0.0.1:5175](http://127.0.0.1:5175) and backend at [http://127.0.0.1:5000](http://127.0.0.1:5000). It preserves local database files, seeds no accounts or jobs, disables outbound email for that process, and does not rewrite environment files. Do not start a second backend on the same port. See the [demo guide](docs/DEMO_GUIDE.md) for isolated accounts and test data.
+
+</details>
+
+<a name="api-overview"></a>
+
+## 🔌 API Overview
+
+### Public APIs
+
+| Method | Endpoint | Purpose |
+|---|---|---|
+| GET | `/health` | Backend and MongoDB readiness |
+| GET | `/api/jobs` | Browse visible jobs |
+| GET | `/api/jobs/:id` | View a visible job's details |
+
+### Candidate APIs
+
+Candidate requests require a verified Clerk Bearer token and access the signed-in candidate's data.
+
+| Method | Endpoint | Purpose |
+|---|---|---|
+| GET | `/api/users/user` | Read or initialize the candidate profile |
+| PUT | `/api/users/profile` | Update permitted profile fields |
+| POST | `/api/users/apply` | Apply for a visible job |
+| GET | `/api/users/applications` | View own applications and interviews |
+| POST | `/api/users/update-resume` | Upload a PDF in multipart field `resume` |
+| GET | `/api/users/resume` | Request an authorized resume download link |
+| GET | `/api/users/recommendations` | Ranked recommendations; optional `jobId` comparison |
+| GET | `/api/users/saved-jobs` | List saved visible jobs |
+| PUT | `/api/users/saved-jobs/:id` | Save a job without duplicate bookmarks |
+| DELETE | `/api/users/saved-jobs/:id` | Remove a saved job |
+
+### Recruiter APIs
+
+Registration and login are public and throttled. Other company routes require a recruiter JWT in the existing `token` header or supported Bearer flow and enforce ownership.
+
+| Method | Endpoint | Purpose |
+|---|---|---|
+| POST | `/api/company/register` | Register a recruiter/company; multipart logo field `image` |
+| POST | `/api/company/login` | Recruiter login |
+| GET | `/api/company/company` | Read the authenticated company |
+| POST | `/api/company/post-job` | Create a job |
+| GET | `/api/company/list-jobs` | List owned jobs |
+| PUT | `/api/company/jobs/:id` | Edit an owned job |
+| PUT | `/api/company/change-visibility` | Toggle owned job visibility |
+| GET | `/api/company/applicants` | View applicants for owned jobs |
+| GET | `/api/company/applications/:id/resume` | Request authorized applicant resume access |
+| PUT | `/api/company/change-status` | Update an owned application status |
+| PUT | `/api/company/interviews/:id` | Schedule or update an interview |
+| GET | `/api/company/analytics` | Recruiter-specific counts and chart data |
+
+**Identity webhook:** `POST /webhooks` verifies Clerk/Svix signatures over the raw body. See the [complete endpoint audit](docs/COMPLETE_API_ENDPOINT_AUDIT.md) for wider verification evidence.
+
+<a name="testing-and-quality-assurance"></a>
+
+## 🧪 Testing and Quality Assurance
+
+The project includes functional, isolated API integration, regression, and real-browser tests. Test scopes and external-service limitations are documented separately.
+
+### Functional checklist coverage
+
+| Metric | Reported Result |
 |---|---|
-| `MONGODB_URI` | Server MongoDB connection; use a dedicated development database locally |
-| `JWT_SECRET` | Server recruiter JWT signing secret |
-| `CLERK_SECRET_KEY`, `CLERK_PUBLISHABLE_KEY` | Server Clerk middleware, as required by the SDK |
-| `CLERK_WEBHOOK_SECRET` | Server Svix webhook verification; existing name preserved |
-| `CLOUDINARY_NAME`, `CLOUDINARY_API_KEY`, `CLOUDINARY_SECRET_KEY` | Server Cloudinary configuration; existing names preserved |
-| `PORT` | Optional local API port; defaults to 5000 |
-| `VITE_BACKEND_URL` | Client API base URL; publicly bundled value |
-| `VITE_CLERK_PUBLISHABLE_KEY` | Client Clerk publishable key; publicly bundled by design |
+| Total test criteria | **138** |
+| Functional sections | **17** |
+| Criteria with passing evidence | **138** |
+| Failed criteria | **0** |
+| Blocked criteria within checklist | **0** |
 
-Additional optional configuration, **not created automatically**:
+The 138-case checklist combines retained test evidence and additional real-browser scenarios. It does **not** mean 138 independent test functions were rerun against the hosted production deployment. Viewport repetitions do not increase the checklist denominator; mocked or deliberately injected failures are not counted as live-service successes.
 
-| Variable | Manual configuration |
-|---|---|
-| `ALLOWED_ORIGINS` | Server comma-separated exact frontend origins. Set for deployment; unset preserves broad origin compatibility. |
-| `RESEND_API_KEY` | Server API credential, only if you elect to enable Resend notifications. |
-| `EMAIL_FROM` | Server sender on a manually verified sending domain. Both email settings are required. |
-| `SENTRY_DSN` | Server opt-in telemetry. Replaces an embedded telemetry destination; no environment value was changed. |
+### Covered areas
 
-Run `npm run server` in `server`, and `npm run dev` in `client`. The normal backend reads its existing configuration; **do not start it against production for testing**. Clerk webhooks must deliver `user.created`, `user.updated` and `user.deleted` to `/webhooks` using the same Clerk instance as the client. Name/email remain Clerk-managed; education, skills, experience and professional URLs are MongoDB fields.
+- Homepage/navigation; Clerk candidate authentication and recruiter login.
+- Job searching/filtering, PDF upload/extraction, analysis, and skill-based matching.
+- Candidate profiles, saved jobs, applications, and status tracking.
+- Recruiter job/applicant management, interviews, and analytics.
+- Ownership/security, responsive layouts, recovery, and cross-account demonstrations.
 
-For a disposable public/recruiter QA environment, run `node scripts/preview-isolated.js` from `server`. It creates only local temporary records and uses an explicit test API in Vite memory. The test recruiter is `qa@example.test` / `qa-preview-password`; these are disposable test credentials only. Candidate login is intentionally unavailable in that harness. Stop it with Ctrl+C. The harness is never imported by production startup.
+### Testing commands
 
-For the complete **real Clerk/Cloudinary browser demo**, use `npm run demo` from `server` instead. It starts all three local services, creates reserved development test accounts, and keeps credentials in ignored `.qa/demo-session.json`. See [DEMO_GUIDE.md](docs/DEMO_GUIDE.md) for login, reset, cleanup and the complete walkthrough. Run `npm run test:e2e` for desktop/mobile Playwright coverage. The original anonymous preview helper above is retained for compatibility; it is not evidence of live candidate authentication.
+Run each block from the repository root.
 
-## Database design and safe index setup
+**Backend**
 
-- **User:** Clerk string ID, synchronized identity, resume URL and asset metadata, extracted summary, profile fields, saved Job ObjectIds. Bookmarks use `$addToSet` / `$pull`.
-- **Company:** name/email/image and hashed recruiter password; passwords are excluded from responses.
-- **Job:** existing title, rich description, location, category, level, salary, date, visibility and company ID; optional `jobType` and `workMode`. Old records keep unspecified fields rather than fabricated values.
-- **JobApplication:** candidate/company/job IDs, bounded status, date, optional interview date/details/status.
-
-The schema declares a unique `{ userId: 1, jobId: 1 }` index. **Automatic index creation is disabled on normal database connections.** Existing duplicate records are never deleted or migrated automatically. The race-safe application guarantee requires the real index to be installed.
-
-`npm run db:check-indexes` is a read-only report against the manually selected database. It prints counts only. Review duplicates and backups yourself. After approval for that database, `npm run db:check-indexes -- --apply` creates the index only when there are no duplicate groups. This command was **not run against the configured database**. It never resolves duplicates automatically.
-
-## API overview
-
-| Method and path | Access / purpose |
-|---|---|
-| `GET /api/jobs`, `/api/jobs/:id` | Public visible jobs with public company fields only |
-| `POST /api/company/register`, `/login` | Throttled recruiter signup/login |
-| `GET /api/company/company`, `/list-jobs`, `/applicants`, `/analytics` | Recruiter-owned records and aggregates |
-| `POST /api/company/post-job` | Recruiter posting |
-| `PUT /api/company/jobs/:id` | Recruiter-owned job edit |
-| `PUT /api/company/change-visibility`, `/change-status` | Ownership-checked updates |
-| `PUT /api/company/interviews/:id` | Schedule/update an owned application interview |
-| `GET /api/company/applications/:id/resume` | Ownership check then expiring resume link |
-| `GET /api/users/user`, `/applications`, `/resume` | Authenticated candidate's own data |
-| `POST /api/users/apply`, `/update-resume` | Candidate application / bounded PDF upload |
-| `PUT /api/users/profile` | Whitelisted profile fields; identity is immutable here |
-| `GET /api/users/recommendations?jobId=...` | Ranked jobs and optional selected-job comparison |
-| `GET /api/users/saved-jobs` | Visible saved jobs |
-| `PUT`, `DELETE /api/users/saved-jobs/:id` | Idempotent save/remove |
-| `POST /webhooks` | Raw-body Svix signature verification and idempotent identity upsert |
-| `GET /health` | Application liveness endpoint; deployed wrapper requires DB readiness |
-
-Candidate APIs accept Clerk Bearer tokens. Recruiter APIs accept the existing `token` header or Bearer JWT. Normal JSON responses use `success` and a message or payload. Private routes send `Cache-Control: no-store`. The development-only `/debug-sentry` endpoint returns 404 outside explicit development mode.
-
-## Tests
-
-```powershell
+```bash
 cd server
 npm test
 npm run test:integration
 npm run check
-cd ../client
+```
+
+**Frontend**
+
+```bash
+cd client
+npm test
 npm run lint
 npm run build
 ```
 
-Unit tests cover vocabulary boundaries, scoring, sanitization, validation, PDF extraction/fallback, throttling and notification outcomes. Integration tests create an isolated MongoDB process, use actual Mongoose queries and indexes, and verify reads after writes, concurrent applications, ownership, profiles, bookmarks, status, interviews, login and signed webhooks. Clerk identity is substituted only at the integration test seam; the production server uses Clerk middleware. Cloudinary upload and email transports are stubbed to avoid external modifications. No test imports dotenv or connects to your configured MongoDB URI.
+**Live browser tests**
 
-Real Chrome tests run against normal local server processes. See [FINAL_E2E_AUDIT.md](docs/FINAL_E2E_AUDIT.md) for the current desktop/tablet/mobile results, screenshots, restart persistence, live-service evidence and remaining blockers. Earlier reports are retained as historical evidence.
+```bash
+cd server
+npm run test:e2e:live
+```
 
-## Security, limitations and next work
+Live tests need configured development services and isolated accounts/data; consult the [demo guide](docs/DEMO_GUIDE.md) before running them. API integration tests use a real isolated MongoDB process with explicitly identified authentication/transport test seams; they do not prove live Clerk, Cloudinary, or email delivery.
 
-- JWTs allow HS256 only and enforce expiry. Recruiters cannot query or mutate another company's resources. Candidate identity always comes from Clerk, never a submitted user ID.
-- Resume links for new authenticated assets expire after two minutes. Candidate and recruiter ownership are checked before signing. **Legacy public Cloudinary URLs remain public** until you approve a migration. Re-upload for private storage; old assets are not automatically deleted.
-- Job HTML is allowlist-sanitized on write and read, including old stored content. Job cards use escaped text. Profile URLs require HTTPS; GitHub/LinkedIn hosts are checked.
-- Uploads use bounded memory, no temporary disk files. Signature checks do not replace malware scanning. PDF extraction has worker/heap/deadline limits; no OCR or DOCX parsing.
-- Email is optional and synchronous with a five-second timeout; failures do not roll back applications/statuses. The API reports `sent`, `failed`, `not_configured` or related outcomes. Durable outbox/retry/delivery receipts are future work; do not treat provider acceptance as confirmed inbox delivery.
-- Local throttles are per process. Use a shared limiter or platform WAF before scaling serverless traffic. CORS is not authorization.
-- Recruiter tokens remain in localStorage for compatibility, with the existing 30-day expiry. Consider HttpOnly cookies, revocation and recovery before public launch. Recruiter password recovery and admin moderation are not implemented.
-- Filters operate on fetched visible jobs; database-side pagination/search and more scalable recommendation retrieval are next steps. Salary retains existing CTC semantics without inventing currency or pay period.
-- Profile fields are candidate-authored; they are not verified qualifications. The matching score is not suitable for automated hiring decisions.
-- Current release dependency scans report no known production advisories. Quill is pinned to 2.0.2, outside the listed 2.0.3 HTML-export advisory range, and nodemon uses the patched minimatch 11.0.1 through a scoped development override. See the release report for audit scope and verification; HTML persistence/display remains independently sanitized.
-- Desktop/mobile Chrome, Clerk development authentication and live authenticated resume delivery have been verified. Physical devices, Safari, complete keyboard focus trapping, live webhook ingress and Vercel worker packaging need further QA. Reviewed source was published to the release branch; no Vercel deployment or production promotion occurred. Live-service tests create only disposable Clerk development users and run-scoped Cloudinary QA assets.
+### External integration checks
 
-For interviews, demonstrate the score calculation and failure paths, ownership tests, concurrent duplicate test, raw webhook verification and the actual MongoDB analytics pipeline. Describe external-service and deployment verification limits openly.
+Five external checks remained blocked in the latest local QA report: **Google OAuth**, **three email notification workflows** (application, status, interview), and **live Clerk webhook delivery**. Hosted backend and MongoDB readiness require separate verification.
 
-## Implementation references
+### QA documentation
 
-The upload and signing approach follows [Cloudinary access-control documentation](https://cloudinary.com/documentation/control_access_to_media). PDF extraction uses the [PDF.js API](https://mozilla.github.io/pdf.js/api/draft/module-pdfjsLib.html). Raw webhook verification follows [Clerk's Express webhook guidance](https://github.com/clerk/skills/blob/main/skills/features/clerk-webhooks/references/frameworks.md). The optional email request uses [Resend's send-email API](https://resend.com/docs/api-reference/emails/send-email).
+- [Exact 138-case coverage and evidence](docs/CHECKLIST_138_COVERAGE.md)
+- [Resumed browser testing report](docs/RESUMED_TESTING_REPORT.md)
+- [Strict live browser results](docs/LIVE_BROWSER_E2E_RESULTS.md)
+- [Independent end-to-end audit](docs/FINAL_E2E_AUDIT.md)
+- [Demo guide](docs/DEMO_GUIDE.md)
+- [Deployment checklist](docs/DEPLOYMENT.md)
+- [Publication and release checks](docs/RELEASE_READINESS.md)
+
+<a name="deployment"></a>
+
+## 🌍 Deployment
+
+### Frontend — Vercel
+
+**[insiderjobs-codec-technologies.vercel.app](https://insiderjobs-codec-technologies.vercel.app/)**
+
+| Configuration | Value |
+|---|---|
+| Framework | Vite |
+| Root Directory | `client` |
+| Build Command | `npm run build` |
+| Output Directory | `dist` |
+
+Configure the following manually in the appropriate Vercel environment:
+
+```env
+VITE_CLERK_PUBLISHABLE_KEY=your_clerk_publishable_key
+VITE_BACKEND_URL=https://your-backend.example.com
+```
+
+The deployed API URL must point to a publicly reachable **HTTPS backend**, not localhost. Match backend allowed origins and Clerk domain settings to the deployed frontend. Local environment files do not configure Vercel automatically.
+
+### Backend and database
+
+The Express backend requires compatible Node.js hosting or a correctly configured serverless deployment. The existing `server/vercel.json` and exported API handler are retained; hosted worker packaging, runtime/request limits, CORS, and authentication still need verification in the chosen environment.
+
+MongoDB must be reachable from the deployed backend. The last release check reported a DNS failure for the configured remote database; use an authorized staging connection and recheck connectivity. Keep MongoDB credentials, Clerk secret keys, JWT secrets, Cloudinary secret keys, and optional email credentials **on the server side**.
+
+Before production promotion, verify hosted `/health`, actual frontend-to-backend requests, MongoDB persistence/indexes, authentication/ownership, private resume upload/download, and the complete candidate/recruiter workflows. A passing local build or reachable homepage is not production certification. See [deployment instructions](docs/DEPLOYMENT.md) and [remaining blockers](docs/REMAINING_BLOCKERS.md).
+
+## 🚀 Future Enhancements
+
+- Complete hosted OAuth, email, webhook, backend, and database verification.
+- Strengthen recruiter session management, recovery, and revocation.
+- Add shared rate limiting, database-side search, and pagination for scaling.
+- Expand resume vocabulary and evaluate OCR with explicit privacy controls.
+- Extend recruiter analytics and cross-browser/accessibility testing.
+- Add production monitoring, backups, retention policies, and operational checks.
+
+## 👨‍💻 Developer
+
+**Priyam Patil** · **CodeC Technologies**
+
+Project: **InsiderJobs — Full-Stack Job Portal**
+
+[GitHub Profile](https://github.com/Priyam-Patil) · [Project Repository](https://github.com/Priyam-Patil/Codec-Technologies-Job-Portal-System) · [Live Demo](https://insiderjobs-codec-technologies.vercel.app/)
+
+## ⭐ Support
+
+If this project is useful, consider starring the repository.
+
+Built with React, Express, MongoDB, Clerk, and Cloudinary.
